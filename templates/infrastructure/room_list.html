@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Rooms{% endblock %}
+{% block page_title %}Rooms{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>All Rooms</h2>
+        <a href="{% url 'room_create' %}" class="btn btn-primary">➕ Add Room</a>
+    </div>
+    <div class="card-body">
+        {% if rooms %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Block</th>
+                    <th>Floor</th>
+                    <th>Room Number</th>
+                    <th>Type</th>
+                    <th>Capacity</th>
+                    <th>Allocatable</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for room in rooms %}
+                <tr>
+                    <td>{{ room.floor.block.code }}</td>
+                    <td>{{ room.floor.floor_number }}</td>
+                    <td>{{ room.room_number }}</td>
+                    <td>{{ room.get_room_type_display }}</td>
+                    <td>{{ room.capacity }}</td>
+                    <td>{% if room.is_allocatable %}✓{% else %}✗{% endif %}</td>
+                    <td>
+                        <a href="{% url 'room_edit' room.pk %}" class="btn btn-secondary">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No rooms found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

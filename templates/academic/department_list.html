@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Departments{% endblock %}
+{% block page_title %}Departments{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>All Departments</h2>
+        {% if user.role == 'admin' or user.role == 'coordinator' %}
+        <a href="{% url 'department_create' %}" class="btn btn-primary">➕ Add Department</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        {% if departments %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Total Batches</th>
+                    <th>Total Faculty</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dept in departments %}
+                <tr>
+                    <td><strong>{{ dept.code }}</strong></td>
+                    <td>{{ dept.name }}</td>
+                    <td>{{ dept.batches.count }}</td>
+                    <td>{{ dept.faculty.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No departments found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

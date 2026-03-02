@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}University Timetable Scheduler{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>📚 Scheduler</h2>
+                <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span class="text">Dashboard</span>
+                </a>
+                
+                {% if user.role == 'admin' %}
+                <div class="nav-section">Infrastructure</div>
+                <a href="{% url 'block_list' %}" class="nav-item">
+                    <span class="icon">🏢</span>
+                    <span class="text">Blocks</span>
+                </a>
+                <a href="{% url 'room_list' %}" class="nav-item">
+                    <span class="icon">🚪</span>
+                    <span class="text">Rooms</span>
+                </a>
+                {% endif %}
+                
+                <div class="nav-section">Academic</div>
+                <a href="{% url 'department_list' %}" class="nav-item">
+                    <span class="icon">🎓</span>
+                    <span class="text">Departments</span>
+                </a>
+                <a href="{% url 'batch_list' %}" class="nav-item">
+                    <span class="icon">👥</span>
+                    <span class="text">Batches</span>
+                </a>
+                <a href="{% url 'faculty_list' %}" class="nav-item">
+                    <span class="icon">👨‍🏫</span>
+                    <span class="text">Faculty</span>
+                </a>
+                <a href="{% url 'subject_list' %}" class="nav-item">
+                    <span class="icon">📖</span>
+                    <span class="text">Subjects</span>
+                </a>
+                <a href="{% url 'faculty_subject_list' %}" class="nav-item">
+                    <span class="icon">🔗</span>
+                    <span class="text">Mappings</span>
+                </a>
+                
+                <div class="nav-section">Timetable</div>
+                <a href="{% url 'generate_timetable' %}" class="nav-item">
+                    <span class="icon">⚙️</span>
+                    <span class="text">Generate</span>
+                </a>
+                <a href="{% url 'timetable_view' %}" class="nav-item">
+                    <span class="icon">📅</span>
+                    <span class="text">View Timetable</span>
+                </a>
+                <a href="{% url 'manual_entry_create' %}" class="nav-item">
+                    <span class="icon">✏️</span>
+                    <span class="text">Manual Entry</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+                </div>
+                <div class="header-right">
+                    <span class="user-info">{{ user.username }} ({{ user.get_role_display }})</span>
+                    <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+                </div>
+            </header>
+
+            <!-- Messages -->
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Content -->
+            <main class="content">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

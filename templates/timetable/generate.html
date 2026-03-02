@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Generate Timetable{% endblock %}
+{% block page_title %}Generate Timetable{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Timetable Generation</h2>
+    </div>
+    <div class="card-body">
+        <div class="info-box">
+            <h3>⚠️ Important Information</h3>
+            <ul>
+                <li>This will regenerate the entire timetable</li>
+                <li>All entries marked as "Fixed" will be preserved</li>
+                <li>Non-fixed entries will be replaced with optimized schedule</li>
+                <li>Generation may take 1-5 minutes depending on constraints</li>
+                <li>Ensure all batches have faculty-subject mappings</li>
+            </ul>
+        </div>
+
+        <form method="post" id="generateForm">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-large" id="generateBtn">
+                    🔄 Generate Timetable
+                </button>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+
+        <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+            <div class="spinner"></div>
+            <p>Generating timetable... Please wait.</p>
+            <p class="loading-subtext">This may take a few minutes.</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Constraint Summary</h2>
+    </div>
+    <div class="card-body">
+        <div class="constraint-info">
+            <h3>Hard Constraints Applied:</h3>
+            <ul>
+                <li>✓ No room clashes</li>
+                <li>✓ No faculty clashes</li>
+                <li>✓ No batch clashes</li>
+                <li>✓ Weekly subject frequency requirements</li>
+                <li>✓ Maximum classes per day per batch</li>
+                <li>✓ Room capacity ≥ batch strength</li>
+                <li>✓ Batch fixed-room constraints</li>
+                <li>✓ Locked manual entries preserved</li>
+                <li>✓ Working hours: 10 AM - 6 PM</li>
+            </ul>
+            
+            <h3>Soft Constraints (Optimization Goals):</h3>
+            <ul>
+                <li>⚡ Balanced faculty workload</li>
+                <li>⚡ Minimized schedule gaps</li>
+                <li>⚡ Maximized room utilization</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('generateForm').addEventListener('submit', function() {
+    document.getElementById('generateBtn').disabled = true;
+    document.getElementById('loadingSpinner').style.display = 'block';
+});
+</script>
+{% endblock %}

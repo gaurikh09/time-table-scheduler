@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty-Subject Mappings{% endblock %}
+{% block page_title %}Faculty-Subject Mappings{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Faculty-Subject Mappings</h2>
+        {% if user.role == 'admin' or user.role == 'coordinator' %}
+        <a href="{% url 'faculty_subject_create' %}" class="btn btn-primary">➕ Add Mapping</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        {% if mappings %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Faculty</th>
+                    <th>Subject</th>
+                    <th>Batch</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mapping in mappings %}
+                <tr>
+                    <td>{{ mapping.faculty.name }}</td>
+                    <td>{{ mapping.subject.code }} - {{ mapping.subject.name }}</td>
+                    <td>{{ mapping.batch }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No faculty-subject mappings found. Create mappings to enable timetable generation.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

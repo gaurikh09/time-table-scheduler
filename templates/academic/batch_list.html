@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %}Batches{% endblock %}
+{% block page_title %}Batches{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>All Batches</h2>
+        {% if user.role == 'admin' or user.role == 'coordinator' %}
+        <a href="{% url 'batch_create' %}" class="btn btn-primary">➕ Add Batch</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        {% if batches %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Department</th>
+                    <th>Year</th>
+                    <th>Semester</th>
+                    <th>Section</th>
+                    <th>Strength</th>
+                    <th>Max Classes/Day</th>
+                    <th>Fixed Room</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for batch in batches %}
+                <tr>
+                    <td>{{ batch.department.code }}</td>
+                    <td>{{ batch.year }}</td>
+                    <td>{{ batch.semester }}</td>
+                    <td>{{ batch.section }}</td>
+                    <td>{{ batch.strength }}</td>
+                    <td>{{ batch.max_classes_per_day }}</td>
+                    <td>{{ batch.fixed_room.room_number|default:"—" }}</td>
+                    <td>
+                        {% if user.role == 'admin' or user.role == 'coordinator' %}
+                        <a href="{% url 'batch_edit' batch.pk %}" class="btn btn-secondary">Edit</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No batches found. Create one to get started.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

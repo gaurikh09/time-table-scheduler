@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Academic Blocks{% endblock %}
+{% block page_title %}Academic Blocks{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>All Academic Blocks</h2>
+        <a href="{% url 'block_create' %}" class="btn btn-primary">➕ Add Block</a>
+    </div>
+    <div class="card-body">
+        {% if blocks %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Total Floors</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for block in blocks %}
+                <tr>
+                    <td><strong>{{ block.code }}</strong></td>
+                    <td>{{ block.name }}</td>
+                    <td>{{ block.description|truncatewords:10 }}</td>
+                    <td>{{ block.floors.count }}</td>
+                    <td>
+                        <a href="{% url 'block_edit' block.pk %}" class="btn btn-secondary">Edit</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No academic blocks found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Faculty{% endblock %}
+{% block page_title %}Faculty Members{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>All Faculty</h2>
+        {% if user.role == 'admin' or user.role == 'coordinator' %}
+        <a href="{% url 'faculty_create' %}" class="btn btn-primary">➕ Add Faculty</a>
+        {% endif %}
+    </div>
+    <div class="card-body">
+        {% if faculty %}
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Email</th>
+                    <th>Max Hours/Week</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for f in faculty %}
+                <tr>
+                    <td>{{ f.employee_id }}</td>
+                    <td>{{ f.name }}</td>
+                    <td>{{ f.department.code }}</td>
+                    <td>{{ f.email }}</td>
+                    <td>{{ f.max_hours_per_week }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No faculty members found.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

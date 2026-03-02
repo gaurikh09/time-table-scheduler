@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}View Timetable{% endblock %}
+{% block page_title %}Timetable View{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Select Batch</h2>
+    </div>
+    <div class="card-body">
+        <form method="get" class="filter-form">
+            <select name="batch" class="form-input" onchange="this.form.submit()">
+                <option value="">-- Select Batch --</option>
+                {% for batch in batches %}
+                <option value="{{ batch.id }}" {% if selected_batch == batch.id|stringformat:"s" %}selected{% endif %}>
+                    {{ batch }}
+                </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+</div>
+
+{% if selected_batch %}
+<div class="card timetable-card">
+    <div class="card-header">
+        <h2>Weekly Timetable</h2>
+        <button onclick="window.print()" class="btn btn-secondary">🖨️ Print</button>
+    </div>
+    <div class="card-body">
+        <div class="timetable-grid">
+            <table class="timetable-table">
+                <thead>
+                    <tr>
+                        <th class="time-column">Time</th>
+                        {% for day_num, day_name in days %}
+                        <th>{{ day_name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for time in timeslots %}
+                    <tr>
+                        <td class="time-column">{{ time }}:00 - {{ time|add:1 }}:00</td>
+                        {% for day_num, day_name in days %}
+                        <td class="timetable-cell">
+                            {% if timetable_grid|get_item:day_num|get_item:time %}
+                                {% with entry=timetable_grid|get_item:day_num|get_item:time %}
+                                <div class="class-entry {% if entry.is_fixed %}fixed-entry{% endif %}" 
+                                     title="Faculty: {{ entry.faculty.name }}&#10;Room: {{ entry.room.room_number }}">
+                                    <div class="subject-name">{{ entry.subject.code }}</div>
+                                    <div class="entry-details">
+                                        <small>{{ entry.faculty.name|truncatewords:2 }}</small><br>
+                                        <small>Room {{ entry.room.room_number }}</small>
+                                    </div>
+                                    {% if entry.is_fixed %}
+                                    <span class="lock-icon">🔒</span>
+                                    {% endif %}
+                                </div>
+                                {% endwith %}
+                            {% else %}
+                                <div class="empty-slot">—</div>
+                            {% endif %}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="legend">
+            <h3>Legend:</h3>
+            <div class="legend-items">
+                <span class="legend-item"><span class="legend-box fixed-entry"></span> Fixed/Locked Entry</span>
+                <span class="legend-item"><span class="legend-box"></span> Generated Entry</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="empty-state-card">
+    <p>Please select a batch to view the timetable.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Custom template filters simulation
+document.addEventListener('DOMContentLoaded', function() {
+    // Add hover effects
+    document.querySelectorAll('.class-entry').forEach(entry => {
+        entry.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+        });
+        entry.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+});
+</script>
+{% endblock %}
