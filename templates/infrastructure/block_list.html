@@ -4,40 +4,136 @@
 {% block page_title %}Academic Blocks{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h2>All Academic Blocks</h2>
-        <a href="{% url 'block_create' %}" class="btn btn-primary">➕ Add Block</a>
+<div class="table-card scroll-reveal">
+    <div class="table-header">
+        <div>
+            <h2 class="table-title">Academic Blocks</h2>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">Manage your institution's building infrastructure</p>
+        </div>
+        <div class="table-actions">
+            <div class="search-bar" style="width: 250px;">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" class="search-input table-search" placeholder="Search blocks...">
+            </div>
+            <a href="{% url 'block_create' %}" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Block
+            </a>
+        </div>
     </div>
-    <div class="card-body">
-        {% if blocks %}
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Total Floors</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for block in blocks %}
-                <tr>
-                    <td><strong>{{ block.code }}</strong></td>
-                    <td>{{ block.name }}</td>
-                    <td>{{ block.description|truncatewords:10 }}</td>
-                    <td>{{ block.floors.count }}</td>
-                    <td>
-                        <a href="{% url 'block_edit' block.pk %}" class="btn btn-secondary">Edit</a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <p class="empty-state">No academic blocks found.</p>
-        {% endif %}
+    
+    {% if blocks %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Total Floors</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for block in blocks %}
+            <tr>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(147, 51, 234, 0.2)); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary);">
+                            {{ block.code|slice:":2"|upper }}
+                        </div>
+                        <strong style="color: var(--text-primary);">{{ block.code }}</strong>
+                    </div>
+                </td>
+                <td style="font-weight: 500;">{{ block.name }}</td>
+                <td style="color: var(--text-secondary);">{{ block.description|truncatewords:10|default:"—" }}</td>
+                <td>
+                    <span class="badge badge-primary">{{ block.floors.count }} Floor{{ block.floors.count|pluralize }}</span>
+                </td>
+                <td>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="{% url 'block_edit' block.pk %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            Edit
+                        </a>
+                        <a href="{% url 'block_delete' block.pk %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; color: var(--error); border-color: var(--error);">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                            Delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.3;">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            </svg>
+        </div>
+        <div class="empty-title">No Academic Blocks Yet</div>
+        <div class="empty-message">Create your first academic block to organize your institution's infrastructure</div>
+        <a href="{% url 'block_create' %}" class="btn btn-primary" style="margin-top: 1rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Create First Block
+        </a>
     </div>
+    {% endif %}
 </div>
+
+<style>
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.table-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+@media (max-width: 768px) {
+    .table-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .table-actions {
+        flex-direction: column;
+    }
+    
+    .search-bar {
+        width: 100% !important;
+    }
+}
+</style>
+
+<script>
+// Show toast on page load if there's a success message
+{% if messages %}
+    {% for message in messages %}
+        showToast('{{ message }}', '{{ message.tags }}');
+    {% endfor %}
+{% endif %}
+</script>
 {% endblock %}

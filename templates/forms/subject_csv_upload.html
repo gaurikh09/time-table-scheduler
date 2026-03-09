@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">{{ title }}</h1>
+    
+    <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
+        <h3 class="font-semibold mb-2">CSV Format Instructions:</h3>
+        <ul class="list-disc list-inside text-sm">
+            <li>Required columns: <strong>subject-code</strong>, <strong>subject-name</strong>, <strong>weekly-frequency</strong></li>
+            <li>Example header: subject-code,subject-name,weekly-frequency</li>
+            <li>weekly-frequency must be a number (e.g., 3, 4, 5)</li>
+        </ul>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+        {% csrf_token %}
+        
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.department.label }}
+            </label>
+            {{ form.department }}
+            {% if form.department.help_text %}
+            <p class="text-gray-600 text-xs mt-1">{{ form.department.help_text }}</p>
+            {% endif %}
+            {% if form.department.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.department.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.subject_type.label }}
+            </label>
+            {{ form.subject_type }}
+            {% if form.subject_type.help_text %}
+            <p class="text-gray-600 text-xs mt-1">{{ form.subject_type.help_text }}</p>
+            {% endif %}
+            {% if form.subject_type.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.subject_type.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.duration_hours.label }}
+            </label>
+            {{ form.duration_hours }}
+            {% if form.duration_hours.help_text %}
+            <p class="text-gray-600 text-xs mt-1">{{ form.duration_hours.help_text }}</p>
+            {% endif %}
+            {% if form.duration_hours.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.duration_hours.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.csv_file.label }}
+            </label>
+            {{ form.csv_file }}
+            {% if form.csv_file.help_text %}
+            <p class="text-gray-600 text-xs mt-1">{{ form.csv_file.help_text }}</p>
+            {% endif %}
+            {% if form.csv_file.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.csv_file.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Upload CSV
+            </button>
+            <a href="{% url 'subject_list' %}" class="text-gray-600 hover:text-gray-800">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -129,6 +129,30 @@ class Subject(models.Model):
         ordering = ['code']
 
 
+class BatchSubject(models.Model):
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE, related_name='batch_subjects')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='subject_batches')
+    
+    def __str__(self):
+        return f"{self.batch} - {self.subject.code}"
+    
+    class Meta:
+        unique_together = ['batch', 'subject']
+
+
+class FacultySubjectCapability(models.Model):
+    """Stores which subjects a faculty member CAN teach (without batch assignment)"""
+    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name='subject_capabilities')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='capable_faculty')
+    
+    def __str__(self):
+        return f"{self.faculty.name} can teach {self.subject.code}"
+    
+    class Meta:
+        unique_together = ['faculty', 'subject']
+        verbose_name_plural = 'Faculty Subject Capabilities'
+
+
 class FacultySubject(models.Model):
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE, related_name='subject_assignments')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, related_name='faculty_assignments')

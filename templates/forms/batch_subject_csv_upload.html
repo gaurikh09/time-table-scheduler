@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">{{ title }}</h1>
+    
+    <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
+        <h3 class="font-semibold mb-2">CSV Format Instructions:</h3>
+        <ul class="list-disc list-inside text-sm">
+            <li>Required column: <strong>section</strong> (batch section name)</li>
+            <li>All other columns will be treated as subject codes</li>
+            <li>Column names can be anything (e.g., subject1, sub-code1, CS101, etc.)</li>
+            <li>Example header: <code>section,CS101,CS102,CS103,CS104,CS105</code></li>
+            <li>Example row: <code>2EA1,CS101,CS102,CS103,CS104,CS105</code></li>
+            <li>Or use descriptive headers: <code>section,subject-code1,subject-code2,subject-code3</code></li>
+            <li>Subjects must already exist in the system before uploading</li>
+            <li>Empty cells will be ignored</li>
+        </ul>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+        {% csrf_token %}
+        
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.department.label }}
+            </label>
+            {{ form.department }}
+            {% if form.department.help_text %}
+            <p class="text-gray-600 text-xs mt-1">{{ form.department.help_text }}</p>
+            {% endif %}
+            {% if form.department.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.department.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.year.label }}
+            </label>
+            {{ form.year }}
+            {% if form.year.help_text %}
+            <p class="text-gray-600 text-xs mt-1">{{ form.year.help_text }}</p>
+            {% endif %}
+            {% if form.year.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.year.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="mb-4">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.semester.label }}
+            </label>
+            {{ form.semester }}
+            {% if form.semester.help_text %}
+            <p class="text-gray-600 text-xs mt-1">{{ form.semester.help_text }}</p>
+            {% endif %}
+            {% if form.semester.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.semester.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="mb-6">
+            <label class="block text-gray-700 text-sm font-bold mb-2">
+                {{ form.csv_file.label }}
+            </label>
+            {{ form.csv_file }}
+            {% if form.csv_file.help_text %}
+            <p class="text-gray-600 text-xs mt-1">{{ form.csv_file.help_text }}</p>
+            {% endif %}
+            {% if form.csv_file.errors %}
+            <p class="text-red-500 text-xs mt-1">{{ form.csv_file.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="flex items-center justify-between">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Upload CSV
+            </button>
+            <a href="{% url 'batch_list' %}" class="text-gray-600 hover:text-gray-800">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+{% endblock %}
