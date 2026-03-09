@@ -4,6 +4,67 @@ from .models import (
     Faculty, Subject, FacultySubject, TimetableEntry
 )
 
+class FacultyCSVUploadForm(forms.Form):
+    csv_file = forms.FileField(
+        label='Upload CSV File',
+        help_text='CSV with headers: Teach-name, Emp-ID (both required), email (optional)',
+        widget=forms.FileInput(attrs={'class': 'form-input', 'accept': '.csv'})
+    )
+    department = forms.ModelChoiceField(
+        queryset=Department.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-input'}),
+        help_text='Select department for all teachers'
+    )
+
+
+class SubjectCSVUploadForm(forms.Form):
+    csv_file = forms.FileField(
+        label='Upload CSV File',
+        help_text='CSV with headers: subject-code, subject-name, weekly-frequency (all required)',
+        widget=forms.FileInput(attrs={'class': 'form-input', 'accept': '.csv'})
+    )
+    department = forms.ModelChoiceField(
+        queryset=Department.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-input'}),
+        help_text='Select department for all subjects'
+    )
+    subject_type = forms.ChoiceField(
+        choices=Subject.SUBJECT_TYPE_CHOICES,
+        widget=forms.Select(attrs={'class': 'form-input'}),
+        help_text='Select subject type for all subjects'
+    )
+    duration_hours = forms.IntegerField(
+        initial=1,
+        min_value=1,
+        widget=forms.NumberInput(attrs={'class': 'form-input'}),
+        help_text='Duration in hours for all subjects'
+    )
+
+
+class BatchSubjectCSVUploadForm(forms.Form):
+    csv_file = forms.FileField(
+        label='Upload CSV File',
+        help_text='CSV with headers: section, subject-code1, subject-code2, ... (section required)',
+        widget=forms.FileInput(attrs={'class': 'form-input', 'accept': '.csv'})
+    )
+    department = forms.ModelChoiceField(
+        queryset=Department.objects.all(),
+        widget=forms.Select(attrs={'class': 'form-input'}),
+        help_text='Select department'
+    )
+    year = forms.IntegerField(
+        min_value=1,
+        max_value=4,
+        widget=forms.NumberInput(attrs={'class': 'form-input'}),
+        help_text='Year (1-4)'
+    )
+    semester = forms.IntegerField(
+        min_value=1,
+        max_value=8,
+        widget=forms.NumberInput(attrs={'class': 'form-input'}),
+        help_text='Semester (1-8)'
+    )
+
 class AcademicBlockForm(forms.ModelForm):
     class Meta:
         model = AcademicBlock

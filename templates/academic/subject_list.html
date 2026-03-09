@@ -4,42 +4,132 @@
 {% block page_title %}Subjects{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h2>All Subjects</h2>
-        {% if user.role == 'admin' or user.role == 'coordinator' %}
-        <a href="{% url 'subject_create' %}" class="btn btn-primary">➕ Add Subject</a>
-        {% endif %}
+<div class="table-card scroll-reveal">
+    <div class="table-header">
+        <div>
+            <h2 class="table-title">Subjects</h2>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">Manage courses and subjects</p>
+        </div>
+        <div class="table-actions">
+            <div class="search-bar" style="width: 250px;">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" class="search-input table-search" placeholder="Search subjects...">
+            </div>
+            <a href="{% url 'subject_upload_csv' %}" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload CSV
+            </a>
+            <a href="{% url 'subject_create' %}" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Subject
+            </a>
+        </div>
     </div>
-    <div class="card-body">
-        {% if subjects %}
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Code</th>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Department</th>
-                    <th>Weekly Frequency</th>
-                    <th>Duration (hrs)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for subject in subjects %}
-                <tr>
-                    <td><strong>{{ subject.code }}</strong></td>
-                    <td>{{ subject.name }}</td>
-                    <td>{{ subject.get_subject_type_display }}</td>
-                    <td>{{ subject.department.code }}</td>
-                    <td>{{ subject.weekly_frequency }}</td>
-                    <td>{{ subject.duration_hours }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <p class="empty-state">No subjects found.</p>
-        {% endif %}
+    
+    {% if subjects %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Subject</th>
+                <th>Code</th>
+                <th>Department</th>
+                <th>Type</th>
+                <th>Weekly Frequency</th>
+                <th>Duration</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subject in subjects %}
+            <tr>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(147, 51, 234, 0.2)); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                        </div>
+                        <strong style="color: var(--text-primary);">{{ subject.name }}</strong>
+                    </div>
+                </td>
+                <td><span class="badge badge-primary">{{ subject.code }}</span></td>
+                <td>{{ subject.department.code }}</td>
+                <td>
+                    <span class="badge {% if subject.subject_type == 'lab' %}badge-success{% elif subject.subject_type == 'theory' %}badge-primary{% else %}badge-secondary{% endif %}">
+                        {{ subject.get_subject_type_display }}
+                    </span>
+                </td>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-secondary);">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        <span style="font-weight: 600;">{{ subject.weekly_frequency }}x/week</span>
+                    </div>
+                </td>
+                <td>{{ subject.duration_hours }}h</td>
+                <td>
+                    <a href="{% url 'subject_create' %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                        </svg>
+                        Edit
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.3;">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+        </div>
+        <div class="empty-title">No Subjects Yet</div>
+        <div class="empty-message">Add subjects to create your course catalog</div>
+        <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 1rem;">
+            <a href="{% url 'subject_create' %}" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Subject
+            </a>
+            <a href="{% url 'subject_upload_csv' %}" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload CSV
+            </a>
+        </div>
     </div>
+    {% endif %}
 </div>
+
+<style>
+.badge-secondary {
+    background: rgba(148, 163, 184, 0.1);
+    color: var(--text-secondary);
+}
+</style>
 {% endblock %}

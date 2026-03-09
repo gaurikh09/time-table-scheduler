@@ -4,36 +4,96 @@
 {% block page_title %}Faculty-Subject Mappings{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h2>Faculty-Subject Mappings</h2>
-        {% if user.role == 'admin' or user.role == 'coordinator' %}
-        <a href="{% url 'faculty_subject_create' %}" class="btn btn-primary">➕ Add Mapping</a>
-        {% endif %}
+<div class="table-card scroll-reveal">
+    <div class="table-header">
+        <div>
+            <h2 class="table-title">Faculty-Subject Mappings</h2>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">Assign faculty members to subjects and batches</p>
+        </div>
+        <div class="table-actions">
+            <div class="search-bar" style="width: 250px;">
+                <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"/>
+                    <path d="m21 21-4.35-4.35"/>
+                </svg>
+                <input type="text" class="search-input table-search" placeholder="Search mappings...">
+            </div>
+            <a href="{% url 'faculty_subject_create' %}" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/>
+                    <line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Mapping
+            </a>
+        </div>
     </div>
-    <div class="card-body">
-        {% if mappings %}
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Faculty</th>
-                    <th>Subject</th>
-                    <th>Batch</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for mapping in mappings %}
-                <tr>
-                    <td>{{ mapping.faculty.name }}</td>
-                    <td>{{ mapping.subject.code }} - {{ mapping.subject.name }}</td>
-                    <td>{{ mapping.batch }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <p class="empty-state">No faculty-subject mappings found. Create mappings to enable timetable generation.</p>
-        {% endif %}
+    
+    {% if mappings %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Faculty</th>
+                <th>Subject</th>
+                <th>Batch</th>
+                <th>Department</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mapping in mappings %}
+            <tr>
+                <td>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="width: 36px; height: 36px; background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(147, 51, 234, 0.2)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--primary); font-size: 0.75rem;">
+                            {{ mapping.faculty.name|slice:":2"|upper }}
+                        </div>
+                        <div>
+                            <strong style="color: var(--text-primary); font-size: 0.875rem;">{{ mapping.faculty.name }}</strong>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ mapping.faculty.employee_id }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <strong style="color: var(--text-primary); font-size: 0.875rem;">{{ mapping.subject.name }}</strong>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ mapping.subject.code }}</div>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge badge-primary">{{ mapping.batch.department.code }} - {{ mapping.batch.section }}</span>
+                </td>
+                <td>{{ mapping.faculty.department.name }}</td>
+                <td>
+                    <button class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; color: var(--error); border-color: var(--error);">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                        Remove
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity: 0.3;">
+                <circle cx="12" cy="12" r="3"/>
+                <path d="M12 1v6m0 6v6m5.2-13.2l-4.2 4.2m0 6l4.2 4.2M23 12h-6m-6 0H1m18.2 5.2l-4.2-4.2m0-6l4.2-4.2"/>
+            </svg>
+        </div>
+        <div class="empty-title">No Mappings Yet</div>
+        <div class="empty-message">Create faculty-subject mappings to assign teachers to courses</div>
+        <a href="{% url 'faculty_subject_create' %}" class="btn btn-primary" style="margin-top: 1rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+            Create First Mapping
+        </a>
     </div>
+    {% endif %}
 </div>
 {% endblock %}

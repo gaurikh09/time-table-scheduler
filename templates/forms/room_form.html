@@ -4,35 +4,286 @@
 {% block page_title %}{{ title }}{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header">
-        <h2>{{ title }}</h2>
-    </div>
-    <div class="card-body">
-        <form method="post">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.help_text %}
-                <small style="color: #7B8794;">{{ field.help_text }}</small>
-                {% endif %}
-                {% if field.errors %}
-                <div style="color: #D9534F; margin-top: 5px;">
-                    {% for error in field.errors %}
-                    <small>{{ error }}</small>
-                    {% endfor %}
-                </div>
-                {% endif %}
+<div class="form-container scroll-reveal">
+    <div class="form-card">
+        <div class="form-header">
+            <div class="form-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="9" y1="3" x2="9" y2="21"/>
+                </svg>
             </div>
-            {% endfor %}
+            <div>
+                <h2 class="form-title">{{ title }}</h2>
+                <p class="form-subtitle">Configure room details and capacity</p>
+            </div>
+        </div>
+
+        <form method="post" class="modern-form" id="roomForm">
+            {% csrf_token %}
             
+            <div class="form-grid">
+                {% for field in form %}
+                <div class="form-group {% if field.name == 'is_allocatable' %}form-group-full{% endif %}">
+                    {% if field.name == 'is_allocatable' %}
+                    <div class="checkbox-wrapper">
+                        {{ field }}
+                        <label for="{{ field.id_for_label }}" class="checkbox-label">
+                            <span class="checkbox-text">{{ field.label }}</span>
+                            {% if field.help_text %}
+                            <small class="help-text">{{ field.help_text }}</small>
+                            {% endif %}
+                        </label>
+                    </div>
+                    {% else %}
+                    <div class="input-wrapper">
+                        {{ field }}
+                        <label for="{{ field.id_for_label }}" class="floating-label">
+                            {{ field.label }}
+                            {% if field.field.required %}<span style="color: var(--error);">*</span>{% endif %}
+                        </label>
+                        {% if field.help_text %}
+                        <small class="help-text">{{ field.help_text }}</small>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                    
+                    {% if field.errors %}
+                    <div class="error-message">
+                        {% for error in field.errors %}
+                        <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
             <div class="form-actions">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a href="{{ request.META.HTTP_REFERER|default:'/' }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"/>
+                    </svg>
+                    Save Room
+                </button>
+                <a href="{% url 'room_list' %}" class="btn btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                    Cancel
+                </a>
             </div>
         </form>
     </div>
 </div>
+
+<style>
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.form-header {
+    padding: 2rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.form-icon {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(147, 51, 234, 0.2));
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary);
+}
+
+.form-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.form-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.modern-form {
+    padding: 2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group-full {
+    grid-column: 1 / -1;
+}
+
+.input-wrapper {
+    position: relative;
+}
+
+.modern-form input[type="text"],
+.modern-form input[type="email"],
+.modern-form input[type="number"],
+.modern-form select {
+    width: 100%;
+    padding: 1rem;
+    background: var(--bg-dark);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.modern-form input:focus,
+.modern-form select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.floating-label {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    background: var(--bg-dark);
+    padding: 0 0.25rem;
+}
+
+.modern-form input:focus + .floating-label,
+.modern-form input:not(:placeholder-shown) + .floating-label,
+.modern-form select:focus + .floating-label,
+.modern-form select:not([value=""]) + .floating-label {
+    top: -0.5rem;
+    left: 0.75rem;
+    font-size: 0.75rem;
+    color: var(--primary);
+}
+
+.checkbox-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(124, 58, 237, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    accent-color: var(--primary);
+    margin-top: 2px;
+}
+
+.checkbox-label {
+    flex: 1;
+    cursor: pointer;
+}
+
+.checkbox-text {
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.help-text {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.error-message {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--error);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+// Add placeholder for floating labels
+document.querySelectorAll('.modern-form input:not([type="checkbox"]), .modern-form select').forEach(input => {
+    if (input.type !== 'checkbox') {
+        input.setAttribute('placeholder', ' ');
+    }
+});
+
+// Form validation animation
+document.getElementById('roomForm').addEventListener('submit', function(e) {
+    const inputs = this.querySelectorAll('input[required]:not([type="checkbox"]), select[required]');
+    let isValid = true;
+    
+    inputs.forEach(input => {
+        if (!input.value.trim()) {
+            isValid = false;
+            input.style.borderColor = 'var(--error)';
+            input.style.animation = 'shake 0.5s ease';
+            setTimeout(() => {
+                input.style.animation = '';
+            }, 500);
+        }
+    });
+    
+    if (!isValid) {
+        e.preventDefault();
+        showToast('Please fill in all required fields', 'error');
+    }
+});
+
+// Remove error styling on input
+document.querySelectorAll('.modern-form input, .modern-form select').forEach(input => {
+    input.addEventListener('input', function() {
+        this.style.borderColor = '';
+    });
+});
+</script>
 {% endblock %}

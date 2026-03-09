@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.dashboard, name='dashboard'),
+    path('dashboard/', views.dashboard, name='dashboard'),
     
     # Infrastructure
     path('blocks/', views.block_list, name='block_list'),
@@ -21,12 +21,15 @@ urlpatterns = [
     path('batches/', views.batch_list, name='batch_list'),
     path('batches/create/', views.batch_create, name='batch_create'),
     path('batches/<int:pk>/edit/', views.batch_edit, name='batch_edit'),
+    path('batches/upload-csv/', views.batch_subject_upload_csv, name='batch_subject_upload_csv'),
     
     path('faculty/', views.faculty_list, name='faculty_list'),
     path('faculty/create/', views.faculty_create, name='faculty_create'),
+    path('faculty/upload-csv/', views.faculty_upload_csv, name='faculty_upload_csv'),
     
     path('subjects/', views.subject_list, name='subject_list'),
     path('subjects/create/', views.subject_create, name='subject_create'),
+    path('subjects/upload-csv/', views.subject_upload_csv, name='subject_upload_csv'),
     
     path('faculty-subjects/', views.faculty_subject_list, name='faculty_subject_list'),
     path('faculty-subjects/create/', views.faculty_subject_create, name='faculty_subject_create'),

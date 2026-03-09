@@ -3,15 +3,24 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction
+import csv
+import io
 from .models import (
     AcademicBlock, Floor, Room, Department, Batch, Faculty, 
-    Subject, FacultySubject, TimetableEntry, TimetableGeneration
+    Subject, FacultySubject, TimetableEntry, TimetableGeneration, BatchSubject
 )
 from .forms import (
     AcademicBlockForm, FloorForm, RoomForm, DepartmentForm, 
-    BatchForm, FacultyForm, SubjectForm, FacultySubjectForm, TimetableEntryForm
+    BatchForm, FacultyForm, SubjectForm, FacultySubjectForm, TimetableEntryForm,
+    FacultyCSVUploadForm, SubjectCSVUploadForm, BatchSubjectCSVUploadForm
 )
 from scheduler_engine.solver import TimetableSolver
+
+
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect('dashboard')
+    return render(request, 'landing.html')
 
 
 def role_required(allowed_roles):
@@ -178,6 +187,73 @@ def batch_edit(request, pk):
     return render(request, 'forms/batch_form.html', {'form': form, 'title': 'Edit Batch'})
 
 
+@login_required
+@role_required(['admin', 'coordinator'])
+def batch_subject_upload_csv(request):
+    if request.method == 'POST':
+        form = BatchSubjectCSVUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES['csv_file']
+            department = form.cleaned_data['department']
+            year = form.cleaned_data['year']
+            semester = form.cleaned_data['semester']
+            
+            try:
+                decoded_file = csv_file.read().decode('utf-8')
+                io_string = io.StringIO(decoded_file)
+                reader = csv.DictReader(io_string)
+                
+                created_batches = 0
+                updated_batches = 0
+                linked_subjects = 0
+                errors = []
+                
+                for idx, row in enumerate(reader, start=2):
+                    section = row.get('section', '').strip()
+                    
+                    if not section:
+                        errors.append(f"Row {idx}: section is required")
+                        continue
+                    
+                    batch, created = Batch.objects.get_or_create(
+                        department=department,
+                        year=year,
+                        semester=semester,
+                        section=section,
+                        defaults={'strength': 60, 'max_classes_per_day': 6}
+                    )
+                    
+                    if created:
+                        created_batches += 1
+                    else:
+                        updated_batches += 1
+                    
+                    # Process subject codes
+                    for key, value in row.items():
+                        if key.startswith('subject-code') and value.strip():
+                            subject_code = value.strip()
+                            try:
+                                subject = Subject.objects.get(code=subject_code)
+                                _, link_created = BatchSubject.objects.get_or_create(batch=batch, subject=subject)
+                                if link_created:
+                                    linked_subjects += 1
+                            except Subject.DoesNotExist:
+                                errors.append(f"Row {idx}: Subject {subject_code} not found")
+                
+                if errors:
+                    messages.warning(request, f'Created {created_batches} batches, updated {updated_batches} batches, linked {linked_subjects} new subjects. Errors: {"; ".join(errors[:5])}')
+                else:
+                    messages.success(request, f'Successfully created {created_batches} batches, updated {updated_batches} batches, and linked {linked_subjects} new subjects.')
+                return redirect('batch_list')
+            
+            except Exception as e:
+                messages.error(request, f'Error processing CSV: {str(e)}')
+    else:
+        form = BatchSubjectCSVUploadForm()
+    
+    return render(request, 'forms/batch_subject_csv_upload.html', {'form': form, 'title': 'Upload Batch-Subject CSV'})
+
+
 # Faculty Views
 @login_required
 def faculty_list(request):
@@ -199,6 +275,63 @@ def faculty_create(request):
     return render(request, 'forms/faculty_form.html', {'form': form, 'title': 'Create Faculty'})
 
 
+@login_required
+@role_required(['admin', 'coordinator'])
+def faculty_upload_csv(request):
+    if request.method == 'POST':
+        form = FacultyCSVUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES['csv_file']
+            department = form.cleaned_data['department']
+            
+            try:
+                decoded_file = csv_file.read().decode('utf-8')
+                io_string = io.StringIO(decoded_file)
+                reader = csv.DictReader(io_string)
+                
+                created_count = 0
+                skipped_count = 0
+                errors = []
+                
+                for idx, row in enumerate(reader, start=2):
+                    teacher_name = row.get('Teach-name', '').strip()
+                    employee_id = row.get('Emp-ID', '').strip()
+                    email = row.get('email', '').strip()
+                    
+                    if not teacher_name:
+                        errors.append(f"Row {idx}: Teach-name is required")
+                        continue
+                    
+                    if not employee_id:
+                        errors.append(f"Row {idx}: Emp-ID is required")
+                        continue
+                    
+                    if not Faculty.objects.filter(employee_id=employee_id).exists():
+                        Faculty.objects.create(
+                            name=teacher_name,
+                            employee_id=employee_id,
+                            department=department,
+                            email=email,
+                            max_hours_per_week=20
+                        )
+                        created_count += 1
+                    else:
+                        skipped_count += 1
+                
+                if errors:
+                    messages.warning(request, f'Created {created_count} faculty. Errors: {"; ".join(errors[:5])}')
+                else:
+                    messages.success(request, f'Successfully created {created_count} faculty members. Skipped {skipped_count} duplicates.')
+                return redirect('faculty_list')
+            
+            except Exception as e:
+                messages.error(request, f'Error processing CSV: {str(e)}')
+    else:
+        form = FacultyCSVUploadForm()
+    
+    return render(request, 'forms/faculty_csv_upload.html', {'form': form, 'title': 'Upload Faculty CSV'})
+
+
 # Subject Views
 @login_required
 def subject_list(request):
@@ -218,6 +351,76 @@ def subject_create(request):
     else:
         form = SubjectForm()
     return render(request, 'forms/subject_form.html', {'form': form, 'title': 'Create Subject'})
+
+
+@login_required
+@role_required(['admin', 'coordinator'])
+def subject_upload_csv(request):
+    if request.method == 'POST':
+        form = SubjectCSVUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            csv_file = request.FILES['csv_file']
+            department = form.cleaned_data['department']
+            subject_type = form.cleaned_data['subject_type']
+            duration_hours = form.cleaned_data['duration_hours']
+            
+            try:
+                decoded_file = csv_file.read().decode('utf-8')
+                io_string = io.StringIO(decoded_file)
+                reader = csv.DictReader(io_string)
+                
+                created_count = 0
+                skipped_count = 0
+                errors = []
+                
+                for idx, row in enumerate(reader, start=2):
+                    subject_code = row.get('subject-code', '').strip()
+                    subject_name = row.get('subject-name', '').strip()
+                    weekly_frequency = row.get('weekly-frequency', '').strip()
+                    
+                    if not subject_code:
+                        errors.append(f"Row {idx}: subject-code is required")
+                        continue
+                    
+                    if not subject_name:
+                        errors.append(f"Row {idx}: subject-name is required")
+                        continue
+                    
+                    if not weekly_frequency:
+                        errors.append(f"Row {idx}: weekly-frequency is required")
+                        continue
+                    
+                    try:
+                        weekly_frequency = int(weekly_frequency)
+                    except ValueError:
+                        errors.append(f"Row {idx}: weekly-frequency must be a number")
+                        continue
+                    
+                    if not Subject.objects.filter(code=subject_code).exists():
+                        Subject.objects.create(
+                            name=subject_name,
+                            code=subject_code,
+                            subject_type=subject_type,
+                            weekly_frequency=weekly_frequency,
+                            duration_hours=duration_hours,
+                            department=department
+                        )
+                        created_count += 1
+                    else:
+                        skipped_count += 1
+                
+                if errors:
+                    messages.warning(request, f'Created {created_count} subjects. Errors: {"; ".join(errors[:5])}')
+                else:
+                    messages.success(request, f'Successfully created {created_count} subjects. Skipped {skipped_count} duplicates.')
+                return redirect('subject_list')
+            
+            except Exception as e:
+                messages.error(request, f'Error processing CSV: {str(e)}')
+    else:
+        form = SubjectCSVUploadForm()
+    
+    return render(request, 'forms/subject_csv_upload.html', {'form': form, 'title': 'Upload Subject CSV'})
 
 
 # Faculty-Subject Mapping
