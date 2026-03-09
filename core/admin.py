@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import (
     User, AcademicBlock, Floor, Room, Department, Batch, 
-    Faculty, Subject, FacultySubject, TimetableEntry, TimetableGeneration, BatchSubject
+    Faculty, Subject, FacultySubject, TimetableEntry, TimetableGeneration, BatchSubject, FacultySubjectCapability
 )
 
 @admin.register(User)
@@ -53,6 +53,12 @@ class SubjectAdmin(admin.ModelAdmin):
 class FacultySubjectAdmin(admin.ModelAdmin):
     list_display = ['faculty', 'subject', 'batch']
     list_filter = ['faculty', 'subject']
+
+@admin.register(FacultySubjectCapability)
+class FacultySubjectCapabilityAdmin(admin.ModelAdmin):
+    list_display = ['faculty', 'subject']
+    list_filter = ['faculty', 'subject']
+    search_fields = ['faculty__name', 'subject__code']
 
 @admin.register(BatchSubject)
 class BatchSubjectAdmin(admin.ModelAdmin):

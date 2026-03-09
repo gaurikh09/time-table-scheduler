@@ -20,11 +20,14 @@ urlpatterns = [
     
     path('batches/', views.batch_list, name='batch_list'),
     path('batches/create/', views.batch_create, name='batch_create'),
+    path('batches/<int:pk>/', views.batch_detail, name='batch_detail'),
     path('batches/<int:pk>/edit/', views.batch_edit, name='batch_edit'),
     path('batches/upload-csv/', views.batch_subject_upload_csv, name='batch_subject_upload_csv'),
+    path('batches/subjects/', views.batch_subjects_view, name='batch_subjects_view'),
     
     path('faculty/', views.faculty_list, name='faculty_list'),
     path('faculty/create/', views.faculty_create, name='faculty_create'),
+    path('faculty/<int:pk>/', views.faculty_detail, name='faculty_detail'),
     path('faculty/upload-csv/', views.faculty_upload_csv, name='faculty_upload_csv'),
     
     path('subjects/', views.subject_list, name='subject_list'),

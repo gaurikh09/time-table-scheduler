@@ -43,6 +43,7 @@
                 <th>Batch</th>
                 <th>Department</th>
                 <th>Year & Semester</th>
+                <th>Subjects</th>
                 <th>Strength</th>
                 <th>Fixed Room</th>
                 <th>Actions</th>
@@ -70,6 +71,20 @@
                     </div>
                 </td>
                 <td>
+                    {% if batch.batch_subjects.all %}
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; max-width: 300px;">
+                        {% for bs in batch.batch_subjects.all|slice:":5" %}
+                        <span class="badge" style="background: rgba(59, 130, 246, 0.1); color: #2563eb; font-size: 0.75rem;">{{ bs.subject.code }}</span>
+                        {% endfor %}
+                        {% if batch.batch_subjects.all|length > 5 %}
+                        <span style="color: var(--text-secondary); font-size: 0.75rem;">+{{ batch.batch_subjects.all|length|add:"-5" }} more</span>
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <span style="color: var(--text-secondary); font-size: 0.875rem;">No subjects</span>
+                    {% endif %}
+                </td>
+                <td>
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-secondary);">
                             <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -88,13 +103,22 @@
                     {% endif %}
                 </td>
                 <td>
-                    <a href="{% url 'batch_edit' batch.pk %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                        </svg>
-                        Edit
-                    </a>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="{% url 'batch_detail' batch.pk %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            View
+                        </a>
+                        <a href="{% url 'batch_edit' batch.pk %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            Edit
+                        </a>
+                    </div>
                 </td>
             </tr>
             {% endfor %}

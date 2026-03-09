@@ -7,11 +7,14 @@
     <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
         <h3 class="font-semibold mb-2">CSV Format Instructions:</h3>
         <ul class="list-disc list-inside text-sm">
-            <li>Required column: <strong>section</strong></li>
-            <li>Subject columns: <strong>subject-code1</strong>, <strong>subject-code2</strong>, <strong>subject-code3</strong>, etc.</li>
-            <li>Example header: section,subject-code1,subject-code2,subject-code3,subject-code4,subject-code5</li>
-            <li>Example row: 2EA1,CS101,CS102,CS103,CS104,CS105</li>
-            <li>Subjects must already exist in the system</li>
+            <li>Required column: <strong>section</strong> (batch section name)</li>
+            <li>All other columns will be treated as subject codes</li>
+            <li>Column names can be anything (e.g., subject1, sub-code1, CS101, etc.)</li>
+            <li>Example header: <code>section,CS101,CS102,CS103,CS104,CS105</code></li>
+            <li>Example row: <code>2EA1,CS101,CS102,CS103,CS104,CS105</code></li>
+            <li>Or use descriptive headers: <code>section,subject-code1,subject-code2,subject-code3</code></li>
+            <li>Subjects must already exist in the system before uploading</li>
+            <li>Empty cells will be ignored</li>
         </ul>
     </div>
     

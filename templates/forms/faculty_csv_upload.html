@@ -7,10 +7,16 @@
     <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
         <h3 class="font-semibold mb-2">CSV Format Instructions:</h3>
         <ul class="list-disc list-inside text-sm">
-            <li>Required columns: <strong>Teach-name</strong>, <strong>Emp-ID</strong></li>
+            <li><strong>Required columns:</strong> Teach-name, Emp-ID, and at least one subject code column</li>
             <li>Optional column: <strong>email</strong></li>
-            <li>Example header: Teach-name,Emp-ID,email</li>
-            <li>Email can be left empty if not available</li>
+            <li><strong>Subject columns (REQUIRED):</strong> All other columns will be treated as subject codes the faculty can teach</li>
+            <li>Example header: <code>Teach-name,Emp-ID,email,CS101,CS102,CS103</code></li>
+            <li>Example row: <code>Dr. John Smith,EMP001,john@university.edu,CS101,CS102,CS103</code></li>
+            <li>Or use descriptive headers: <code>Teach-name,Emp-ID,email,subject1,subject2,subject3</code></li>
+            <li><strong>Important:</strong> Each faculty member MUST have at least one subject code</li>
+            <li>Subjects must already exist in the system before uploading</li>
+            <li>Empty subject cells will be ignored, but at least one must be filled</li>
+            <li><strong>All subjects will be visible in faculty list immediately after upload!</strong></li>
         </ul>
     </div>
     
@@ -30,7 +36,7 @@
             {% endif %}
         </div>
         
-        <div class="mb-6">
+        <div class="mb-4">
             <label class="block text-gray-700 text-sm font-bold mb-2">
                 {{ form.csv_file.label }}
             </label>
@@ -40,6 +46,19 @@
             {% endif %}
             {% if form.csv_file.errors %}
             <p class="text-red-500 text-xs mt-1">{{ form.csv_file.errors.0 }}</p>
+            {% endif %}
+        </div>
+        
+        <div class="mb-6">
+            <label class="flex items-center">
+                {{ form.assign_to_batches }}
+                <span class="ml-2 text-gray-700 text-sm font-bold">{{ form.assign_to_batches.label }}</span>
+            </label>
+            {% if form.assign_to_batches.help_text %}
+            <p class="text-gray-600 text-xs mt-1 ml-6">{{ form.assign_to_batches.help_text }}</p>
+            {% endif %}
+            {% if form.assign_to_batches.errors %}
+            <p class="text-red-500 text-xs mt-1 ml-6">{{ form.assign_to_batches.errors.0 }}</p>
             {% endif %}
         </div>
         

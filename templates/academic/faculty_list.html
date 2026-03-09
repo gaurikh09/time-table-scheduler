@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_filters %}
 
 {% block title %}Faculty{% endblock %}
 {% block page_title %}Faculty Members{% endblock %}
@@ -43,6 +44,7 @@
                 <th>Faculty</th>
                 <th>Employee ID</th>
                 <th>Department</th>
+                <th>Subjects Teaching</th>
                 <th>Email</th>
                 <th>Max Hours/Week</th>
                 <th>Actions</th>
@@ -61,6 +63,19 @@
                 </td>
                 <td><span class="badge badge-primary">{{ member.employee_id }}</span></td>
                 <td>{{ member.department.code }}</td>
+                <td>
+                    {% with subjects=faculty_subjects|get_item:member.id %}
+                    {% if subjects %}
+                    <div style="display: flex; flex-wrap: wrap; gap: 0.25rem; max-width: 400px;">
+                        {% for subject in subjects %}
+                        <span class="badge" style="background: rgba(59, 130, 246, 0.1); color: #2563eb; font-size: 0.75rem;">{{ subject.code }}</span>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <span style="color: var(--text-secondary); font-size: 0.875rem;">No subjects assigned</span>
+                    {% endif %}
+                    {% endwith %}
+                </td>
                 <td style="color: var(--text-secondary); font-size: 0.875rem;">{{ member.email }}</td>
                 <td>
                     <div style="display: flex; align-items: center; gap: 0.5rem;">
@@ -72,13 +87,22 @@
                     </div>
                 </td>
                 <td>
-                    <a href="{% url 'faculty_create' %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                        </svg>
-                        Edit
-                    </a>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="{% url 'faculty_detail' member.pk %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            View
+                        </a>
+                        <a href="{% url 'faculty_create' %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
+                            Edit
+                        </a>
+                    </div>
                 </td>
             </tr>
             {% endfor %}
