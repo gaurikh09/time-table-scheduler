@@ -7,20 +7,13 @@ from .models import (
 class FacultyCSVUploadForm(forms.Form):
     csv_file = forms.FileField(
         label='Upload CSV File',
-        help_text='CSV with headers: Teach-name, Emp-ID (required), email (optional), subject codes (REQUIRED - at least one)',
+        help_text='CSV with headers: Teach-name, Emp-ID (both required), email (optional)',
         widget=forms.FileInput(attrs={'class': 'form-input', 'accept': '.csv'})
     )
     department = forms.ModelChoiceField(
         queryset=Department.objects.all(),
         widget=forms.Select(attrs={'class': 'form-input'}),
         help_text='Select department for all teachers'
-    )
-    assign_to_batches = forms.BooleanField(
-        required=False,
-        initial=False,
-        label='Also assign subjects to all batches in department (Optional)',
-        help_text='Optional: Check this to also create batch assignments. Subjects will be visible in faculty list regardless of this option.',
-        widget=forms.CheckboxInput(attrs={'class': 'form-checkbox'})
     )
 
 

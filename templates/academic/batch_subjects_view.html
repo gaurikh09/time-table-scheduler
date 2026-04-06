@@ -76,9 +76,10 @@
         </form>
     </div>
 
-    {% if batches_data %}
+    {% if has_data %}
     <div style="padding: 2rem;">
-        {% for batch, subjects in batches_data.items %}
+        {% for item in batches_data %}
+        {% with batch=item.batch subjects=item.subjects %}
         <div style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
             <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid rgba(0,0,0,0.05);">
                 <div style="display: flex; align-items: center; gap: 1rem;">
@@ -147,6 +148,7 @@
                 {% endfor %}
             </div>
         </div>
+        {% endwith %}
         {% endfor %}
     </div>
     {% else %}

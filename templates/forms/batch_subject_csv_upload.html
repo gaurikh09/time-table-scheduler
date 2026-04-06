@@ -82,5 +82,19 @@
             </a>
         </div>
     </form>
+
+    {% if all_subjects %}
+    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mt-6">
+        <h3 class="font-semibold mb-3">Available Subject Codes</h3>
+        <p class="text-sm text-gray-600 mb-3">Use these exact codes in your CSV file:</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            {% for subject in all_subjects %}
+            <span style="background: #ede9fe; color: #5b21b6; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer;" title="{{ subject.name }}">
+                {{ subject.code }}
+            </span>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
 </div>
 {% endblock %}

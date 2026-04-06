@@ -7,7 +7,7 @@ import csv
 import io
 from .models import (
     AcademicBlock, Floor, Room, Department, Batch, Faculty, 
-    Subject, FacultySubject, TimetableEntry, TimetableGeneration, BatchSubject, FacultySubjectCapability
+    Subject, FacultySubject, FacultySubjectCapability, TimetableEntry, TimetableGeneration, BatchSubject
 )
 from .forms import (
     AcademicBlockForm, FloorForm, RoomForm, DepartmentForm, 
@@ -15,12 +15,6 @@ from .forms import (
     FacultyCSVUploadForm, SubjectCSVUploadForm, BatchSubjectCSVUploadForm
 )
 from scheduler_engine.solver import TimetableSolver
-
-
-def landing_page(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    return render(request, 'landing.html')
 
 
 def role_required(allowed_roles):
@@ -32,6 +26,12 @@ def role_required(allowed_roles):
             return view_func(request, *args, **kwargs)
         return wrapper
     return decorator
+
+
+def landing_page(request):
+    if request.user.is_authenticated:
+        return redirect('/app/')
+    return render(request, 'landing.html')
 
 
 @login_required
@@ -154,50 +154,8 @@ def department_create(request):
 # Batch Views
 @login_required
 def batch_list(request):
-    batches = Batch.objects.select_related('department', 'fixed_room').prefetch_related('batch_subjects__subject').all()
+    batches = Batch.objects.select_related('department', 'fixed_room').all()
     return render(request, 'academic/batch_list.html', {'batches': batches})
-
-
-@login_required
-def batch_detail(request, pk):
-    batch = get_object_or_404(Batch, pk=pk)
-    batch_subjects = BatchSubject.objects.filter(batch=batch).select_related('subject')
-    return render(request, 'academic/batch_detail.html', {'batch': batch, 'batch_subjects': batch_subjects})
-
-
-@login_required
-def batch_subjects_view(request):
-    department_id = request.GET.get('department')
-    year = request.GET.get('year')
-    semester = request.GET.get('semester')
-    
-    batch_subjects = BatchSubject.objects.select_related('batch__department', 'subject').all()
-    
-    if department_id:
-        batch_subjects = batch_subjects.filter(batch__department_id=department_id)
-    if year:
-        batch_subjects = batch_subjects.filter(batch__year=year)
-    if semester:
-        batch_subjects = batch_subjects.filter(batch__semester=semester)
-    
-    batch_subjects = batch_subjects.order_by('batch__department', 'batch__year', 'batch__semester', 'batch__section', 'subject__code')
-    
-    # Group by batch
-    from collections import defaultdict
-    batches_data = defaultdict(list)
-    for bs in batch_subjects:
-        batches_data[bs.batch].append(bs.subject)
-    
-    departments = Department.objects.all()
-    
-    context = {
-        'batches_data': dict(batches_data),
-        'departments': departments,
-        'selected_department': department_id,
-        'selected_year': year,
-        'selected_semester': semester,
-    }
-    return render(request, 'academic/batch_subjects_view.html', context)
 
 
 @login_required
@@ -227,6 +185,53 @@ def batch_edit(request, pk):
     else:
         form = BatchForm(instance=batch)
     return render(request, 'forms/batch_form.html', {'form': form, 'title': 'Edit Batch'})
+
+
+@login_required
+def batch_detail(request, pk):
+    batch = get_object_or_404(Batch, pk=pk)
+    batch_subjects = BatchSubject.objects.filter(batch=batch).select_related('subject')
+    return render(request, 'academic/batch_detail.html', {'batch': batch, 'batch_subjects': batch_subjects})
+
+
+@login_required
+def batch_subjects_view(request):
+    selected_department = request.GET.get('department')
+    selected_year = request.GET.get('year')
+    selected_semester = request.GET.get('semester')
+
+    batches = Batch.objects.select_related('department').all()
+    if selected_department:
+        batches = batches.filter(department_id=selected_department)
+    if selected_year:
+        batches = batches.filter(year=selected_year)
+    if selected_semester:
+        batches = batches.filter(semester=selected_semester)
+
+    batches_data = []
+    for batch in batches:
+        subjects = list(Subject.objects.filter(subject_batches__batch=batch))
+        if subjects:
+            batches_data.append({'batch': batch, 'subjects': subjects})
+
+    context = {
+        'batches_data': batches_data,
+        'has_data': len(batches_data) > 0,
+        'departments': Department.objects.all(),
+        'selected_department': selected_department,
+        'selected_year': selected_year,
+        'selected_semester': selected_semester,
+    }
+    return render(request, 'academic/batch_subjects_view.html', context)
+
+    context = {
+        'batches_data': batches_data,
+        'departments': Department.objects.all(),
+        'selected_department': selected_department,
+        'selected_year': selected_year,
+        'selected_semester': selected_semester,
+    }
+    return render(request, 'academic/batch_subjects_view.html', context)
 
 
 @login_required
@@ -270,9 +275,9 @@ def batch_subject_upload_csv(request):
                     else:
                         updated_batches += 1
                     
-                    # Process ALL columns except 'section' as potential subject codes
+                    # Process subject codes
                     for key, value in row.items():
-                        if key.lower() != 'section' and value and value.strip():
+                        if key.startswith('subject-code') and value.strip():
                             subject_code = value.strip()
                             try:
                                 subject = Subject.objects.get(code=subject_code)
@@ -280,61 +285,36 @@ def batch_subject_upload_csv(request):
                                 if link_created:
                                     linked_subjects += 1
                             except Subject.DoesNotExist:
-                                errors.append(f"Row {idx}, Column '{key}': Subject '{subject_code}' not found")
+                                # Try case-insensitive match
+                                subject_qs = Subject.objects.filter(code__iexact=subject_code)
+                                if subject_qs.exists():
+                                    subject = subject_qs.first()
+                                    _, link_created = BatchSubject.objects.get_or_create(batch=batch, subject=subject)
+                                    if link_created:
+                                        linked_subjects += 1
+                                else:
+                                    errors.append(f"Row {idx}: Subject '{subject_code}' not found")
                 
                 if errors:
-                    error_msg = '; '.join(errors[:10])  # Show first 10 errors
-                    if len(errors) > 10:
-                        error_msg += f' ... and {len(errors) - 10} more errors'
-                    messages.warning(request, f'Created {created_batches} batches, updated {updated_batches} batches, linked {linked_subjects} new subjects. Errors: {error_msg}')
+                    messages.warning(request, f'Created {created_batches} batches, updated {updated_batches} batches, linked {linked_subjects} new subjects. Errors: {"; ".join(errors[:5])}')
                 else:
                     messages.success(request, f'Successfully created {created_batches} batches, updated {updated_batches} batches, and linked {linked_subjects} new subjects.')
-                return redirect('batch_subjects_view')
+                return redirect('batch_list')
             
             except Exception as e:
                 messages.error(request, f'Error processing CSV: {str(e)}')
     else:
         form = BatchSubjectCSVUploadForm()
     
-    return render(request, 'forms/batch_subject_csv_upload.html', {'form': form, 'title': 'Upload Batch-Subject CSV'})
+    all_subjects = Subject.objects.all().order_by('code')
+    return render(request, 'forms/batch_subject_csv_upload.html', {'form': form, 'title': 'Upload Batch-Subject CSV', 'all_subjects': all_subjects})
 
 
 # Faculty Views
 @login_required
 def faculty_list(request):
-    faculty_list = Faculty.objects.select_related('department').prefetch_related(
-        'subject_capabilities__subject',
-        'subject_assignments__subject', 
-        'subject_assignments__batch'
-    ).all()
-    
-    # Group subjects by faculty - get unique subjects from capabilities
-    from collections import defaultdict
-    faculty_subjects = defaultdict(list)
-    for f in faculty_list:
-        # First, get subjects from capabilities (subjects they CAN teach)
-        for capability in f.subject_capabilities.all():
-            faculty_subjects[f.id].append(capability.subject)
-    
-    return render(request, 'academic/faculty_list.html', {'faculty': faculty_list, 'faculty_subjects': dict(faculty_subjects)})
-
-
-@login_required
-def faculty_detail(request, pk):
-    faculty = get_object_or_404(Faculty, pk=pk)
-    faculty_subjects = FacultySubject.objects.filter(faculty=faculty).select_related('subject', 'batch__department')
-    
-    # Group by subject
-    from collections import defaultdict
-    subjects_data = defaultdict(list)
-    for fs in faculty_subjects:
-        subjects_data[fs.subject].append(fs.batch)
-    
-    return render(request, 'academic/faculty_detail.html', {
-        'faculty': faculty,
-        'subjects_data': dict(subjects_data),
-        'total_assignments': faculty_subjects.count()
-    })
+    faculty = Faculty.objects.select_related('department').all()
+    return render(request, 'academic/faculty_list.html', {'faculty': faculty})
 
 
 @login_required
@@ -359,18 +339,14 @@ def faculty_upload_csv(request):
         if form.is_valid():
             csv_file = request.FILES['csv_file']
             department = form.cleaned_data['department']
-            assign_to_batches = form.cleaned_data.get('assign_to_batches', False)
             
             try:
                 decoded_file = csv_file.read().decode('utf-8')
                 io_string = io.StringIO(decoded_file)
                 reader = csv.DictReader(io_string)
                 
-                created_faculty_count = 0
-                skipped_faculty_count = 0
-                linked_capabilities_count = 0
-                linked_batch_assignments_count = 0
-                total_subjects_found = 0
+                created_count = 0
+                skipped_count = 0
                 errors = []
                 
                 for idx, row in enumerate(reader, start=2):
@@ -386,78 +362,22 @@ def faculty_upload_csv(request):
                         errors.append(f"Row {idx}: Emp-ID is required")
                         continue
                     
-                    # Extract subject codes from remaining columns
-                    subject_codes = []
-                    for key, value in row.items():
-                        if key.lower() not in ['teach-name', 'emp-id', 'email'] and value and value.strip():
-                            subject_codes.append(value.strip())
-                    
-                    # Validate that at least one subject is provided
-                    if not subject_codes:
-                        errors.append(f"Row {idx}: At least one subject code is required for {teacher_name}")
-                        continue
-                    
-                    total_subjects_found += len(subject_codes)
-                    
-                    # Create or get faculty
-                    faculty, faculty_created = Faculty.objects.get_or_create(
-                        employee_id=employee_id,
-                        defaults={
-                            'name': teacher_name,
-                            'department': department,
-                            'email': email,
-                            'max_hours_per_week': 20
-                        }
-                    )
-                    
-                    if faculty_created:
-                        created_faculty_count += 1
+                    if not Faculty.objects.filter(employee_id=employee_id).exists():
+                        Faculty.objects.create(
+                            name=teacher_name,
+                            employee_id=employee_id,
+                            department=department,
+                            email=email,
+                            max_hours_per_week=20
+                        )
+                        created_count += 1
                     else:
-                        skipped_faculty_count += 1
-                    
-                    # ALWAYS create FacultySubjectCapability (subjects faculty CAN teach)
-                    for subject_code in subject_codes:
-                        try:
-                            subject = Subject.objects.get(code=subject_code)
-                            _, capability_created = FacultySubjectCapability.objects.get_or_create(
-                                faculty=faculty,
-                                subject=subject
-                            )
-                            if capability_created:
-                                linked_capabilities_count += 1
-                        except Subject.DoesNotExist:
-                            errors.append(f"Row {idx}: Subject '{subject_code}' not found. Create subject first.")
-                    
-                    # OPTIONALLY create FacultySubject (batch assignments)
-                    if assign_to_batches:
-                        batches = Batch.objects.filter(department=department)
-                        if not batches.exists():
-                            errors.append(f"Row {idx}: No batches found in department {department.code}. Skipping batch assignments.")
-                        else:
-                            for subject_code in subject_codes:
-                                try:
-                                    subject = Subject.objects.get(code=subject_code)
-                                    for batch in batches:
-                                        _, link_created = FacultySubject.objects.get_or_create(
-                                            faculty=faculty,
-                                            subject=subject,
-                                            batch=batch
-                                        )
-                                        if link_created:
-                                            linked_batch_assignments_count += 1
-                                except Subject.DoesNotExist:
-                                    pass  # Already reported above
+                        skipped_count += 1
                 
                 if errors:
-                    error_msg = '; '.join(errors[:10])
-                    if len(errors) > 10:
-                        error_msg += f' ... and {len(errors) - 10} more errors'
-                    messages.warning(request, f'Created {created_faculty_count} faculty, skipped {skipped_faculty_count} duplicates, linked {linked_capabilities_count} subject capabilities. Errors: {error_msg}')
+                    messages.warning(request, f'Created {created_count} faculty. Errors: {"; ".join(errors[:5])}')
                 else:
-                    if assign_to_batches:
-                        messages.success(request, f'Successfully created {created_faculty_count} faculty members, skipped {skipped_faculty_count} duplicates. Linked {linked_capabilities_count} subject capabilities and {linked_batch_assignments_count} batch assignments. All {total_subjects_found} subjects are now visible in faculty list!')
-                    else:
-                        messages.success(request, f'Successfully created {created_faculty_count} faculty members, skipped {skipped_faculty_count} duplicates. Linked {linked_capabilities_count} subject capabilities. All {total_subjects_found} subjects are now visible in faculty list!')
+                    messages.success(request, f'Successfully created {created_count} faculty members. Skipped {skipped_count} duplicates.')
                 return redirect('faculty_list')
             
             except Exception as e:
@@ -562,13 +482,12 @@ def subject_upload_csv(request):
 # Faculty-Subject Mapping
 @login_required
 def faculty_subject_list(request):
-    # Get both types of mappings
-    batch_mappings = FacultySubject.objects.select_related('faculty', 'subject', 'batch').all()
     capability_mappings = FacultySubjectCapability.objects.select_related('faculty', 'subject').all()
-    
+    batch_mappings = FacultySubject.objects.select_related('faculty', 'subject', 'batch').all()
     return render(request, 'academic/faculty_subject_list.html', {
+        'mappings': batch_mappings,
+        'capability_mappings': capability_mappings,
         'batch_mappings': batch_mappings,
-        'capability_mappings': capability_mappings
     })
 
 
