@@ -25,6 +25,7 @@
                     <th>Department</th>
                     <th>Weekly Frequency</th>
                     <th>Duration (hrs)</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -36,6 +37,14 @@
                     <td>{{ subject.department.code }}</td>
                     <td>{{ subject.weekly_frequency }}</td>
                     <td>{{ subject.duration_hours }}</td>
+                    <td style="display:flex; gap:0.5rem;">
+                        {% if user.role == 'admin' or user.role == 'coordinator' %}
+                        <a href="{% url 'subject_edit' subject.pk %}" class="btn btn-secondary">Edit</a>
+                        {% endif %}
+                        {% if user.role == 'admin' %}
+                        <a href="{% url 'subject_delete' subject.pk %}" class="btn btn-secondary" style="color:#ef4444;border-color:#ef4444;">Delete</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

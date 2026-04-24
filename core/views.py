@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import UpdateView, DeleteView
+from django.urls import reverse_lazy
 from django.contrib import messages
 from django.utils import timezone
 from django.db import transaction
@@ -17,6 +20,33 @@ from .forms import (
 from scheduler_engine.solver import TimetableSolver
 
 
+# ── Mixins ────────────────────────────────────────────────────────────────────
+
+class RoleRequiredMixin(LoginRequiredMixin):
+    """CBV mixin: restrict access to specific roles."""
+    allowed_roles = []
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if request.user.role not in self.allowed_roles:
+            messages.error(request, "You don't have permission to access this page.")
+            return redirect('dashboard')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class SuccessMessageMixin:
+    """Adds a success message after form_valid."""
+    success_message = ''
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(self.request, self.success_message)
+        return response
+
+
+# ── Helper decorator (kept for FBVs) ──────────────────────────────────────────
+
 def role_required(allowed_roles):
     def decorator(view_func):
         def wrapper(request, *args, **kwargs):
@@ -26,6 +56,171 @@ def role_required(allowed_roles):
             return view_func(request, *args, **kwargs)
         return wrapper
     return decorator
+
+
+# ── AcademicBlock CBVs ────────────────────────────────────────────────────────
+
+class BlockEditView(RoleRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = AcademicBlock
+    form_class = AcademicBlockForm
+    template_name = 'forms/block_form.html'
+    success_url = reverse_lazy('block_list')
+    allowed_roles = ['admin']
+    success_message = 'Academic block updated successfully.'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = 'Edit Block'
+        return ctx
+
+
+class BlockDeleteView(RoleRequiredMixin, DeleteView):
+    model = AcademicBlock
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('block_list')
+    allowed_roles = ['admin']
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['type'] = 'Academic Block'
+        return ctx
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Academic block deleted successfully.')
+        return super().delete(request, *args, **kwargs)
+
+
+# ── Room CBVs ─────────────────────────────────────────────────────────────────
+
+class RoomDeleteView(RoleRequiredMixin, DeleteView):
+    model = Room
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('room_list')
+    allowed_roles = ['admin']
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['type'] = 'Room'
+        return ctx
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Room deleted successfully.')
+        return super().delete(request, *args, **kwargs)
+
+
+# ── Department CBVs ───────────────────────────────────────────────────────────
+
+class DepartmentEditView(RoleRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Department
+    form_class = DepartmentForm
+    template_name = 'forms/department_form.html'
+    success_url = reverse_lazy('department_list')
+    allowed_roles = ['admin', 'coordinator']
+    success_message = 'Department updated successfully.'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = 'Edit Department'
+        return ctx
+
+
+class DepartmentDeleteView(RoleRequiredMixin, DeleteView):
+    model = Department
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('department_list')
+    allowed_roles = ['admin']
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['type'] = 'Department'
+        return ctx
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Department deleted successfully.')
+        return super().delete(request, *args, **kwargs)
+
+
+# ── Batch CBVs ────────────────────────────────────────────────────────────────
+
+class BatchDeleteView(RoleRequiredMixin, DeleteView):
+    model = Batch
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('batch_list')
+    allowed_roles = ['admin']
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['type'] = 'Batch'
+        return ctx
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Batch deleted successfully.')
+        return super().delete(request, *args, **kwargs)
+
+
+# ── Faculty CBVs ──────────────────────────────────────────────────────────────
+
+class FacultyEditView(RoleRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Faculty
+    form_class = FacultyForm
+    template_name = 'forms/faculty_form.html'
+    success_url = reverse_lazy('faculty_list')
+    allowed_roles = ['admin', 'coordinator']
+    success_message = 'Faculty updated successfully.'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = 'Edit Faculty'
+        return ctx
+
+
+class FacultyDeleteView(RoleRequiredMixin, DeleteView):
+    model = Faculty
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('faculty_list')
+    allowed_roles = ['admin']
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['type'] = 'Faculty'
+        return ctx
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Faculty deleted successfully.')
+        return super().delete(request, *args, **kwargs)
+
+
+# ── Subject CBVs ──────────────────────────────────────────────────────────────
+
+class SubjectEditView(RoleRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = Subject
+    form_class = SubjectForm
+    template_name = 'forms/subject_form.html'
+    success_url = reverse_lazy('subject_list')
+    allowed_roles = ['admin', 'coordinator']
+    success_message = 'Subject updated successfully.'
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = 'Edit Subject'
+        return ctx
+
+
+class SubjectDeleteView(RoleRequiredMixin, DeleteView):
+    model = Subject
+    template_name = 'confirm_delete.html'
+    success_url = reverse_lazy('subject_list')
+    allowed_roles = ['admin']
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['type'] = 'Subject'
+        return ctx
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Subject deleted successfully.')
+        return super().delete(request, *args, **kwargs)
+
 
 
 def landing_page(request):

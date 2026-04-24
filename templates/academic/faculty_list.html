@@ -24,6 +24,7 @@
                     <th>Department</th>
                     <th>Email</th>
                     <th>Max Hours/Week</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +35,14 @@
                     <td>{{ f.department.code }}</td>
                     <td>{{ f.email }}</td>
                     <td>{{ f.max_hours_per_week }}</td>
+                    <td style="display:flex; gap:0.5rem;">
+                        {% if user.role == 'admin' or user.role == 'coordinator' %}
+                        <a href="{% url 'faculty_edit' f.pk %}" class="btn btn-secondary">Edit</a>
+                        {% endif %}
+                        {% if user.role == 'admin' %}
+                        <a href="{% url 'faculty_delete' f.pk %}" class="btn btn-secondary" style="color:#ef4444;border-color:#ef4444;">Delete</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
