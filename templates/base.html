@@ -105,6 +105,18 @@
                     </span>
                     <span class="text">Mappings</span>
                 </a>
+                {% if user.role == 'admin' or user.role == 'coordinator' %}
+                <a href="{% url 'upload_faculty_subject' %}" class="nav-item {% if request.resolver_match.url_name == 'upload_faculty_subject' %}active{% endif %}">
+                    <span class="icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="17 8 12 3 7 8"/>
+                            <line x1="12" y1="3" x2="12" y2="15"/>
+                        </svg>
+                    </span>
+                    <span class="text">Assign Faculty</span>
+                </a>
+                {% endif %}
                 <a href="{% url 'batch_subjects_view' %}" class="nav-item {% if 'batch_subjects_view' in request.resolver_match.url_name %}active{% endif %}">
                     <span class="icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

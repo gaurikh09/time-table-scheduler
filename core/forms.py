@@ -65,6 +65,14 @@ class BatchSubjectCSVUploadForm(forms.Form):
         help_text='Semester (1-8)'
     )
 
+
+class FacultySubjectCSVUploadForm(forms.Form):
+    csv_file = forms.FileField(
+        label='Upload CSV File',
+        help_text='CSV with headers: faculty_emp_id, subject_code, batch_section (all required)',
+        widget=forms.FileInput(attrs={'class': 'form-input', 'accept': '.csv'})
+    )
+
 class AcademicBlockForm(forms.ModelForm):
     class Meta:
         model = AcademicBlock

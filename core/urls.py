@@ -35,6 +35,7 @@ urlpatterns = [
     
     path('faculty-subjects/', views.faculty_subject_list, name='faculty_subject_list'),
     path('faculty-subjects/create/', views.faculty_subject_create, name='faculty_subject_create'),
+    path('faculty-subjects/upload-csv/', views.upload_faculty_subject_csv, name='upload_faculty_subject'),
     
     # Timetable
     path('timetable/generate/', views.generate_timetable, name='generate_timetable'),

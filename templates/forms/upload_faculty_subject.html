@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload Faculty-Subject Mappings{% endblock %}
+{% block page_title %}Upload Faculty-Subject Mappings{% endblock %}
+
+{% block content %}
+<div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+
+    <!-- Format Instructions -->
+    <div style="background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.3); border-radius: 12px; padding: 1.5rem;">
+        <h3 style="font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);">CSV Format</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+            Required columns (all three must be present):
+        </p>
+        <ul style="font-size: 0.875rem; color: var(--text-secondary); margin-left: 1.25rem; margin-bottom: 1rem; line-height: 1.8;">
+            <li><strong>faculty_emp_id</strong> — Employee ID of the faculty</li>
+            <li><strong>subject_code</strong> — Subject code</li>
+            <li><strong>batch_section</strong> — Section name of the batch (e.g. 2A(AIML))</li>
+        </ul>
+        <div style="background: rgba(0,0,0,0.15); border-radius: 8px; padding: 0.75rem 1rem; font-family: monospace; font-size: 0.8rem; color: var(--text-primary);">
+            faculty_emp_id,subject_code,batch_section<br>
+            EMP001,BCSC1005,2A(AIML)<br>
+            EMP002,BCSE1506,2B(AIML)
+        </div>
+    </div>
+
+    <!-- Upload Form -->
+    <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem;">
+        <h3 style="font-weight: 700; margin-bottom: 1.5rem; color: var(--text-primary);">Upload CSV File</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div style="margin-bottom: 1.5rem;">
+                <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">
+                    {{ form.csv_file.label }}
+                </label>
+                {{ form.csv_file }}
+                {% if form.csv_file.errors %}
+                <p style="color: #ef4444; font-size: 0.8rem; margin-top: 0.25rem;">{{ form.csv_file.errors.0 }}</p>
+                {% endif %}
+                <p style="color: var(--text-secondary); font-size: 0.75rem; margin-top: 0.25rem;">{{ form.csv_file.help_text }}</p>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload & Process</button>
+        </form>
+    </div>
+
+    <!-- Results after upload -->
+    {% if request.method == 'POST' %}
+    <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+        <h3 style="font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">Upload Results</h3>
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+            <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 600;">
+                ✓ Created: {{ created_count }}
+            </span>
+            <span style="background: rgba(245,158,11,0.1); color: #f59e0b; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 600;">
+                ↷ Skipped: {{ skipped_count }}
+            </span>
+            {% if errors %}
+            <span style="background: rgba(239,68,68,0.1); color: #ef4444; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 600;">
+                ✗ Errors: {{ errors|length }}
+            </span>
+            {% endif %}
+        </div>
+        {% if errors %}
+        <div style="background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.2); border-radius: 8px; padding: 1rem;">
+            <p style="font-weight: 600; color: #ef4444; margin-bottom: 0.5rem;">Error Details:</p>
+            <ul style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 1rem; line-height: 1.8;">
+                {% for error in errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Reference Tables -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+
+        <!-- Faculty -->
+        <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+            <h3 style="font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); font-size: 0.95rem;">
+                Available Faculty ({{ faculty_list|length }})
+            </h3>
+            <div style="max-height: 250px; overflow-y: auto;">
+                <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Emp ID</th>
+                            <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for f in faculty_list %}
+                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);">
+                            <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: var(--primary); font-family: monospace;">{{ f.employee_id }}</td>
+                            <td style="padding: 0.4rem 0.5rem; color: var(--text-primary);">{{ f.name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Subjects -->
+        <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+            <h3 style="font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); font-size: 0.95rem;">
+                Available Subjects ({{ subject_list|length }})
+            </h3>
+            <div style="max-height: 250px; overflow-y: auto;">
+                <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Code</th>
+                            <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Name</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in subject_list %}
+                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);">
+                            <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: #3b82f6; font-family: monospace;">{{ s.code }}</td>
+                            <td style="padding: 0.4rem 0.5rem; color: var(--text-primary);">{{ s.name }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Batches -->
+        <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+            <h3 style="font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); font-size: 0.95rem;">
+                Available Batches ({{ batch_list|length }})
+            </h3>
+            <div style="max-height: 250px; overflow-y: auto;">
+                <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 1px solid var(--border-color);">
+                            <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Section</th>
+                            <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Dept / Yr / Sem</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for b in batch_list %}
+                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);">
+                            <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: #10b981; font-family: monospace;">{{ b.section }}</td>
+                            <td style="padding: 0.4rem 0.5rem; color: var(--text-secondary);">{{ b.department.code }} Y{{ b.year }} S{{ b.semester }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

@@ -31,31 +31,50 @@
                     <strong>Important Information</strong>
                 </div>
                 <ul class="info-list">
-                    <li>This will regenerate the entire timetable using OR-Tools solver</li>
+                    <li>This will regenerate the timetable for the selected batch using OR-Tools solver</li>
                     <li>All entries marked as "Fixed" will be preserved</li>
-                    <li>Non-fixed entries will be replaced with optimized schedule</li>
+                    <li>Non-fixed entries for this batch will be replaced</li>
                     <li>Generation may take 1-5 minutes depending on constraints</li>
-                    <li>Ensure all batches have faculty-subject mappings</li>
+                    <li>Ensure the batch has faculty-subject mappings before generating</li>
                 </ul>
             </div>
 
+            {% if missing_mappings and selected_batch %}
+            <div style="background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.3); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" style="flex-shrink:0;">
+                    <circle cx="12" cy="12" r="10"/>
+                    <line x1="12" y1="8" x2="12" y2="12"/>
+                    <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                <span style="color: #ef4444; font-weight: 600;">
+                    No Faculty-Subject mappings found for "{{ selected_batch }}". 
+                    <a href="{% url 'upload_faculty_subject' %}" style="text-decoration: underline;">Upload mappings first</a>.
+                </span>
+            </div>
+            {% endif %}
+
             <form method="post" id="generateForm">
                 {% csrf_token %}
-                <div class="form-actions" style="border-top: none; padding-top: 1.5rem;">
-                    <button type="submit" class="btn btn-primary btn-large" id="generateBtn">
+                <div style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem;">Select Batch</label>
+                    <select name="batch_id" class="form-input" onchange="this.form.method='get'; this.form.submit(); this.form.method='post';" required>
+                        <option value="">-- Select a Batch --</option>
+                        {% for batch in batches %}
+                        <option value="{{ batch.pk }}" {% if selected_batch_id == batch.pk|stringformat:"s" %}selected{% endif %}>
+                            {{ batch }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-actions" style="border-top: none; padding-top: 0;">
+                    <button type="submit" class="btn btn-primary btn-large" id="generateBtn" {% if not selected_batch or missing_mappings %}disabled{% endif %}>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="3"/>
                             <path d="M12 1v6m0 6v6"/>
                         </svg>
                         Generate Timetable
                     </button>
-                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <line x1="18" y1="6" x2="6" y2="18"/>
-                            <line x1="6" y1="6" x2="18" y2="18"/>
-                        </svg>
-                        Cancel
-                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
                 </div>
             </form>
 
@@ -198,10 +217,14 @@
 </style>
 
 <script>
-document.getElementById('generateForm').addEventListener('submit', function() {
-    document.getElementById('generateBtn').disabled = true;
-    document.getElementById('loadingSpinner').style.display = 'block';
-    showToast('Starting timetable generation...', 'info');
+document.getElementById('generateForm').addEventListener('submit', function(e) {
+    var batchId = this.querySelector('[name=batch_id]').value;
+    if (!batchId) { e.preventDefault(); return; }
+    // Only show spinner on actual POST (not GET batch selection)
+    if (this.method === 'post') {
+        document.getElementById('generateBtn').disabled = true;
+        document.getElementById('loadingSpinner').style.display = 'block';
+    }
 });
 </script>
 {% endblock %}

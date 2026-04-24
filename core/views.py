@@ -12,7 +12,7 @@ from .models import (
 from .forms import (
     AcademicBlockForm, FloorForm, RoomForm, DepartmentForm, 
     BatchForm, FacultyForm, SubjectForm, FacultySubjectForm, TimetableEntryForm,
-    FacultyCSVUploadForm, SubjectCSVUploadForm, BatchSubjectCSVUploadForm
+    FacultyCSVUploadForm, SubjectCSVUploadForm, BatchSubjectCSVUploadForm, FacultySubjectCSVUploadForm
 )
 from scheduler_engine.solver import TimetableSolver
 
@@ -217,15 +217,6 @@ def batch_subjects_view(request):
     context = {
         'batches_data': batches_data,
         'has_data': len(batches_data) > 0,
-        'departments': Department.objects.all(),
-        'selected_department': selected_department,
-        'selected_year': selected_year,
-        'selected_semester': selected_semester,
-    }
-    return render(request, 'academic/batch_subjects_view.html', context)
-
-    context = {
-        'batches_data': batches_data,
         'departments': Department.objects.all(),
         'selected_department': selected_department,
         'selected_year': selected_year,
@@ -505,83 +496,158 @@ def faculty_subject_create(request):
     return render(request, 'forms/faculty_subject_form.html', {'form': form, 'title': 'Create Mapping'})
 
 
+@login_required
+@role_required(['admin', 'coordinator'])
+def upload_faculty_subject_csv(request):
+    form = FacultySubjectCSVUploadForm(request.POST or None, request.FILES or None)
+    created_count = 0
+    skipped_count = 0
+    errors = []
+
+    if request.method == 'POST' and form.is_valid():
+        try:
+            decoded = request.FILES['csv_file'].read().decode('utf-8')
+            reader = csv.DictReader(io.StringIO(decoded))
+
+            for idx, row in enumerate(reader, start=2):
+                emp_id = row.get('faculty_emp_id', '').strip()
+                subject_code = row.get('subject_code', '').strip()
+                batch_section = row.get('batch_section', '').strip()
+
+                if not emp_id or not subject_code or not batch_section:
+                    errors.append(f"Row {idx}: all three columns are required")
+                    continue
+
+                try:
+                    faculty = Faculty.objects.get(employee_id__iexact=emp_id)
+                except Faculty.DoesNotExist:
+                    errors.append(f"Row {idx}: Faculty '{emp_id}' not found")
+                    continue
+
+                try:
+                    subject = Subject.objects.get(code__iexact=subject_code)
+                except Subject.DoesNotExist:
+                    errors.append(f"Row {idx}: Subject '{subject_code}' not found")
+                    continue
+
+                batch = Batch.objects.filter(section__iexact=batch_section).first()
+                if not batch:
+                    errors.append(f"Row {idx}: Batch section '{batch_section}' not found")
+                    continue
+
+                _, created = FacultySubject.objects.get_or_create(
+                    faculty=faculty, subject=subject, batch=batch
+                )
+                if created:
+                    created_count += 1
+                else:
+                    skipped_count += 1
+
+            if errors:
+                messages.warning(request, f"Created {created_count}, skipped {skipped_count} duplicates. Errors: {'; '.join(errors[:5])}")
+            else:
+                messages.success(request, f"Successfully created {created_count} mappings. Skipped {skipped_count} duplicates.")
+
+        except Exception as e:
+            messages.error(request, f"Error processing CSV: {str(e)}")
+
+    faculty_list_qs = Faculty.objects.select_related('department').order_by('employee_id')
+    subject_list_qs = Subject.objects.order_by('code')
+    batch_list_qs = Batch.objects.select_related('department').order_by('section')
+
+    return render(request, 'forms/upload_faculty_subject.html', {
+        'form': form,
+        'title': 'Upload Faculty-Subject Mappings',
+        'faculty_list': faculty_list_qs,
+        'subject_list': subject_list_qs,
+        'batch_list': batch_list_qs,
+        'created_count': created_count,
+        'skipped_count': skipped_count,
+        'errors': errors,
+    })
+
+
 # Timetable Generation
 @login_required
 @role_required(['admin', 'coordinator'])
 def generate_timetable(request):
-    if request.method == 'POST':
-        try:
-            with transaction.atomic():
-                generation = TimetableGeneration.objects.create(
-                    generated_by=request.user,
-                    status='processing'
-                )
-                
-                # Get all data
-                batches = list(Batch.objects.all())
-                rooms = list(Room.objects.filter(is_allocatable=True))
-                faculty_subjects = list(FacultySubject.objects.select_related('faculty', 'subject', 'batch').all())
-                fixed_entries = list(TimetableEntry.objects.filter(is_fixed=True).select_related('batch', 'subject', 'faculty', 'room'))
-                
-                # Run solver
-                solver = TimetableSolver(batches, None, faculty_subjects, rooms, fixed_entries)
-                success, message = solver.solve()
-                
-                if success:
-                    # Delete non-fixed entries
-                    TimetableEntry.objects.filter(is_fixed=False).delete()
-                    
-                    # Create new entries
-                    for entry_data in solver.solution:
-                        TimetableEntry.objects.create(
-                            batch_id=entry_data['batch_id'],
-                            subject_id=entry_data['subject_id'],
-                            faculty_id=entry_data['faculty_id'],
-                            room_id=entry_data['room_id'],
-                            day_of_week=entry_data['day_of_week'],
-                            start_time=entry_data['start_time'],
-                            end_time=entry_data['end_time'],
-                            is_fixed=False
-                        )
-                    
-                    generation.status = 'completed'
-                    generation.completed_at = timezone.now()
-                    generation.save()
-                    
-                    messages.success(request, 'Timetable generated successfully!')
-                    return redirect('timetable_view')
-                else:
-                    generation.status = 'failed'
-                    generation.error_message = message
-                    generation.save()
-                    messages.error(request, message)
-        
-        except Exception as e:
-            messages.error(request, f'Error generating timetable: {str(e)}')
-    
-    return render(request, 'timetable/generate.html')
+    batches = Batch.objects.select_related('department').all()
+    selected_batch_id = request.POST.get('batch_id') or request.GET.get('batch_id')
+    selected_batch = None
+    missing_mappings = False
+
+    if selected_batch_id:
+        selected_batch = Batch.objects.filter(pk=selected_batch_id).first()
+        if selected_batch:
+            missing_mappings = not FacultySubject.objects.filter(batch=selected_batch).exists()
+
+    if request.method == 'POST' and selected_batch:
+        if missing_mappings:
+            messages.error(request, f'No Faculty-Subject mappings found for batch "{selected_batch}". Please upload mappings first.')
+        else:
+            try:
+                with transaction.atomic():
+                    generation = TimetableGeneration.objects.create(
+                        generated_by=request.user,
+                        status='processing'
+                    )
+                    rooms = list(Room.objects.filter(is_allocatable=True))
+                    faculty_subjects = list(FacultySubject.objects.filter(batch=selected_batch).select_related('faculty', 'subject', 'batch'))
+                    fixed_entries = list(TimetableEntry.objects.filter(is_fixed=True, batch=selected_batch).select_related('batch', 'subject', 'faculty', 'room'))
+
+                    solver = TimetableSolver([selected_batch], None, faculty_subjects, rooms, fixed_entries)
+                    success, message = solver.solve()
+
+                    if success:
+                        TimetableEntry.objects.filter(is_fixed=False, batch=selected_batch).delete()
+                        for entry_data in solver.solution:
+                            TimetableEntry.objects.create(
+                                batch_id=entry_data['batch_id'],
+                                subject_id=entry_data['subject_id'],
+                                faculty_id=entry_data['faculty_id'],
+                                room_id=entry_data['room_id'],
+                                day_of_week=entry_data['day_of_week'],
+                                start_time=entry_data['start_time'],
+                                end_time=entry_data['end_time'],
+                                is_fixed=False
+                            )
+                        generation.status = 'completed'
+                        generation.completed_at = timezone.now()
+                        generation.save()
+                        messages.success(request, f'Timetable generated successfully for {selected_batch}!')
+                        return redirect(f'/app/timetable/view/?batch={selected_batch.pk}')
+                    else:
+                        generation.status = 'failed'
+                        generation.error_message = message
+                        generation.save()
+                        messages.error(request, message)
+            except Exception as e:
+                messages.error(request, f'Error generating timetable: {str(e)}')
+
+    return render(request, 'timetable/generate.html', {
+        'batches': batches,
+        'selected_batch': selected_batch,
+        'selected_batch_id': selected_batch_id,
+        'missing_mappings': missing_mappings,
+    })
 
 
 @login_required
 def timetable_view(request):
     batch_id = request.GET.get('batch')
-    batches = Batch.objects.all()
-    
+    batches = Batch.objects.select_related('department').all()
+    timetable_grid = {}
+
     if batch_id:
         entries = TimetableEntry.objects.filter(batch_id=batch_id).select_related(
-            'subject', 'faculty', 'room', 'batch'
+            'subject', 'faculty', 'room'
         ).order_by('day_of_week', 'start_time')
-    else:
-        entries = []
-    
-    # Organize by day and time
-    timetable_grid = {}
-    for entry in entries:
-        day = entry.day_of_week
-        if day not in timetable_grid:
-            timetable_grid[day] = {}
-        timetable_grid[day][entry.start_time] = entry
-    
+        for entry in entries:
+            day = entry.day_of_week
+            if day not in timetable_grid:
+                timetable_grid[day] = {}
+            timetable_grid[day][entry.start_time] = entry
+
     context = {
         'batches': batches,
         'selected_batch': batch_id,
