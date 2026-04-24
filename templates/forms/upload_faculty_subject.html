@@ -6,6 +6,20 @@
 {% block content %}
 <div style="max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
 
+    <!-- Important Note -->
+    <div style="background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.4); border-radius: 12px; padding: 1.25rem 1.5rem; display: flex; align-items: flex-start; gap: 0.75rem;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" style="flex-shrink:0; margin-top:0.1rem;">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+        <div style="font-size: 0.875rem; color: #f59e0b;">
+            <strong>Important:</strong> Assigning a subject to a batch (via Batch-Subject CSV) does <strong>not</strong> automatically assign a faculty member.
+            You must separately upload faculty-subject mappings here so the timetable solver knows who teaches what.
+            Until a faculty is assigned to a subject for a batch, that subject will be skipped during timetable generation.
+        </div>
+    </div>
+
     <!-- Format Instructions -->
     <div style="background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.3); border-radius: 12px; padding: 1.5rem;">
         <h3 style="font-weight: 700; margin-bottom: 0.75rem; color: var(--text-primary);">CSV Format</h3>

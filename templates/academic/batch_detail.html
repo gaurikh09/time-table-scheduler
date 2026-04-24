@@ -92,10 +92,29 @@
 
             <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--text-primary); margin-bottom: 1rem;">Assigned Subjects</h3>
             
-            {% if batch_subjects %}
+            {% if batch_subjects_with_status %}
+
+            {% comment %}Show single warning banner if ANY subject has no faculty{% endcomment %}
+            {% for item in batch_subjects_with_status %}
+                {% if not item.has_faculty and forloop.first %}
+                <div style="background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.4); border-radius: 10px; padding: 0.875rem 1.25rem; margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.75rem;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" style="flex-shrink:0;">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    <span style="color: #f59e0b; font-weight: 600; font-size: 0.875rem;">
+                        Some subjects have no faculty assigned. Timetable cannot be generated for those subjects.
+                        <a href="{% url 'upload_faculty_subject' %}" style="text-decoration: underline; margin-left: 0.25rem;">Assign faculty &rarr;</a>
+                    </span>
+                </div>
+                {% endif %}
+            {% endfor %}
+
             <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem;">
-                {% for bs in batch_subjects %}
-                <div style="background: white; border: 1px solid var(--border-color); border-radius: 12px; padding: 1.25rem; transition: all 0.3s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.05);" onmouseover="this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.05)'; this.style.transform='translateY(0)';">
+                {% for item in batch_subjects_with_status %}
+                {% with bs=item.bs %}
+                <div style="background: white; border: 1px solid {% if not item.has_faculty %}rgba(245,158,11,0.4){% else %}var(--border-color){% endif %}; border-radius: 12px; padding: 1.25rem; transition: all 0.3s ease; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
                     <div style="display: flex; align-items: start; gap: 1rem;">
                         <div style="width: 48px; height: 48px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(37, 99, 235, 0.1)); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: #3b82f6;">
@@ -104,7 +123,14 @@
                             </svg>
                         </div>
                         <div style="flex: 1; min-width: 0;">
-                            <div style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.25rem; font-size: 1rem;">{{ bs.subject.code }}</div>
+                            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.25rem;">
+                                <span style="font-weight: 700; color: var(--text-primary); font-size: 1rem;">{{ bs.subject.code }}</span>
+                                {% if not item.has_faculty %}
+                                <span style="background: rgba(245,158,11,0.15); color: #f59e0b; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; white-space: nowrap;">⚠ No Faculty</span>
+                                {% else %}
+                                <span style="background: rgba(16,185,129,0.1); color: #10b981; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 4px; white-space: nowrap;">✓ Faculty Assigned</span>
+                                {% endif %}
+                            </div>
                             <div style="color: var(--text-secondary); font-size: 0.875rem; margin-bottom: 0.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ bs.subject.name }}</div>
                             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
                                 <span class="badge" style="background: rgba(124, 58, 237, 0.1); color: var(--primary); font-size: 0.75rem;">{{ bs.subject.get_subject_type_display }}</span>
@@ -114,6 +140,7 @@
                         </div>
                     </div>
                 </div>
+                {% endwith %}
                 {% endfor %}
             </div>
             {% else %}

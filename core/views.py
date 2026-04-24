@@ -386,7 +386,19 @@ def batch_edit(request, pk):
 def batch_detail(request, pk):
     batch = get_object_or_404(Batch, pk=pk)
     batch_subjects = BatchSubject.objects.filter(batch=batch).select_related('subject')
-    return render(request, 'academic/batch_detail.html', {'batch': batch, 'batch_subjects': batch_subjects})
+    # For each subject, check if a FacultySubject mapping exists for this batch
+    assigned_subject_ids = set(
+        FacultySubject.objects.filter(batch=batch).values_list('subject_id', flat=True)
+    )
+    batch_subjects_with_status = [
+        {'bs': bs, 'has_faculty': bs.subject_id in assigned_subject_ids}
+        for bs in batch_subjects
+    ]
+    return render(request, 'academic/batch_detail.html', {
+        'batch': batch,
+        'batch_subjects': batch_subjects,
+        'batch_subjects_with_status': batch_subjects_with_status,
+    })
 
 
 @login_required
