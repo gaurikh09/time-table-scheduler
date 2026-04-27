@@ -803,6 +803,12 @@ def generate_timetable(request):
                     fixed_entries = list(TimetableEntry.objects.filter(is_fixed=True, batch=selected_batch).select_related('batch', 'subject', 'faculty', 'room'))
 
                     solver = TimetableSolver([selected_batch], None, faculty_subjects, rooms, fixed_entries)
+                    
+                    # Warn if total frequency exceeds available slots
+                    warning = solver.validate_inputs()
+                    if warning:
+                        messages.warning(request, warning)
+                    
                     success, message = solver.solve()
 
                     if success:

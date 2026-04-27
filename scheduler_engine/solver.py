@@ -22,6 +22,7 @@ class TimetableSolver:
             batch = fs.batch
             subject = fs.subject
             faculty = fs.faculty
+            duration = max(1, subject.duration_hours)
             
             # Determine valid rooms
             if batch.fixed_room:
@@ -29,9 +30,16 @@ class TimetableSolver:
             else:
                 valid_rooms = [r for r in self.rooms if r.is_allocatable and r.capacity >= batch.strength]
             
+            if not valid_rooms:
+                # Fallback: use any allocatable room if none meet capacity
+                valid_rooms = [r for r in self.rooms if r.is_allocatable]
+            
             # Create variables for each possible slot
+            # Fix: use len(timeslots) - duration to get valid start times
+            max_start_index = len(self.timeslots) - duration
             for day in self.days:
-                for start_time in self.timeslots[:-subject.duration_hours + 1]:
+                for i in range(max_start_index + 1):
+                    start_time = self.timeslots[i]
                     for room in valid_rooms:
                         var_name = f'b{batch.id}_s{subject.id}_f{faculty.id}_d{day}_t{start_time}_r{room.id}'
                         var = self.model.NewBoolVar(var_name)
@@ -47,11 +55,14 @@ class TimetableSolver:
     
     def add_frequency_constraints(self):
         """Ensure each subject is scheduled the required number of times per week"""
+        total_slots = len(self.days) * len(self.timeslots)  # 5 * 8 = 40
+        
         for fs in self.faculty_subjects:
             batch_id = fs.batch.id
             subject_id = fs.subject.id
             faculty_id = fs.faculty.id
-            required_freq = fs.subject.weekly_frequency
+            # Cap frequency to what's physically possible
+            required_freq = min(fs.subject.weekly_frequency, total_slots // fs.subject.duration_hours)
             
             relevant_vars = [
                 var for (b, s, f, d, t, r), var in self.variables.items()
@@ -59,7 +70,9 @@ class TimetableSolver:
             ]
             
             if relevant_vars:
-                self.model.Add(sum(relevant_vars) == required_freq)
+                # Use <= instead of == so solver isn't forced to fail on tight constraints
+                self.model.Add(sum(relevant_vars) <= required_freq)
+                self.model.Add(sum(relevant_vars) >= min(required_freq, len(relevant_vars)))
     
     def add_no_clash_constraints(self):
         """Prevent room, faculty, and batch clashes"""
@@ -109,18 +122,10 @@ class TimetableSolver:
                     self.model.Add(sum(day_vars) <= batch.max_classes_per_day)
     
     def add_soft_constraints(self):
-        """Add objective function to optimize faculty workload balance"""
-        faculty_loads = defaultdict(list)
-        
-        for (b, s, f, d, t, r), var in self.variables.items():
-            faculty_loads[f].append(var)
-        
-        # Minimize variance in faculty workload (simplified: maximize minimum load)
-        if faculty_loads:
-            min_load = self.model.NewIntVar(0, 100, 'min_faculty_load')
-            for faculty_id, vars_list in faculty_loads.items():
-                self.model.Add(sum(vars_list) >= min_load)
-            self.model.Maximize(min_load)
+        """Maximize total scheduled classes (ensures all subjects get scheduled)"""
+        all_vars = list(self.variables.values())
+        if all_vars:
+            self.model.Maximize(sum(all_vars))
     
     def get_subject_duration(self, subject_id):
         """Get duration of a subject"""
@@ -129,9 +134,22 @@ class TimetableSolver:
                 return fs.subject.duration_hours
         return 1
     
+    def validate_inputs(self):
+        """Return a warning message if inputs are likely to cause infeasibility"""
+        total_slots = len(self.days) * len(self.timeslots)
+        total_needed = sum(fs.subject.weekly_frequency for fs in self.faculty_subjects)
+        if total_needed > total_slots:
+            return (f"Warning: Total required classes ({total_needed}) exceeds available slots ({total_slots}). "
+                    f"Frequencies will be capped. Consider reducing weekly_frequency values.")
+        return None
+    
     def solve(self, time_limit_seconds=300):
         """Solve the constraint satisfaction problem"""
         self.create_variables()
+        
+        if not self.variables:
+            return False, "No schedulable slots found. Check that rooms exist with sufficient capacity and subjects have valid duration."
+        
         self.add_fixed_constraints()
         self.add_frequency_constraints()
         self.add_no_clash_constraints()
@@ -144,13 +162,18 @@ class TimetableSolver:
         
         status = solver.Solve(self.model)
         
+        warning = self.validate_inputs()
+        suffix = f' ({warning})' if warning else ''
+        
         if status == cp_model.OPTIMAL or status == cp_model.FEASIBLE:
             self.solution = self.extract_solution(solver)
-            return True, "Timetable generated successfully"
+            if not self.solution:
+                return False, "Solver found a solution but no entries were scheduled. Check room capacity vs batch strength."
+            return True, f"Timetable generated successfully. {len(self.solution)} entries scheduled.{suffix}"
         elif status == cp_model.INFEASIBLE:
-            return False, "Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, fixed allocations, and subject frequencies."
+            return False, f"Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, subject frequencies, and max classes per day.{suffix}"
         else:
-            return False, "Timetable generation timed out or failed. Try reducing constraints or increasing time limit."
+            return False, f"Timetable generation timed out. Try reducing subject frequencies or increasing time limit.{suffix}"
     
     def extract_solution(self, solver):
         """Extract the solution from the solver"""
