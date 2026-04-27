@@ -152,6 +152,20 @@ class TimetableSolver:
                 if day_vars:
                     self.model.Add(sum(day_vars) <= batch.max_classes_per_day)
 
+    def add_one_subject_per_day_constraint(self):
+        """Each subject can appear at most once per day per batch."""
+        for fs in self.faculty_subjects:
+            batch_id = fs.batch.id
+            subject_id = fs.subject.id
+            faculty_id = fs.faculty.id
+            for day in self.days:
+                day_vars = [
+                    var for (b, s, f, d, t, r), var in self.variables.items()
+                    if b == batch_id and s == subject_id and f == faculty_id and d == day
+                ]
+                if day_vars:
+                    self.model.Add(sum(day_vars) <= 1)
+
     def get_subject_duration(self, subject_id):
         for fs in self.faculty_subjects:
             if fs.subject.id == subject_id:
@@ -184,6 +198,7 @@ class TimetableSolver:
         self.add_no_clash_constraints()
         self.add_lab_continuity_constraints()
         self.add_max_classes_per_day_constraint()
+        self.add_one_subject_per_day_constraint()
 
         solver = cp_model.CpSolver()
         solver.parameters.max_time_in_seconds = time_limit_seconds
