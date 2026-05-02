@@ -57,41 +57,96 @@
                             <div class="time-sublabel">{{ time|add:1 }}:00</div>
                         </td>
                         {% for day_num, day_name in days %}
-                        <td class="schedule-cell">
-                            {% if timetable_grid|get_item:day_num|get_item:time %}
-                                {% with entry=timetable_grid|get_item:day_num|get_item:time %}
-                                <div class="class-entry {% if entry.is_fixed %}fixed-entry{% endif %}">
-                                    <div class="entry-header">
-                                        <strong class="subject-code">{{ entry.subject.code }}</strong>
-                                        {% if entry.is_fixed %}
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="lock-icon">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                                            <path d="M7 11V7a5 5 0 0110 0v4"/>
-                                        </svg>
+                            {% with day_spanned=spanned_cells|get_item:day_num entry=timetable_grid|get_item:day_num|get_item:time cc_spanned=combined_spanned|get_item:day_num cc=combined_grid|get_item:day_num|get_item:time %}
+                            {% if day_spanned and time in day_spanned %}
+                                {# skipped — covered by rowspan of a multi-hour entry above #}
+                            {% elif cc_spanned and time in cc_spanned %}
+                                {# skipped — covered by rowspan of a combined class above #}
+                            {% elif entry %}
+                                <td class="schedule-cell" rowspan="{{ entry|entry_rowspan }}">
+                                    <div class="class-entry {% if entry.combined_class %}combined-entry{% elif entry.is_fixed %}fixed-entry{% endif %} {% if entry|entry_rowspan > 1 %}multi-hour-entry{% endif %}">
+                                        <div class="entry-header">
+                                            <strong class="subject-code">{{ entry.subject.code }}</strong>
+                                            {% if entry.combined_class %}
+                                            <span class="combined-badge">Combined</span>
+                                            {% elif entry.is_fixed %}
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="lock-icon">
+                                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                                <path d="M7 11V7a5 5 0 0110 0v4"/>
+                                            </svg>
+                                            {% endif %}
+                                        </div>
+                                        {% if entry|entry_rowspan > 1 %}
+                                        <div class="duration-badge" {% if entry.combined_class %}style="color:#7c3aed;background:rgba(124,58,237,0.1);"{% endif %}>{{ entry.start_time }}:00 – {{ entry.end_time }}:00</div>
                                         {% endif %}
-                                    </div>
-                                    <div class="entry-details">
-                                        <div class="entry-row">
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                                                <circle cx="12" cy="7" r="4"/>
-                                            </svg>
-                                            <span>{{ entry.faculty.name|truncatewords:2 }}</span>
+                                        <div class="entry-details">
+                                            <div class="entry-row">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                                    <circle cx="12" cy="7" r="4"/>
+                                                </svg>
+                                                <span>{{ entry.faculty.name|truncatewords:2 }}</span>
+                                            </div>
+                                            <div class="entry-row">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                                    <line x1="9" y1="3" x2="9" y2="21"/>
+                                                </svg>
+                                                <span>Room {{ entry.room.room_number }}</span>
+                                            </div>
+                                            {% if entry.combined_class %}
+                                            <div class="entry-row" style="flex-wrap:wrap;gap:0.25rem;margin-top:0.25rem;">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0">
+                                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                                                </svg>
+                                                {% for b in entry.combined_class.batches.all %}
+                                                <span style="background:rgba(124,58,237,0.15);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.7rem;color:var(--primary);">{{ b.section }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% endif %}
                                         </div>
-                                        <div class="entry-row">
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                                <line x1="9" y1="3" x2="9" y2="21"/>
-                                            </svg>
-                                            <span>Room {{ entry.room.room_number }}</span>
+                                    </div>
+                                </td>
+                            {% elif cc %}
+                                <td class="schedule-cell combined-cell" rowspan="{{ cc|entry_rowspan }}">
+                                    <div class="class-entry combined-entry">
+                                        <div class="entry-header">
+                                            <strong class="subject-code">{{ cc.subject.code }}</strong>
+                                            <span class="combined-badge">Combined</span>
+                                        </div>
+                                        {% if cc|entry_rowspan > 1 %}
+                                        <div class="duration-badge" style="color:#7c3aed;background:rgba(124,58,237,0.1);">{{ cc.start_time }}:00 – {{ cc.end_time }}:00</div>
+                                        {% endif %}
+                                        <div class="entry-details">
+                                            <div class="entry-row">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                                    <circle cx="12" cy="7" r="4"/>
+                                                </svg>
+                                                <span>{{ cc.faculty.name|truncatewords:2 }}</span>
+                                            </div>
+                                            <div class="entry-row">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                                    <line x1="9" y1="3" x2="9" y2="21"/>
+                                                </svg>
+                                                <span>Room {{ cc.room.room_number }}</span>
+                                            </div>
+                                            <div class="entry-row" style="flex-wrap:wrap;gap:0.25rem;margin-top:0.25rem;">
+                                                {% for b in cc.batches.all %}
+                                                <span style="background:rgba(124,58,237,0.15);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.7rem;color:var(--primary);">{{ b.section }}</span>
+                                                {% endfor %}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                {% endwith %}
+                                </td>
                             {% else %}
-                                <div class="empty-slot">—</div>
+                                <td class="schedule-cell">
+                                    <div class="empty-slot">—</div>
+                                </td>
                             {% endif %}
-                        </td>
+                            {% endwith %}
                         {% endfor %}
                     </tr>
                     {% endfor %}
@@ -109,6 +164,10 @@
                 <div class="legend-item">
                     <div class="legend-box fixed-entry"></div>
                     <span>Fixed/Locked</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(167,139,250,0.15));border:2px dashed rgba(124,58,237,0.5);"></div>
+                    <span>Combined Class</span>
                 </div>
             </div>
         </div>
@@ -226,6 +285,44 @@
     vertical-align: top;
     min-height: 80px;
     position: relative;
+}
+
+.class-entry.combined-entry {
+    background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(167, 139, 250, 0.15));
+    border-color: rgba(124, 58, 237, 0.5);
+    border-width: 2px;
+    border-style: dashed;
+}
+
+.combined-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: rgba(124, 58, 237, 0.2);
+    color: var(--primary);
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+}
+
+.class-entry.multi-hour-entry {
+    background: linear-gradient(135deg, rgba(234, 88, 12, 0.12), rgba(249, 115, 22, 0.12));
+    border-color: rgba(234, 88, 12, 0.4);
+}
+
+.multi-hour-entry .subject-code {
+    color: #ea580c;
+}
+
+.duration-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #ea580c;
+    background: rgba(234, 88, 12, 0.1);
+    border-radius: 4px;
+    padding: 0.1rem 0.4rem;
+    margin-bottom: 0.4rem;
 }
 
 .class-entry {

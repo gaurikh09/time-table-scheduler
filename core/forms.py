@@ -1,7 +1,7 @@
 from django import forms
 from .models import (
-    AcademicBlock, Floor, Room, Department, Batch, 
-    Faculty, Subject, FacultySubject, TimetableEntry
+    AcademicBlock, Floor, Room, Department, Batch,
+    Faculty, Subject, FacultySubject, TimetableEntry, CombinedClass
 )
 
 class FacultyCSVUploadForm(forms.Form):
@@ -183,4 +183,24 @@ class TimetableEntryForm(forms.ModelForm):
             'start_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 10, 'max': 17}),
             'end_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 11, 'max': 18}),
             'is_fixed': forms.CheckboxInput(attrs={'class': 'form-checkbox'}),
+        }
+
+
+class CombinedClassForm(forms.ModelForm):
+    def __init__(self, *args, batch_queryset=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if batch_queryset is not None:
+            self.fields['batches'].queryset = batch_queryset
+
+    class Meta:
+        model = CombinedClass
+        fields = ['batches', 'subject', 'faculty', 'room', 'day_of_week', 'start_time', 'end_time']
+        widgets = {
+            'batches': forms.CheckboxSelectMultiple(),
+            'subject': forms.Select(attrs={'class': 'form-input'}),
+            'faculty': forms.Select(attrs={'class': 'form-input'}),
+            'room': forms.Select(attrs={'class': 'form-input'}),
+            'day_of_week': forms.Select(attrs={'class': 'form-input'}),
+            'start_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 10, 'max': 17}),
+            'end_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 11, 'max': 18}),
         }

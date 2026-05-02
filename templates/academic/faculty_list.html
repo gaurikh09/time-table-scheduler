@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header">
         <h2>All Faculty</h2>
-        {% if user.role == 'admin' or user.role == 'coordinator' %}
+        {% if user.role == 'admin' or user.role == 'coordinator' or user.role == 'class_advisor' %}
         <div>
             <a href="{% url 'faculty_create' %}" class="btn btn-primary">➕ Add Faculty</a>
             <a href="{% url 'faculty_upload_csv' %}" class="btn btn-primary" style="margin-left: 10px;">📄 Upload CSV</a>
@@ -36,7 +36,7 @@
                     <td>{{ f.email }}</td>
                     <td>{{ f.max_hours_per_week }}</td>
                     <td style="display:flex; gap:0.5rem;">
-                        {% if user.role == 'admin' or user.role == 'coordinator' %}
+                        {% if user.role == 'admin' or user.role == 'coordinator' or user.role == 'class_advisor' %}
                         <a href="{% url 'faculty_edit' f.pk %}" class="btn btn-secondary">Edit</a>
                         {% endif %}
                         {% if user.role == 'admin' %}

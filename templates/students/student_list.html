@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Management{% endblock %}
+{% block page_title %}Student Management{% endblock %}
+
+{% block content %}
+<div class="table-card scroll-reveal">
+    <div class="table-header">
+        <div>
+            <h2 class="table-title">Students{% if context_batch %} — {{ context_batch }}{% endif %}</h2>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">
+                Manage student login accounts for timetable access
+            </p>
+        </div>
+        <div class="table-actions">
+            <a href="{% url 'student_upload_csv' %}" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="17 8 12 3 7 8"/>
+                    <line x1="12" y1="3" x2="12" y2="15"/>
+                </svg>
+                Upload CSV
+            </a>
+            <a href="{% url 'student_create' %}" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Student
+            </a>
+        </div>
+    </div>
+
+    {% if user.role == 'admin' %}
+    <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; gap: 1rem; align-items: center;">
+        <form method="get" style="display:flex; gap:0.75rem; align-items:center;">
+            <select name="batch" class="form-input" style="min-width:250px;" onchange="this.form.submit()">
+                <option value="">All Batches</option>
+                {% for b in batches %}
+                <option value="{{ b.pk }}" {% if selected_batch_id == b.pk|stringformat:"s" %}selected{% endif %}>{{ b }}</option>
+                {% endfor %}
+            </select>
+            {% if selected_batch_id %}
+            <a href="{% url 'student_list' %}" class="btn btn-secondary" style="padding:0.5rem 0.75rem;">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+    {% endif %}
+
+    {% if students %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Roll No.</th>
+                <th>Batch</th>
+                <th>Added</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td style="font-weight:600;">{{ student.user.get_full_name|default:student.user.username }}</td>
+                <td><code style="background:rgba(124,58,237,0.1);padding:0.2rem 0.5rem;border-radius:4px;font-size:0.85rem;color:var(--primary);">{{ student.user.username }}</code></td>
+                <td style="color:var(--text-secondary);">{{ student.roll_number|default:"—" }}</td>
+                <td><span class="badge badge-primary">{{ student.batch }}</span></td>
+                <td style="color:var(--text-secondary);font-size:0.85rem;">{{ student.created_at|date:"Y-m-d" }}</td>
+                <td>
+                    <a href="{% url 'student_delete' student.pk %}" class="btn btn-secondary" style="padding:0.4rem 0.8rem;font-size:0.8rem;color:var(--error);border-color:var(--error);">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"/>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                        </svg>
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.3;">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+        </div>
+        <div class="empty-title">No Students Yet</div>
+        <div class="empty-message">Add students manually or upload a CSV file</div>
+        <div style="display:flex;gap:1rem;justify-content:center;margin-top:1rem;">
+            <a href="{% url 'student_create' %}" class="btn btn-primary">Add Student</a>
+            <a href="{% url 'student_upload_csv' %}" class="btn btn-secondary">Upload CSV</a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.table-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;}
+.table-actions{display:flex;gap:1rem;align-items:center;}
+</style>
+{% endblock %}

@@ -56,7 +56,14 @@
                     <span class="badge badge-primary">{{ block.floors.count }} Floor{{ block.floors.count|pluralize }}</span>
                 </td>
                 <td>
-                    <div style="display: flex; gap: 0.5rem;">
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <a href="{% url 'floor_create' block.pk %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem; color: var(--success, #16a34a); border-color: var(--success, #16a34a);">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"/>
+                                <line x1="5" y1="12" x2="19" y2="12"/>
+                            </svg>
+                            Add Floor
+                        </a>
                         <a href="{% url 'block_edit' block.pk %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
@@ -72,6 +79,16 @@
                             Delete
                         </a>
                     </div>
+                    {% if block.floors.all %}
+                    <div style="margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                        {% for floor in block.floors.all %}
+                        <span style="display: inline-flex; align-items: center; gap: 0.3rem; background: rgba(124,58,237,0.08); border-radius: 6px; padding: 0.2rem 0.6rem; font-size: 0.8rem; color: var(--text-secondary);">
+                            Floor {{ floor.floor_number }}
+                            <a href="{% url 'floor_delete' floor.pk %}" style="color: var(--error); text-decoration: none; font-weight: 700; line-height: 1;" title="Delete floor">×</a>
+                        </span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </td>
             </tr>
             {% endfor %}

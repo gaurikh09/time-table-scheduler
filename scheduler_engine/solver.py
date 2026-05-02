@@ -5,12 +5,13 @@ LUNCH_END = 14    # 2 PM
 
 
 class TimetableSolver:
-    def __init__(self, batches, subjects, faculty_subjects, rooms, fixed_entries, working_hours=(10, 18)):
+    def __init__(self, batches, subjects, faculty_subjects, rooms, fixed_entries, combined_classes=None, working_hours=(10, 18)):
         self.batches = batches
         self.subjects = subjects
         self.faculty_subjects = faculty_subjects
         self.rooms = rooms
         self.fixed_entries = fixed_entries
+        self.combined_classes = combined_classes or []
         self.working_hours = working_hours
         self.days = list(range(5))  # Monday to Friday
         self.timeslots = list(range(working_hours[0], working_hours[1]))
@@ -18,6 +19,26 @@ class TimetableSolver:
         self.model = cp_model.CpModel()
         self.variables = {}
         self.solution = None
+
+        # Build blocked slots from combined classes:
+        # {batch_id: {(day, time): True}} — times occupied by combined classes
+        self.combined_blocked = {}  # batch_id -> set of (day, t) for every hour occupied
+        self.combined_faculty_blocked = {}  # faculty_id -> set of (day, t)
+        self.combined_room_blocked = {}  # room_id -> set of (day, t)
+        self.combined_subject_batches = set()  # (batch_id, subject_id) already covered by combined class
+        for cc in self.combined_classes:
+            for t in range(cc.start_time, cc.end_time):
+                for batch in cc.batches.all():
+                    self.combined_blocked.setdefault(batch.id, set()).add((cc.day_of_week, t))
+                    self.combined_subject_batches.add((batch.id, cc.subject_id))
+                self.combined_faculty_blocked.setdefault(cc.faculty_id, set()).add((cc.day_of_week, t))
+                self.combined_room_blocked.setdefault(cc.room_id, set()).add((cc.day_of_week, t))
+
+        # Filter out faculty_subjects whose subject is already fully covered by a combined class
+        self.faculty_subjects = [
+            fs for fs in self.faculty_subjects
+            if (fs.batch.id, fs.subject.id) not in self.combined_subject_batches
+        ]
 
     def _is_valid_start(self, start_time, duration):
         """
@@ -34,7 +55,7 @@ class TimetableSolver:
         return True
 
     def create_variables(self):
-        """Create decision variables — one variable per (batch, subject, faculty, day, start, room)."""
+        """Create decision variables — skip slots already occupied by combined classes."""
         for fs in self.faculty_subjects:
             batch = fs.batch
             subject = fs.subject
@@ -50,11 +71,21 @@ class TimetableSolver:
             if not valid_rooms:
                 valid_rooms = [r for r in self.rooms if r.is_allocatable]
 
+            batch_blocked = self.combined_blocked.get(batch.id, set())
+            faculty_blocked = self.combined_faculty_blocked.get(faculty.id, set())
+
             for day in self.days:
                 for start_time in self.timeslots:
                     if not self._is_valid_start(start_time, duration):
                         continue
+                    # Skip if any hour of this slot is blocked by a combined class for this batch or faculty
+                    slot_hours = set((day, start_time + offset) for offset in range(duration))
+                    if slot_hours & batch_blocked or slot_hours & faculty_blocked:
+                        continue
                     for room in valid_rooms:
+                        room_blocked = self.combined_room_blocked.get(room.id, set())
+                        if slot_hours & room_blocked:
+                            continue
                         var_name = f'b{batch.id}_s{subject.id}_f{faculty.id}_d{day}_t{start_time}_r{room.id}'
                         var = self.model.NewBoolVar(var_name)
                         self.variables[(batch.id, subject.id, faculty.id, day, start_time, room.id)] = var
@@ -172,6 +203,95 @@ class TimetableSolver:
                 return max(1, fs.subject.duration_hours)
         return 1
 
+    def diagnose(self):
+        """Return a list of specific reasons why generation may fail."""
+        issues = []
+        DAYS = 5
+        slots_per_day = (LUNCH_START - self.working_hours[0]) + (self.working_hours[1] - LUNCH_END)  # 7
+        total_available = DAYS * slots_per_day
+
+        for fs in self.faculty_subjects:
+            batch = fs.batch
+            subject = fs.subject
+            faculty = fs.faculty
+            duration = max(1, subject.duration_hours)
+            freq = subject.weekly_frequency
+            needed = freq * duration
+
+            # 1. No rooms at all
+            if not self.rooms:
+                issues.append("No allocatable rooms exist. Add rooms first.")
+                break
+
+            # 2. Room capacity
+            if batch.fixed_room:
+                valid_rooms = [batch.fixed_room]
+            else:
+                valid_rooms = [r for r in self.rooms if r.is_allocatable and r.capacity >= batch.strength]
+            if not valid_rooms:
+                room_caps = ', '.join(f"Room {r.room_number} (cap {r.capacity})" for r in self.rooms if r.is_allocatable)
+                issues.append(
+                    f"Batch '{batch}' (strength {batch.strength}) — no room has enough capacity. "
+                    f"Available rooms: {room_caps or 'none'}"
+                )
+
+            # 3. Total weekly hours vs available slots
+            total_needed = sum(f.subject.weekly_frequency * max(1, f.subject.duration_hours) for f in self.faculty_subjects if f.batch.id == batch.id)
+            combined_blocked_count = len(self.combined_blocked.get(batch.id, set()))
+            effective_slots = total_available - combined_blocked_count
+            if total_needed > effective_slots:
+                issues.append(
+                    f"Batch '{batch}' needs {total_needed} hours/week but only {effective_slots} slots available "
+                    f"({total_available} total − {combined_blocked_count} blocked by combined classes)."
+                )
+
+            # 4. max_classes_per_day too low
+            min_days_needed = (total_needed + batch.max_classes_per_day - 1) // batch.max_classes_per_day
+            if min_days_needed > DAYS:
+                issues.append(
+                    f"Batch '{batch}': max_classes_per_day={batch.max_classes_per_day} is too low. "
+                    f"Need at least {total_needed} hours across {DAYS} days — increase to at least {-(-total_needed // DAYS)}."
+                )
+
+            # 5. Subject frequency > 5 (can't schedule same subject more than once per day)
+            if freq > DAYS:
+                issues.append(
+                    f"Subject '{subject.code}' for batch '{batch}' has weekly_frequency={freq} "
+                    f"but there are only {DAYS} working days. Max frequency is {DAYS}."
+                )
+
+            # 6. Lab/2hr subject: check enough valid 2-hr slots exist after lunch blocking
+            if duration > 1:
+                valid_starts = [
+                    (d, t) for d in range(DAYS)
+                    for t in self.timeslots
+                    if self._is_valid_start(t, duration)
+                    and not (set((d, t + o) for o in range(duration)) & self.combined_blocked.get(batch.id, set()))
+                    and not (set((d, t + o) for o in range(duration)) & self.combined_faculty_blocked.get(faculty.id, set()))
+                ]
+                if len(valid_starts) < freq:
+                    issues.append(
+                        f"Subject '{subject.code}' (duration={duration}h, freq={freq}) for batch '{batch}': "
+                        f"only {len(valid_starts)} valid {duration}-hour slots exist after lunch/combined blocking, need {freq}."
+                    )
+
+            # 7. Faculty blocked by combined classes for too many slots
+            faculty_blocked_days = set(d for (d, t) in self.combined_faculty_blocked.get(faculty.id, set()))
+            if len(faculty_blocked_days) >= DAYS and freq > 0:
+                issues.append(
+                    f"Faculty '{faculty.name}' is blocked by combined classes on all {DAYS} days "
+                    f"and cannot teach '{subject.code}' for batch '{batch}'."
+                )
+
+        # 8. No variables created at all (catches edge cases)
+        if not self.variables and not issues:
+            issues.append(
+                "No schedulable variable slots were created. This usually means all time slots are "
+                "blocked by combined classes, or no rooms match batch capacity."
+            )
+
+        return issues
+
     def validate_inputs(self):
         """Return warning if total weekly hours exceed available slots."""
         # Available slots per day excluding lunch = 7 hours (10-13 + 14-18)
@@ -215,8 +335,14 @@ class TimetableSolver:
                 return False, "Solver ran but scheduled nothing. Check room capacity vs batch strength."
             return True, f"Timetable generated: {len(self.solution)} entries scheduled.{suffix}"
         elif status == cp_model.INFEASIBLE:
-            return False, (f"Cannot generate timetable: constraints are impossible to satisfy. "
-                           f"Check room capacity, subject frequencies, and max classes per day.{suffix}")
+            issues = self.diagnose()
+            if issues:
+                detail = '\n'.join(f"• {i}" for i in issues)
+                return False, f"Cannot generate timetable. Specific issues found:\n{detail}"
+            return False, (
+                f"Cannot generate timetable: constraints are impossible to satisfy.{suffix} "
+                f"Check room capacity, subject frequencies, and max classes per day."
+            )
         else:
             return False, f"Timetable generation timed out. Try reducing frequencies.{suffix}"
 

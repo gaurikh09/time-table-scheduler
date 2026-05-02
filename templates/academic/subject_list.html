@@ -7,7 +7,7 @@
 <div class="card">
     <div class="card-header">
         <h2>All Subjects</h2>
-        {% if user.role == 'admin' or user.role == 'coordinator' %}
+        {% if user.role == 'admin' or user.role == 'coordinator' or user.role == 'class_advisor' %}
         <div>
             <a href="{% url 'subject_create' %}" class="btn btn-primary">➕ Add Subject</a>
             <a href="{% url 'subject_upload_csv' %}" class="btn btn-primary" style="margin-left: 10px;">📄 Upload CSV</a>
@@ -38,7 +38,7 @@
                     <td>{{ subject.weekly_frequency }}</td>
                     <td>{{ subject.duration_hours }}</td>
                     <td style="display:flex; gap:0.5rem;">
-                        {% if user.role == 'admin' or user.role == 'coordinator' %}
+                        {% if user.role == 'admin' or user.role == 'coordinator' or user.role == 'class_advisor' %}
                         <a href="{% url 'subject_edit' subject.pk %}" class="btn btn-secondary">Edit</a>
                         {% endif %}
                         {% if user.role == 'admin' %}

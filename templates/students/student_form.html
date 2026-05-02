@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="table-card scroll-reveal" style="max-width:560px;margin:0 auto;">
+    <div style="padding:1.5rem 1.5rem 0;">
+        <h2 class="table-title">{{ title }}</h2>
+        <p style="color:var(--text-secondary);font-size:0.875rem;margin-top:0.25rem;">
+            Create a student login account{% if fixed_batch %} for <strong style="color:var(--primary);">{{ fixed_batch }}</strong>{% endif %}
+        </p>
+    </div>
+    <form method="post" style="padding:1.5rem;">
+        {% csrf_token %}
+        <div style="display:flex;flex-direction:column;gap:1.25rem;">
+
+            {% if not fixed_batch %}
+            <div>
+                <label class="form-label">Batch <span style="color:var(--error)">*</span></label>
+                <select name="batch" class="form-input" required>
+                    <option value="">-- Select Batch --</option>
+                    {% for b in batches %}
+                    <option value="{{ b.pk }}">{{ b }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+
+            <div>
+                <label class="form-label">Full Name</label>
+                <input type="text" name="full_name" class="form-input" placeholder="e.g. Aryan Gupta">
+            </div>
+
+            <div>
+                <label class="form-label">Roll Number</label>
+                <input type="text" name="roll_number" class="form-input" placeholder="e.g. 2021CSE001">
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                <div>
+                    <label class="form-label">Username / Email <span style="color:var(--error)">*</span></label>
+                    <input type="text" name="username" class="form-input" placeholder="e.g. aryan2021" required>
+                </div>
+                <div>
+                    <label class="form-label">Password <span style="color:var(--error)">*</span></label>
+                    <input type="text" name="password" class="form-input" placeholder="Set a password" required>
+                </div>
+            </div>
+
+        </div>
+        <div style="display:flex;gap:1rem;margin-top:1.75rem;">
+            <button type="submit" class="btn btn-primary">Create Account</button>
+            <a href="{% url 'student_list' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+<style>.form-label{display:block;font-weight:500;margin-bottom:0.4rem;color:var(--text-primary);font-size:0.875rem;}</style>
+{% endblock %}

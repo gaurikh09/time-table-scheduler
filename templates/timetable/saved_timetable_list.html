@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Saved Timetables{% endblock %}
+{% block page_title %}Saved Timetables{% endblock %}
+
+{% block content %}
+<div class="table-card scroll-reveal">
+    <div class="table-header">
+        <div>
+            <h2 class="table-title">Saved Timetables</h2>
+            <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">
+                Previous timetable versions automatically saved before each regeneration
+            </p>
+        </div>
+    </div>
+
+    {% if saved_timetables %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Batch</th>
+                <th>Label</th>
+                <th>Saved By</th>
+                <th>Saved At</th>
+                <th>Entries</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for st in saved_timetables %}
+            <tr>
+                <td><strong style="color: var(--primary);">{{ st.batch }}</strong></td>
+                <td style="color: var(--text-secondary); font-size: 0.85rem;">{{ st.label }}</td>
+                <td>{{ st.saved_by.username }}</td>
+                <td>{{ st.created_at|date:"Y-m-d H:i" }}</td>
+                <td><span class="badge badge-primary">{{ st.entries.count }}</span></td>
+                <td>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="{% url 'saved_timetable_view' st.pk %}" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                            View
+                        </a>
+                        {% if user.role == 'admin' or user.role == 'coordinator' %}
+                        <a href="{% url 'saved_timetable_delete' st.pk %}" class="btn btn-secondary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; color: var(--error); border-color: var(--error);">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="3 6 5 6 21 6"/>
+                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            </svg>
+                            Delete
+                        </a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.3;">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+        </div>
+        <div class="empty-title">No Saved Timetables</div>
+        <div class="empty-message">Timetables are automatically saved here before each regeneration</div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.table-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; }
+</style>
+{% endblock %}

@@ -10,12 +10,14 @@ import csv
 import io
 from .models import (
     AcademicBlock, Floor, Room, Department, Batch, Faculty, 
-    Subject, FacultySubject, FacultySubjectCapability, TimetableEntry, TimetableGeneration, BatchSubject
+    Subject, FacultySubject, FacultySubjectCapability, TimetableEntry, TimetableGeneration,
+    BatchSubject, CombinedClass, SavedTimetable, SavedTimetableEntry, ClassAdvisor, User, Student
 )
 from .forms import (
     AcademicBlockForm, FloorForm, RoomForm, DepartmentForm, 
     BatchForm, FacultyForm, SubjectForm, FacultySubjectForm, TimetableEntryForm,
-    FacultyCSVUploadForm, SubjectCSVUploadForm, BatchSubjectCSVUploadForm, FacultySubjectCSVUploadForm
+    FacultyCSVUploadForm, SubjectCSVUploadForm, BatchSubjectCSVUploadForm, FacultySubjectCSVUploadForm,
+    CombinedClassForm
 )
 from scheduler_engine.solver import TimetableSolver
 
@@ -165,7 +167,7 @@ class FacultyEditView(RoleRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = FacultyForm
     template_name = 'forms/faculty_form.html'
     success_url = reverse_lazy('faculty_list')
-    allowed_roles = ['admin', 'coordinator']
+    allowed_roles = ['admin', 'coordinator', 'class_advisor']
     success_message = 'Faculty updated successfully.'
 
     def get_context_data(self, **kwargs):
@@ -197,7 +199,7 @@ class SubjectEditView(RoleRequiredMixin, SuccessMessageMixin, UpdateView):
     form_class = SubjectForm
     template_name = 'forms/subject_form.html'
     success_url = reverse_lazy('subject_list')
-    allowed_roles = ['admin', 'coordinator']
+    allowed_roles = ['admin', 'coordinator', 'class_advisor']
     success_message = 'Subject updated successfully.'
 
     def get_context_data(self, **kwargs):
@@ -231,6 +233,9 @@ def landing_page(request):
 
 @login_required
 def dashboard(request):
+    # Students go directly to their timetable
+    if request.user.role == 'student':
+        return redirect('student_timetable')
     context = {
         'total_batches': Batch.objects.count(),
         'total_faculty': Faculty.objects.count(),
@@ -287,6 +292,33 @@ def block_delete(request, pk):
         messages.success(request, 'Academic block deleted successfully.')
         return redirect('block_list')
     return render(request, 'confirm_delete.html', {'object': block, 'type': 'Block'})
+
+
+@login_required
+@role_required(['admin'])
+def floor_create(request, block_pk):
+    block = get_object_or_404(AcademicBlock, pk=block_pk)
+    if request.method == 'POST':
+        form = FloorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Floor added to {block.name} successfully.')
+            return redirect('block_list')
+    else:
+        form = FloorForm(initial={'block': block})
+    return render(request, 'forms/floor_form.html', {'form': form, 'title': f'Add Floor to {block.name}', 'block': block})
+
+
+@login_required
+@role_required(['admin'])
+def floor_delete(request, pk):
+    floor = get_object_or_404(Floor, pk=pk)
+    block_pk = floor.block.pk
+    if request.method == 'POST':
+        floor.delete()
+        messages.success(request, 'Floor deleted successfully.')
+        return redirect('block_list')
+    return render(request, 'confirm_delete.html', {'object': floor, 'type': 'Floor'})
 
 
 @login_required
@@ -385,18 +417,20 @@ def batch_edit(request, pk):
 @login_required
 def batch_detail(request, pk):
     batch = get_object_or_404(Batch, pk=pk)
-    batch_subjects = BatchSubject.objects.filter(batch=batch).select_related('subject')
-    # For each subject, check if a FacultySubject mapping exists for this batch
-    assigned_subject_ids = set(
-        FacultySubject.objects.filter(batch=batch).values_list('subject_id', flat=True)
-    )
+
+    # Subjects from BatchSubject (CSV) + FacultySubject mappings, deduplicated
+    bs_subject_ids = set(BatchSubject.objects.filter(batch=batch).values_list('subject_id', flat=True))
+    fs_subject_ids = set(FacultySubject.objects.filter(batch=batch).values_list('subject_id', flat=True))
+    all_subject_ids = bs_subject_ids | fs_subject_ids
+    all_subjects = Subject.objects.filter(id__in=all_subject_ids).order_by('code')
+
     batch_subjects_with_status = [
-        {'bs': bs, 'has_faculty': bs.subject_id in assigned_subject_ids}
-        for bs in batch_subjects
+        {'subject': s, 'has_faculty': s.id in fs_subject_ids}
+        for s in all_subjects
     ]
     return render(request, 'academic/batch_detail.html', {
         'batch': batch,
-        'batch_subjects': batch_subjects,
+        'batch_subjects': batch_subjects_with_status,
         'batch_subjects_with_status': batch_subjects_with_status,
     })
 
@@ -417,7 +451,10 @@ def batch_subjects_view(request):
 
     batches_data = []
     for batch in batches:
-        subjects = list(Subject.objects.filter(subject_batches__batch=batch))
+        bs_ids = set(BatchSubject.objects.filter(batch=batch).values_list('subject_id', flat=True))
+        fs_ids = set(FacultySubject.objects.filter(batch=batch).values_list('subject_id', flat=True))
+        all_ids = bs_ids | fs_ids
+        subjects = list(Subject.objects.filter(id__in=all_ids).order_by('code'))
         if subjects:
             batches_data.append({'batch': batch, 'subjects': subjects})
 
@@ -433,7 +470,7 @@ def batch_subjects_view(request):
 
 
 @login_required
-@role_required(['admin', 'coordinator'])
+@role_required(['admin', 'coordinator', 'class_advisor'])
 def batch_subject_upload_csv(request):
     if request.method == 'POST':
         form = BatchSubjectCSVUploadForm(request.POST, request.FILES)
@@ -516,7 +553,7 @@ def faculty_list(request):
 
 
 @login_required
-@role_required(['admin', 'coordinator'])
+@role_required(['admin', 'coordinator', 'class_advisor'])
 def faculty_create(request):
     if request.method == 'POST':
         form = FacultyForm(request.POST)
@@ -530,7 +567,7 @@ def faculty_create(request):
 
 
 @login_required
-@role_required(['admin', 'coordinator'])
+@role_required(['admin', 'coordinator', 'class_advisor'])
 def faculty_upload_csv(request):
     if request.method == 'POST':
         form = FacultyCSVUploadForm(request.POST, request.FILES)
@@ -594,7 +631,7 @@ def subject_list(request):
 
 
 @login_required
-@role_required(['admin', 'coordinator'])
+@role_required(['admin', 'coordinator', 'class_advisor'])
 def subject_create(request):
     if request.method == 'POST':
         form = SubjectForm(request.POST)
@@ -608,7 +645,7 @@ def subject_create(request):
 
 
 @login_required
-@role_required(['admin', 'coordinator'])
+@role_required(['admin', 'coordinator', 'class_advisor'])
 def subject_upload_csv(request):
     if request.method == 'POST':
         form = SubjectCSVUploadForm(request.POST, request.FILES)
@@ -690,7 +727,7 @@ def faculty_subject_list(request):
 
 
 @login_required
-@role_required(['admin', 'coordinator'])
+@role_required(['admin', 'coordinator', 'class_advisor'])
 def faculty_subject_create(request):
     if request.method == 'POST':
         form = FacultySubjectForm(request.POST)
@@ -704,7 +741,7 @@ def faculty_subject_create(request):
 
 
 @login_required
-@role_required(['admin', 'coordinator'])
+@role_required(['admin', 'coordinator', 'class_advisor'])
 def upload_faculty_subject_csv(request):
     form = FacultySubjectCSVUploadForm(request.POST or None, request.FILES or None)
     created_count = 0
@@ -776,9 +813,18 @@ def upload_faculty_subject_csv(request):
 
 # Timetable Generation
 @login_required
-@role_required(['admin', 'coordinator'])
+@role_required(['admin', 'coordinator', 'class_advisor'])
 def generate_timetable(request):
-    batches = Batch.objects.select_related('department').all()
+    # Class advisor can only see/generate for their assigned batch
+    if request.user.role == 'class_advisor':
+        try:
+            advisor_batch = request.user.class_advisor_profile.batch
+            batches = Batch.objects.filter(pk=advisor_batch.pk).select_related('department')
+        except Exception:
+            messages.error(request, 'No batch assigned to your advisor profile.')
+            return redirect('dashboard')
+    else:
+        batches = Batch.objects.select_related('department').all()
     selected_batch_id = request.POST.get('batch_id') or request.GET.get('batch_id')
     selected_batch = None
     missing_mappings = False
@@ -801,18 +847,52 @@ def generate_timetable(request):
                     rooms = list(Room.objects.filter(is_allocatable=True))
                     faculty_subjects = list(FacultySubject.objects.filter(batch=selected_batch).select_related('faculty', 'subject', 'batch'))
                     fixed_entries = list(TimetableEntry.objects.filter(is_fixed=True, batch=selected_batch).select_related('batch', 'subject', 'faculty', 'room'))
+                    combined_classes = list(CombinedClass.objects.filter(batches=selected_batch).prefetch_related('batches').select_related('subject', 'faculty', 'room'))
 
-                    solver = TimetableSolver([selected_batch], None, faculty_subjects, rooms, fixed_entries)
-                    
-                    # Warn if total frequency exceeds available slots
+                    solver = TimetableSolver([selected_batch], None, faculty_subjects, rooms, fixed_entries, combined_classes)
+
                     warning = solver.validate_inputs()
                     if warning:
                         messages.warning(request, warning)
-                    
+
                     success, message = solver.solve()
 
                     if success:
-                        TimetableEntry.objects.filter(is_fixed=False, batch=selected_batch).delete()
+                        # --- Snapshot existing timetable before replacing ---
+                        existing_entries = list(
+                            TimetableEntry.objects.filter(batch=selected_batch)
+                            .select_related('subject', 'faculty', 'room', 'combined_class')
+                            .prefetch_related('combined_class__batches')
+                        )
+                        if existing_entries:
+                            snapshot = SavedTimetable.objects.create(
+                                batch=selected_batch,
+                                saved_by=request.user,
+                                label=f"{selected_batch} – saved before regeneration on {timezone.now().strftime('%Y-%m-%d %H:%M')}"
+                            )
+                            SavedTimetableEntry.objects.bulk_create([
+                                SavedTimetableEntry(
+                                    saved_timetable=snapshot,
+                                    subject_code=e.subject.code,
+                                    subject_name=e.subject.name,
+                                    faculty_name=e.faculty.name,
+                                    room_number=e.room.room_number,
+                                    day_of_week=e.day_of_week,
+                                    start_time=e.start_time,
+                                    end_time=e.end_time,
+                                    is_fixed=e.is_fixed,
+                                    is_combined=bool(e.combined_class_id),
+                                    combined_batch_sections=', '.join(
+                                        b.section for b in e.combined_class.batches.all()
+                                    ) if e.combined_class_id else ''
+                                )
+                                for e in existing_entries
+                            ])
+
+                        # Delete old non-fixed, non-combined entries for this batch
+                        TimetableEntry.objects.filter(is_fixed=False, batch=selected_batch, combined_class__isnull=True).delete()
+
+                        # Save regular solver entries
                         for entry_data in solver.solution:
                             TimetableEntry.objects.create(
                                 batch_id=entry_data['batch_id'],
@@ -824,6 +904,22 @@ def generate_timetable(request):
                                 end_time=entry_data['end_time'],
                                 is_fixed=False
                             )
+
+                        # Upsert combined class entries for this batch
+                        TimetableEntry.objects.filter(batch=selected_batch, combined_class__isnull=False).delete()
+                        for cc in combined_classes:
+                            TimetableEntry.objects.create(
+                                batch=selected_batch,
+                                subject=cc.subject,
+                                faculty=cc.faculty,
+                                room=cc.room,
+                                day_of_week=cc.day_of_week,
+                                start_time=cc.start_time,
+                                end_time=cc.end_time,
+                                is_fixed=True,
+                                combined_class=cc
+                            )
+
                         generation.status = 'completed'
                         generation.completed_at = timezone.now()
                         generation.save()
@@ -848,23 +944,62 @@ def generate_timetable(request):
 @login_required
 def timetable_view(request):
     batch_id = request.GET.get('batch')
-    batches = Batch.objects.select_related('department').all()
+    # Class advisor: restrict to their batch only
+    if request.user.role == 'class_advisor':
+        try:
+            advisor_batch = request.user.class_advisor_profile.batch
+            batches = Batch.objects.filter(pk=advisor_batch.pk).select_related('department')
+            if not batch_id:
+                batch_id = str(advisor_batch.pk)
+        except Exception:
+            batches = Batch.objects.none()
+    else:
+        batches = Batch.objects.select_related('department').all()
     timetable_grid = {}
+    spanned_cells = {}
+    combined_grid = {}  # {day: {start_time: CombinedClass}}
+    combined_spanned = {}
 
     if batch_id:
         entries = TimetableEntry.objects.filter(batch_id=batch_id).select_related(
-            'subject', 'faculty', 'room'
-        ).order_by('day_of_week', 'start_time')
+            'subject', 'faculty', 'room', 'combined_class'
+        ).prefetch_related('combined_class__batches').order_by('day_of_week', 'start_time')
         for entry in entries:
             day = entry.day_of_week
             if day not in timetable_grid:
                 timetable_grid[day] = {}
             timetable_grid[day][entry.start_time] = entry
+            duration = entry.end_time - entry.start_time
+            if duration > 1:
+                if day not in spanned_cells:
+                    spanned_cells[day] = set()
+                for offset in range(1, duration):
+                    spanned_cells[day].add(entry.start_time + offset)
+
+        # Load combined classes that include this batch
+        combined = CombinedClass.objects.filter(batches__id=batch_id).prefetch_related('batches').select_related('subject', 'faculty', 'room')
+        for cc in combined:
+            day = cc.day_of_week
+            if day not in combined_grid:
+                combined_grid[day] = {}
+            combined_grid[day][cc.start_time] = cc
+            duration = cc.end_time - cc.start_time
+            if duration > 1:
+                if day not in combined_spanned:
+                    combined_spanned[day] = set()
+                for offset in range(1, duration):
+                    combined_spanned[day].add(cc.start_time + offset)
+
+    spanned_cells = {day: list(times) for day, times in spanned_cells.items()}
+    combined_spanned = {day: list(times) for day, times in combined_spanned.items()}
 
     context = {
         'batches': batches,
         'selected_batch': batch_id,
         'timetable_grid': timetable_grid,
+        'spanned_cells': spanned_cells,
+        'combined_grid': combined_grid,
+        'combined_spanned': combined_spanned,
         'days': TimetableEntry.DAYS_OF_WEEK,
         'timeslots': range(10, 18),
     }
@@ -872,7 +1007,7 @@ def timetable_view(request):
 
 
 @login_required
-@role_required(['admin', 'coordinator'])
+@role_required(['admin', 'coordinator', 'class_advisor'])
 def manual_entry_create(request):
     if request.method == 'POST':
         form = TimetableEntryForm(request.POST)
@@ -883,3 +1018,387 @@ def manual_entry_create(request):
     else:
         form = TimetableEntryForm()
     return render(request, 'forms/timetable_entry_form.html', {'form': form, 'title': 'Create Manual Entry'})
+
+
+@login_required
+def combined_class_list(request):
+    combined_classes = CombinedClass.objects.prefetch_related('batches').select_related('subject', 'faculty', 'room').all()
+    return render(request, 'timetable/combined_class_list.html', {'combined_classes': combined_classes})
+
+
+@login_required
+@role_required(['admin', 'coordinator', 'class_advisor'])
+def combined_class_create(request):
+    batch_qs = Batch.objects.select_related('department').all()
+
+    if request.method == 'POST':
+        form = CombinedClassForm(request.POST, batch_queryset=batch_qs)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Combined class created successfully.')
+            return redirect('combined_class_list')
+    else:
+        form = CombinedClassForm(batch_queryset=batch_qs)
+    return render(request, 'timetable/combined_class_form.html', {'form': form, 'title': 'Create Combined Class'})
+
+
+@login_required
+@role_required(['admin', 'coordinator', 'class_advisor'])
+def combined_class_edit(request, pk):
+    cc = get_object_or_404(CombinedClass, pk=pk)
+    batch_qs = Batch.objects.select_related('department').all()
+
+    if request.method == 'POST':
+        form = CombinedClassForm(request.POST, instance=cc, batch_queryset=batch_qs)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Combined class updated successfully.')
+            return redirect('combined_class_list')
+    else:
+        form = CombinedClassForm(instance=cc, batch_queryset=batch_qs)
+    return render(request, 'timetable/combined_class_form.html', {'form': form, 'title': 'Edit Combined Class'})
+
+
+@login_required
+@role_required(['admin', 'coordinator', 'class_advisor'])
+def combined_class_delete(request, pk):
+    cc = get_object_or_404(CombinedClass, pk=pk)
+    if request.method == 'POST':
+        cc.delete()
+        messages.success(request, 'Combined class deleted successfully.')
+        return redirect('combined_class_list')
+    return render(request, 'confirm_delete.html', {'object': cc, 'type': 'Combined Class'})
+
+
+@login_required
+def saved_timetable_list(request):
+    saved = SavedTimetable.objects.select_related('batch__department', 'saved_by').all()
+    return render(request, 'timetable/saved_timetable_list.html', {'saved_timetables': saved})
+
+
+@login_required
+def saved_timetable_view(request, pk):
+    snapshot = get_object_or_404(SavedTimetable.objects.select_related('batch__department', 'saved_by'), pk=pk)
+    entries = snapshot.entries.all()
+
+    # Build grid: {day: {start_time: entry}}, spanned: {day: [times]}
+    grid = {}
+    spanned = {}
+    for e in entries:
+        grid.setdefault(e.day_of_week, {})[e.start_time] = e
+        duration = e.end_time - e.start_time
+        if duration > 1:
+            spanned.setdefault(e.day_of_week, set())
+            for offset in range(1, duration):
+                spanned[e.day_of_week].add(e.start_time + offset)
+    spanned = {day: list(times) for day, times in spanned.items()}
+
+    context = {
+        'snapshot': snapshot,
+        'grid': grid,
+        'spanned': spanned,
+        'days': TimetableEntry.DAYS_OF_WEEK,
+        'timeslots': range(10, 18),
+    }
+    return render(request, 'timetable/saved_timetable_view.html', context)
+
+
+@login_required
+@role_required(['admin', 'coordinator'])
+def saved_timetable_delete(request, pk):
+    snapshot = get_object_or_404(SavedTimetable, pk=pk)
+    if request.method == 'POST':
+        snapshot.delete()
+        messages.success(request, 'Saved timetable deleted.')
+        return redirect('saved_timetable_list')
+    return render(request, 'confirm_delete.html', {'object': snapshot, 'type': 'Saved Timetable'})
+
+
+# ── Class Advisor Management ──────────────────────────────────────────────────
+
+@login_required
+@role_required(['admin'])
+def class_advisor_list(request):
+    advisors = ClassAdvisor.objects.select_related('user', 'faculty', 'batch__department').all()
+    return render(request, 'advisor/class_advisor_list.html', {'advisors': advisors})
+
+
+@login_required
+@role_required(['admin'])
+def class_advisor_create(request):
+    faculties = Faculty.objects.select_related('department').all()
+    batches = Batch.objects.select_related('department').all()
+    # Exclude already-assigned faculties and batches
+    assigned_faculty_ids = ClassAdvisor.objects.values_list('faculty_id', flat=True)
+    assigned_batch_ids = ClassAdvisor.objects.values_list('batch_id', flat=True)
+    faculties = faculties.exclude(id__in=assigned_faculty_ids)
+    batches = batches.exclude(id__in=assigned_batch_ids)
+
+    if request.method == 'POST':
+        faculty_id = request.POST.get('faculty')
+        batch_id = request.POST.get('batch')
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+
+        errors = []
+        if not faculty_id:
+            errors.append('Faculty is required.')
+        if not batch_id:
+            errors.append('Batch is required.')
+        if not username:
+            errors.append('Username is required.')
+        if not password:
+            errors.append('Password is required.')
+        if username and User.objects.filter(username=username).exists():
+            errors.append(f'Username "{username}" is already taken.')
+
+        if errors:
+            for e in errors:
+                messages.error(request, e)
+        else:
+            faculty = get_object_or_404(Faculty, pk=faculty_id)
+            batch = get_object_or_404(Batch, pk=batch_id)
+            user = User.objects.create_user(
+                username=username,
+                password=password,
+                role='class_advisor',
+                first_name=faculty.name.split()[0],
+                last_name=' '.join(faculty.name.split()[1:]),
+            )
+            ClassAdvisor.objects.create(user=user, faculty=faculty, batch=batch)
+            messages.success(request, f'Class Advisor account created. Login: {username} / {password}')
+            return redirect('class_advisor_list')
+
+    return render(request, 'advisor/class_advisor_form.html', {
+        'faculties': faculties,
+        'batches': batches,
+        'title': 'Create Class Advisor',
+    })
+
+
+@login_required
+@role_required(['admin'])
+def class_advisor_reset_password(request, pk):
+    advisor = get_object_or_404(ClassAdvisor, pk=pk)
+    if request.method == 'POST':
+        new_password = request.POST.get('password', '').strip()
+        if not new_password:
+            messages.error(request, 'Password cannot be empty.')
+        else:
+            advisor.user.set_password(new_password)
+            advisor.user.save()
+            messages.success(request, f'Password reset for {advisor.user.username}.')
+            return redirect('class_advisor_list')
+    return render(request, 'advisor/reset_password.html', {'advisor': advisor})
+
+
+@login_required
+@role_required(['admin'])
+def class_advisor_delete(request, pk):
+    advisor = get_object_or_404(ClassAdvisor, pk=pk)
+    if request.method == 'POST':
+        user = advisor.user
+        advisor.delete()
+        user.delete()
+        messages.success(request, 'Class Advisor and their login account deleted.')
+        return redirect('class_advisor_list')
+    return render(request, 'confirm_delete.html', {'object': advisor, 'type': 'Class Advisor'})
+
+
+# ── Student Management ────────────────────────────────────────────────────
+
+def _get_advisor_batch(user):
+    """Return the batch assigned to a class advisor, or None."""
+    try:
+        return user.class_advisor_profile.batch
+    except Exception:
+        return None
+
+
+@login_required
+@role_required(['admin', 'class_advisor'])
+def student_list(request):
+    if request.user.role == 'class_advisor':
+        batch = _get_advisor_batch(request.user)
+        if not batch:
+            messages.error(request, 'No batch assigned to your profile.')
+            return redirect('dashboard')
+        students = Student.objects.filter(batch=batch).select_related('user', 'batch__department')
+        context_batch = batch
+    else:
+        batch_id = request.GET.get('batch')
+        students = Student.objects.select_related('user', 'batch__department').all()
+        if batch_id:
+            students = students.filter(batch_id=batch_id)
+        context_batch = None
+
+    return render(request, 'students/student_list.html', {
+        'students': students,
+        'batches': Batch.objects.select_related('department').all() if request.user.role == 'admin' else None,
+        'selected_batch_id': request.GET.get('batch', ''),
+        'context_batch': context_batch,
+    })
+
+
+@login_required
+@role_required(['admin', 'class_advisor'])
+def student_create(request):
+    if request.user.role == 'class_advisor':
+        batch = _get_advisor_batch(request.user)
+        if not batch:
+            messages.error(request, 'No batch assigned to your profile.')
+            return redirect('dashboard')
+    else:
+        batch = None
+
+    batches = Batch.objects.select_related('department').all() if not batch else None
+
+    if request.method == 'POST':
+        username = request.POST.get('username', '').strip()
+        password = request.POST.get('password', '').strip()
+        full_name = request.POST.get('full_name', '').strip()
+        roll_number = request.POST.get('roll_number', '').strip()
+        batch_id = request.POST.get('batch') if not batch else batch.pk
+
+        errors = []
+        if not username: errors.append('Username is required.')
+        if not password: errors.append('Password is required.')
+        if not batch_id: errors.append('Batch is required.')
+        if username and User.objects.filter(username=username).exists():
+            errors.append(f'Username "{username}" already exists.')
+
+        if errors:
+            for e in errors: messages.error(request, e)
+        else:
+            selected_batch = batch or get_object_or_404(Batch, pk=batch_id)
+            parts = full_name.split(' ', 1)
+            user = User.objects.create_user(
+                username=username, password=password, role='student',
+                first_name=parts[0], last_name=parts[1] if len(parts) > 1 else ''
+            )
+            Student.objects.create(user=user, batch=selected_batch, roll_number=roll_number)
+            messages.success(request, f'Student account created: {username}')
+            return redirect('student_list')
+
+    return render(request, 'students/student_form.html', {
+        'title': 'Add Student',
+        'batches': batches,
+        'fixed_batch': batch,
+    })
+
+
+@login_required
+@role_required(['admin', 'class_advisor'])
+def student_upload_csv(request):
+    if request.user.role == 'class_advisor':
+        batch = _get_advisor_batch(request.user)
+        if not batch:
+            messages.error(request, 'No batch assigned to your profile.')
+            return redirect('dashboard')
+    else:
+        batch = None
+
+    batches = Batch.objects.select_related('department').all() if not batch else None
+
+    if request.method == 'POST':
+        csv_file = request.FILES.get('csv_file')
+        batch_id = request.POST.get('batch') if not batch else batch.pk
+
+        if not csv_file:
+            messages.error(request, 'Please upload a CSV file.')
+        elif not batch_id:
+            messages.error(request, 'Please select a batch.')
+        else:
+            selected_batch = batch or get_object_or_404(Batch, pk=batch_id)
+            try:
+                decoded = csv_file.read().decode('utf-8')
+                reader = csv.DictReader(io.StringIO(decoded))
+                created, skipped, errors = 0, 0, []
+                for idx, row in enumerate(reader, start=2):
+                    username = row.get('username', '').strip()
+                    password = row.get('password', '').strip()
+                    full_name = row.get('full_name', '').strip()
+                    roll_number = row.get('roll_number', '').strip()
+                    if not username or not password:
+                        errors.append(f'Row {idx}: username and password are required.')
+                        continue
+                    if User.objects.filter(username=username).exists():
+                        skipped += 1
+                        continue
+                    parts = full_name.split(' ', 1)
+                    user = User.objects.create_user(
+                        username=username, password=password, role='student',
+                        first_name=parts[0], last_name=parts[1] if len(parts) > 1 else ''
+                    )
+                    Student.objects.create(user=user, batch=selected_batch, roll_number=roll_number)
+                    created += 1
+                if errors:
+                    messages.warning(request, f'Created {created}, skipped {skipped}. Errors: {"; ".join(errors[:5])}')
+                else:
+                    messages.success(request, f'Created {created} student accounts. Skipped {skipped} duplicates.')
+                return redirect('student_list')
+            except Exception as e:
+                messages.error(request, f'Error processing CSV: {e}')
+
+    return render(request, 'students/student_csv_upload.html', {
+        'title': 'Upload Students CSV',
+        'batches': batches,
+        'fixed_batch': batch,
+    })
+
+
+@login_required
+@role_required(['admin', 'class_advisor'])
+def student_delete(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    # Class advisor can only delete students from their batch
+    if request.user.role == 'class_advisor':
+        batch = _get_advisor_batch(request.user)
+        if student.batch != batch:
+            messages.error(request, 'You can only manage students in your assigned batch.')
+            return redirect('student_list')
+    if request.method == 'POST':
+        user = student.user
+        student.delete()
+        user.delete()
+        messages.success(request, 'Student account deleted.')
+        return redirect('student_list')
+    return render(request, 'confirm_delete.html', {'object': student, 'type': 'Student'})
+
+
+@login_required
+def student_timetable(request):
+    """Student's personal timetable view — auto-loads their batch."""
+    if request.user.role != 'student':
+        return redirect('timetable_view')
+    try:
+        student = request.user.student_profile
+    except Student.DoesNotExist:
+        messages.error(request, 'No batch assigned to your account. Contact your class advisor.')
+        return render(request, 'students/student_timetable.html', {'error': True})
+
+    batch = student.batch
+    entries = TimetableEntry.objects.filter(batch=batch).select_related(
+        'subject', 'faculty', 'room', 'combined_class'
+    ).prefetch_related('combined_class__batches').order_by('day_of_week', 'start_time')
+
+    timetable_grid, spanned_cells = {}, {}
+    for entry in entries:
+        day = entry.day_of_week
+        timetable_grid.setdefault(day, {})[entry.start_time] = entry
+        duration = entry.end_time - entry.start_time
+        if duration > 1:
+            spanned_cells.setdefault(day, set())
+            for offset in range(1, duration):
+                spanned_cells[day].add(entry.start_time + offset)
+
+    spanned_cells = {day: list(times) for day, times in spanned_cells.items()}
+
+    return render(request, 'students/student_timetable.html', {
+        'batch': batch,
+        'student': student,
+        'timetable_grid': timetable_grid,
+        'spanned_cells': spanned_cells,
+        'days': TimetableEntry.DAYS_OF_WEEK,
+        'timeslots': range(10, 18),
+    })

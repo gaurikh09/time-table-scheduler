@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}My Timetable{% endblock %}
+{% block page_title %}My Timetable{% endblock %}
+
+{% block content %}
+{% if error %}
+<div class="empty-state">
+    <div class="empty-title">No Timetable Available</div>
+    <div class="empty-message">Your class advisor hasn't generated a timetable yet. Please check back later.</div>
+</div>
+{% else %}
+<div class="timetable-container scroll-reveal">
+
+    <div class="timetable-header-card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;">
+            <div>
+                <h2 style="font-size:1.25rem;font-weight:700;margin-bottom:0.25rem;">{{ batch }}</h2>
+                <p style="color:var(--text-secondary);font-size:0.85rem;">
+                    {{ batch.department.name }} &nbsp;|&nbsp; Year {{ batch.year }}, Semester {{ batch.semester }}, Section {{ batch.section }}
+                </p>
+                {% if student.roll_number %}
+                <p style="color:var(--text-secondary);font-size:0.8rem;margin-top:0.2rem;">Roll No: {{ student.roll_number }}</p>
+                {% endif %}
+            </div>
+            <button onclick="window.print()" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6 9 6 2 18 2 18 9"/>
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+                    <rect x="6" y="14" width="12" height="8"/>
+                </svg>
+                Print
+            </button>
+        </div>
+    </div>
+
+    {% if timetable_grid %}
+    <div class="timetable-card">
+        <div class="timetable-wrapper">
+            <table class="timetable-table">
+                <thead>
+                    <tr>
+                        <th class="time-header">Time</th>
+                        {% for day_num, day_name in days %}
+                        <th class="day-header">{{ day_name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for time in timeslots %}
+                    <tr>
+                        <td class="time-cell">
+                            <div class="time-label">{{ time }}:00</div>
+                            <div class="time-sublabel">{{ time|add:1 }}:00</div>
+                        </td>
+                        {% for day_num, day_name in days %}
+                            {% with day_spanned=spanned_cells|get_item:day_num entry=timetable_grid|get_item:day_num|get_item:time %}
+                            {% if day_spanned and time in day_spanned %}
+                                {# covered by rowspan #}
+                            {% elif entry %}
+                                <td class="schedule-cell" rowspan="{{ entry|entry_rowspan }}">
+                                    <div class="class-entry {% if entry.combined_class %}combined-entry{% elif entry.is_fixed %}fixed-entry{% endif %} {% if entry|entry_rowspan > 1 %}multi-hour-entry{% endif %}">
+                                        <div class="entry-header">
+                                            <strong class="subject-code">{{ entry.subject.code }}</strong>
+                                            {% if entry.combined_class %}<span class="combined-badge">Combined</span>{% endif %}
+                                        </div>
+                                        <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:0.35rem;">{{ entry.subject.name|truncatewords:4 }}</div>
+                                        {% if entry|entry_rowspan > 1 %}
+                                        <div class="duration-badge" {% if entry.combined_class %}style="color:#7c3aed;background:rgba(124,58,237,0.1);"{% endif %}>
+                                            {{ entry.start_time }}:00 – {{ entry.end_time }}:00
+                                        </div>
+                                        {% endif %}
+                                        <div class="entry-details">
+                                            <div class="entry-row">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                                <span>{{ entry.faculty.name|truncatewords:2 }}</span>
+                                            </div>
+                                            <div class="entry-row">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+                                                <span>Room {{ entry.room.room_number }}</span>
+                                            </div>
+                                            {% if entry.combined_class %}
+                                            <div class="entry-row" style="flex-wrap:wrap;gap:0.25rem;margin-top:0.2rem;">
+                                                {% for b in entry.combined_class.batches.all %}
+                                                <span style="background:rgba(124,58,237,0.15);border-radius:4px;padding:0.1rem 0.35rem;font-size:0.7rem;color:var(--primary);">{{ b.section }}</span>
+                                                {% endfor %}
+                                            </div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                            {% else %}
+                                <td class="schedule-cell"><div class="empty-slot">—</div></td>
+                            {% endif %}
+                            {% endwith %}
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="legend-card">
+            <strong style="margin-right:1rem;">Legend:</strong>
+            <div class="legend-items">
+                <div class="legend-item"><div class="legend-box"></div><span>Regular</span></div>
+                <div class="legend-item"><div class="legend-box" style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(167,139,250,0.15));border:2px dashed rgba(124,58,237,0.5);"></div><span>Combined</span></div>
+                <div class="legend-item"><div class="legend-box" style="background:linear-gradient(135deg,rgba(234,88,12,0.12),rgba(249,115,22,0.12));border-color:rgba(234,88,12,0.4);"></div><span>Lab / 2hr</span></div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-title">Timetable Not Generated Yet</div>
+        <div class="empty-message">Your class advisor hasn't generated the timetable yet. Please check back later.</div>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.timetable-container{max-width:1400px;margin:0 auto;}
+.timetable-header-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1.5rem;}
+.timetable-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.timetable-wrapper{overflow-x:auto;}
+.timetable-table{width:100%;border-collapse:collapse;min-width:900px;}
+.time-header,.day-header{background:rgba(124,58,237,0.05);padding:1rem;text-align:center;font-weight:600;font-size:0.875rem;text-transform:uppercase;letter-spacing:0.05em;border-bottom:2px solid var(--border);}
+.time-header{width:100px;background:var(--bg-dark);}
+.time-cell{background:var(--bg-dark);padding:1rem;text-align:center;border-right:1px solid var(--border);vertical-align:middle;}
+.time-label{font-weight:600;font-size:0.875rem;}
+.time-sublabel{font-size:0.75rem;color:var(--text-secondary);margin-top:0.25rem;}
+.schedule-cell{padding:0.5rem;border:1px solid var(--border);vertical-align:top;min-height:80px;}
+.class-entry{background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(147,51,234,0.1));border:1px solid rgba(124,58,237,0.3);border-radius:8px;padding:0.75rem;height:100%;}
+.class-entry.fixed-entry{background:linear-gradient(135deg,rgba(16,185,129,0.1),rgba(5,150,105,0.1));border-color:rgba(16,185,129,0.3);}
+.class-entry.combined-entry{background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(167,139,250,0.15));border:2px dashed rgba(124,58,237,0.5);}
+.class-entry.multi-hour-entry{background:linear-gradient(135deg,rgba(234,88,12,0.12),rgba(249,115,22,0.12));border-color:rgba(234,88,12,0.4);}
+.entry-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.35rem;}
+.subject-code{font-size:0.875rem;font-weight:700;color:var(--primary);}
+.combined-badge{font-size:0.65rem;font-weight:700;text-transform:uppercase;background:rgba(124,58,237,0.2);color:var(--primary);border-radius:4px;padding:0.1rem 0.4rem;}
+.duration-badge{display:inline-block;font-size:0.7rem;font-weight:600;color:#ea580c;background:rgba(234,88,12,0.1);border-radius:4px;padding:0.1rem 0.4rem;margin-bottom:0.35rem;}
+.entry-details{display:flex;flex-direction:column;gap:0.25rem;}
+.entry-row{display:flex;align-items:center;gap:0.5rem;font-size:0.75rem;color:var(--text-secondary);}
+.entry-row svg{flex-shrink:0;}
+.empty-slot{text-align:center;color:var(--text-secondary);opacity:0.3;padding:1rem;}
+.legend-card{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;flex-wrap:wrap;gap:1rem;}
+.legend-items{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.legend-item{display:flex;align-items:center;gap:0.5rem;font-size:0.875rem;}
+.legend-box{width:24px;height:24px;border-radius:4px;background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(147,51,234,0.1));border:1px solid rgba(124,58,237,0.3);}
+@media print{.timetable-header-card .btn,.sidebar,.top-navbar{display:none!important;}.main-content{margin-left:0!important;}}
+</style>
+{% endif %}
+{% endblock %}

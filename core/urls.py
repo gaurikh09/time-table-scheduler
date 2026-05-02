@@ -9,6 +9,8 @@ urlpatterns = [
     path('blocks/create/', views.block_create, name='block_create'),
     path('blocks/<int:pk>/edit/', views.block_edit, name='block_edit'),
     path('blocks/<int:pk>/delete/', views.block_delete, name='block_delete'),
+    path('blocks/<int:block_pk>/floors/add/', views.floor_create, name='floor_create'),
+    path('floors/<int:pk>/delete/', views.floor_delete, name='floor_delete'),
 
     path('rooms/', views.room_list, name='room_list'),
     path('rooms/create/', views.room_create, name='room_create'),
@@ -49,4 +51,26 @@ urlpatterns = [
     path('timetable/generate/', views.generate_timetable, name='generate_timetable'),
     path('timetable/view/', views.timetable_view, name='timetable_view'),
     path('timetable/manual-entry/', views.manual_entry_create, name='manual_entry_create'),
+    path('timetable/combined/', views.combined_class_list, name='combined_class_list'),
+    path('timetable/combined/create/', views.combined_class_create, name='combined_class_create'),
+    path('timetable/combined/<int:pk>/edit/', views.combined_class_edit, name='combined_class_edit'),
+    path('timetable/combined/<int:pk>/delete/', views.combined_class_delete, name='combined_class_delete'),
+
+    # Saved Timetables
+    path('timetable/saved/', views.saved_timetable_list, name='saved_timetable_list'),
+    path('timetable/saved/<int:pk>/', views.saved_timetable_view, name='saved_timetable_view'),
+    path('timetable/saved/<int:pk>/delete/', views.saved_timetable_delete, name='saved_timetable_delete'),
+
+    # Class Advisors
+    path('advisors/', views.class_advisor_list, name='class_advisor_list'),
+    path('advisors/create/', views.class_advisor_create, name='class_advisor_create'),
+    path('advisors/<int:pk>/reset-password/', views.class_advisor_reset_password, name='class_advisor_reset_password'),
+    path('advisors/<int:pk>/delete/', views.class_advisor_delete, name='class_advisor_delete'),
+
+    # Students
+    path('students/', views.student_list, name='student_list'),
+    path('students/add/', views.student_create, name='student_create'),
+    path('students/upload-csv/', views.student_upload_csv, name='student_upload_csv'),
+    path('students/<int:pk>/delete/', views.student_delete, name='student_delete'),
+    path('my-timetable/', views.student_timetable, name='student_timetable'),
 ]

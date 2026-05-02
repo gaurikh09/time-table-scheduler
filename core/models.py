@@ -7,6 +7,8 @@ class User(AbstractUser):
         ('admin', 'Admin'),
         ('coordinator', 'Department Coordinator'),
         ('reviewer', 'Reviewer'),
+        ('class_advisor', 'Class Advisor'),
+        ('student', 'Student'),
     ]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='coordinator')
     
@@ -186,6 +188,11 @@ class TimetableEntry(models.Model):
                                    help_text="Hour in 24-hour format (11-18)")
     is_fixed = models.BooleanField(default=False, 
                                    help_text="If True, this entry is locked and won't be changed during regeneration")
+    combined_class = models.ForeignKey(
+        'CombinedClass', on_delete=models.SET_NULL, null=True, blank=True,
+        related_name='timetable_entries',
+        help_text="Set if this entry was created from a combined class"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
@@ -194,6 +201,58 @@ class TimetableEntry(models.Model):
     class Meta:
         ordering = ['batch', 'day_of_week', 'start_time']
         verbose_name_plural = 'Timetable Entries'
+
+
+class CombinedClass(models.Model):
+    DAYS_OF_WEEK = [
+        (0, 'Monday'), (1, 'Tuesday'), (2, 'Wednesday'),
+        (3, 'Thursday'), (4, 'Friday'), (5, 'Saturday'),
+    ]
+
+    batches = models.ManyToManyField(Batch, related_name='combined_classes')
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
+    day_of_week = models.IntegerField(choices=DAYS_OF_WEEK)
+    start_time = models.IntegerField(validators=[MinValueValidator(10), MaxValueValidator(17)])
+    end_time = models.IntegerField(validators=[MinValueValidator(11), MaxValueValidator(18)])
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        batch_names = ', '.join(str(b) for b in self.batches.all())
+        return f"Combined: {self.subject.code} | {self.get_day_of_week_display()} {self.start_time}:00 | {batch_names}"
+
+    class Meta:
+        ordering = ['day_of_week', 'start_time']
+        verbose_name_plural = 'Combined Classes'
+
+
+class ClassAdvisor(models.Model):
+    """Links a User (class_advisor role) to a Faculty record and an assigned Batch."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='class_advisor_profile')
+    faculty = models.OneToOneField(Faculty, on_delete=models.CASCADE, related_name='class_advisor_profile')
+    batch = models.OneToOneField(Batch, on_delete=models.CASCADE, related_name='class_advisor')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.faculty.name} → {self.batch} (advisor)"
+
+    class Meta:
+        ordering = ['batch']
+
+
+class Student(models.Model):
+    """A student account linked to a batch."""
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student_profile')
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE, related_name='students')
+    roll_number = models.CharField(max_length=50, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.get_full_name() or self.user.username} ({self.batch})"
+
+    class Meta:
+        ordering = ['batch', 'roll_number']
 
 
 class TimetableGeneration(models.Model):
@@ -215,3 +274,37 @@ class TimetableGeneration(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+
+
+class SavedTimetable(models.Model):
+    """Snapshot of a batch timetable saved before regeneration."""
+    batch = models.ForeignKey(Batch, on_delete=models.CASCADE, related_name='saved_timetables')
+    saved_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    label = models.CharField(max_length=200, blank=True, help_text='Auto-generated label')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.label or f"Saved TT – {self.batch} – {self.created_at.strftime('%Y-%m-%d %H:%M')}"
+
+    class Meta:
+        ordering = ['-created_at']
+
+
+class SavedTimetableEntry(models.Model):
+    """A single entry belonging to a SavedTimetable snapshot."""
+    DAYS_OF_WEEK = TimetableEntry.DAYS_OF_WEEK
+
+    saved_timetable = models.ForeignKey(SavedTimetable, on_delete=models.CASCADE, related_name='entries')
+    subject_code = models.CharField(max_length=20)
+    subject_name = models.CharField(max_length=200)
+    faculty_name = models.CharField(max_length=200)
+    room_number = models.CharField(max_length=20)
+    day_of_week = models.IntegerField(choices=DAYS_OF_WEEK)
+    start_time = models.IntegerField()
+    end_time = models.IntegerField()
+    is_fixed = models.BooleanField(default=False)
+    is_combined = models.BooleanField(default=False)
+    combined_batch_sections = models.CharField(max_length=500, blank=True)
+
+    class Meta:
+        ordering = ['day_of_week', 'start_time']
