@@ -39,6 +39,25 @@
             </div>
             {% endif %}
 
+            {% if form.errors %}
+            <div class="messages">
+                <div class="alert alert-error">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="8" x2="12" y2="12"/>
+                        <line x1="12" y1="16" x2="12.01" y2="16"/>
+                    </svg>
+                    <span>
+                        {% if form.non_field_errors %}
+                            {{ form.non_field_errors.0 }}
+                        {% else %}
+                            Invalid username or password. Please try again.
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+            {% endif %}
+
             <form method="post" class="login-form" id="loginForm">
                 {% csrf_token %}
                 
