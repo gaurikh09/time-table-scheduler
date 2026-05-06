@@ -1,3 +1,9 @@
+databases:
+  - name: university-scheduler-db
+    databaseName: scheduler_db
+    user: scheduler_user
+    plan: free
+
 services:
   - type: web
     name: university-scheduler
@@ -13,3 +19,7 @@ services:
         value: "university-scheduler.onrender.com"
       - key: PYTHON_VERSION
         value: "3.12.0"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: university-scheduler-db
+          property: connectionString

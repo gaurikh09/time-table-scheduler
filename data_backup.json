@@ -1,0 +1,5619 @@
+[
+{
+  "model": "sessions.session",
+  "pk": "8pnw3hn7krhdaz7cna87uucmuwko1kar",
+  "fields": {
+    "session_data": ".eJxVjDEOwjAMRe-SGUUNSe3CyM4ZIsd2SAGlUtNOiLtDpQ6w_vfef5lI61Li2nSOo5izcebwuyXih9YNyJ3qbbI81WUek90Uu9Nmr5Po87K7fweFWvnWShkDCiBpf8Shg-BAApOiBwbOLvfenwK5xJyBqCNULzhwIvBZnXl_APVOOME:1wKKK1:rlrdcUehlQ3w1Z-h673jP3-KtZrZLgi8KhvOv1gsRZY",
+    "expire_date": "2026-05-19T18:16:41.470Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "99sxpivsoi87c9s1a8u5l5csil4iipsn",
+  "fields": {
+    "session_data": ".eJxVjDEOwjAMRe-SGUUNSe3CyM4ZIsd2SAGlUtNOiLtDpQ6w_vfef5lI61Li2nSOo5izcebwuyXih9YNyJ3qbbI81WUek90Uu9Nmr5Po87K7fweFWvnWShkDCiBpf8Shg-BAApOiBwbOLvfenwK5xJyBqCNULzhwIvBZnXl_APVOOME:1vyYNH:cQU15FZM4-g_xnJYRKIGhn00Sv1em7tTRZfz9nSzq-A",
+    "expire_date": "2026-03-20T16:50:03.967Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "cmmki1ej4ewm8td5ibq589w6aa3scuv8",
+  "fields": {
+    "session_data": ".eJxVjDEOwjAMRe-SGUUNSe3CyM4ZIsd2SAGlUtNOiLtDpQ6w_vfef5lI61Li2nSOo5izcebwuyXih9YNyJ3qbbI81WUek90Uu9Nmr5Po87K7fweFWvnWShkDCiBpf8Shg-BAApOiBwbOLvfenwK5xJyBqCNULzhwIvBZnXl_APVOOME:1wJ7JB:Eezr8q1eRS0uvMJizVJbtF4wGqmYB_fHr_aqSOXpXq8",
+    "expire_date": "2026-05-16T10:10:49.774Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "i7dfy4gvhmd2i52abetz8owfwnffrglw",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hBombG4dO8ZyJQZpGogKe3KeHdD0oVu_3vvv1Wgfcthb7KGhdVFDer0u80Un1I64AeVe9Wxlm1dZt0VfdCmb5XldT3cv4NMLfca4YwDRe-Bkh0BRkmCAsyUwFKayJC3UZwZxRoXAd3E4o21SCgR1ecL8644MQ:1vx1cp:gJZCiBXBwzqLrIKrjjDmlMfkb4jK2eRwOZL5DWhiFjQ",
+    "expire_date": "2026-03-16T11:39:47.102Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "tc6jog2sv1a9f4i1hkrcpsvghqza6pu3",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-s6ak5wzW2rvBAeRIcVIh7k4ipYD2zcx7i4TrUtPaeU4jiYtw4vS7ZSxPbjugB7b7JMvUlnnMclfkQbu8TcSv6-H-HVTsdasDBVDaG8U0MEYfmPUZbcnBGe-5WGtciaCJonFWu40hA-sBFFCEKD5f3Nw3hQ:1wKKMH:jEtDJPg8BuaTEl_0ZtqwSX5ul76N1xFJHkCMgMr9bLs",
+    "expire_date": "2026-05-19T18:19:01.586Z"
+  }
+},
+{
+  "model": "core.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$X14yUzhQ2MBxHC1PJKgBnp$lCyf1qtOvZdPMWpqWPgCkk2RHFBSmodV+9wn4G6OfVc=",
+    "last_login": "2026-05-05T18:16:41.459Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@university.edu",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-03-02T11:38:08.897Z",
+    "role": "admin",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$Fp1H690I2PPi8N1KkrzEdU$yjtypPhAS1xjbBIk+54A6FBSKacF/FBiQe0KXlI0yiI=",
+    "last_login": "2026-03-02T11:39:47.093Z",
+    "is_superuser": false,
+    "username": "coordinator",
+    "first_name": "",
+    "last_name": "",
+    "email": "coord@university.edu",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-02T11:38:28.040Z",
+    "role": "coordinator",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$HWYhSySQNKvbLWAmc51rWA$AHmoS9lyaqFLI3bh/Lm9Yk/eP/LpkjwVt8fG/MThP5s=",
+    "last_login": "2026-05-02T09:46:26.191Z",
+    "is_superuser": false,
+    "username": "ankur_010",
+    "first_name": "Ankur",
+    "last_name": "rai",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-05-02T09:02:29.599Z",
+    "role": "class_advisor",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$6bfKlUnTB7IRZpoWK1uFR7$Q/2pCpq5ULaNyAJn5riy8+KRWwzTiqQkJuo00J2IUGA=",
+    "last_login": "2026-05-05T18:19:01.572Z",
+    "is_superuser": false,
+    "username": "aryan.gupta@gla.ac.in",
+    "first_name": "Aryan",
+    "last_name": "Gupta",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-05-02T09:15:24.615Z",
+    "role": "student",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$600000$1j0qlNOHE0WnEEBKYEfEst$Ujl4eldDVRps3SZ7ilD54jCkqD2dEBWYGuSxSP37g6U=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "namrata",
+    "first_name": "Namratta",
+    "last_name": "",
+    "email": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-05-02T09:26:52.203Z",
+    "role": "class_advisor",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "core.academicblock",
+  "pk": 2,
+  "fields": {
+    "name": "Academic Block 12",
+    "code": "AB12",
+    "description": ""
+  }
+},
+{
+  "model": "core.academicblock",
+  "pk": 3,
+  "fields": {
+    "name": "Academic Block 1",
+    "code": "AB1",
+    "description": ""
+  }
+},
+{
+  "model": "core.floor",
+  "pk": 2,
+  "fields": {
+    "block": 2,
+    "floor_number": 7
+  }
+},
+{
+  "model": "core.floor",
+  "pk": 3,
+  "fields": {
+    "block": 2,
+    "floor_number": 6
+  }
+},
+{
+  "model": "core.floor",
+  "pk": 4,
+  "fields": {
+    "block": 3,
+    "floor_number": 3
+  }
+},
+{
+  "model": "core.room",
+  "pk": 4,
+  "fields": {
+    "floor": 3,
+    "room_number": "6040",
+    "capacity": 50,
+    "room_type": "classroom",
+    "is_allocatable": true
+  }
+},
+{
+  "model": "core.room",
+  "pk": 5,
+  "fields": {
+    "floor": 2,
+    "room_number": "7025",
+    "capacity": 50,
+    "room_type": "classroom",
+    "is_allocatable": true
+  }
+},
+{
+  "model": "core.room",
+  "pk": 6,
+  "fields": {
+    "floor": 4,
+    "room_number": "4018",
+    "capacity": 100,
+    "room_type": "classroom",
+    "is_allocatable": true
+  }
+},
+{
+  "model": "core.department",
+  "pk": 4,
+  "fields": {
+    "name": "Computer Science and Engineering",
+    "code": "CS"
+  }
+},
+{
+  "model": "core.batch",
+  "pk": 4,
+  "fields": {
+    "department": 4,
+    "year": 2,
+    "semester": 4,
+    "section": "EA",
+    "strength": 42,
+    "max_classes_per_day": 7,
+    "fixed_room": 4
+  }
+},
+{
+  "model": "core.batch",
+  "pk": 5,
+  "fields": {
+    "department": 4,
+    "year": 2,
+    "semester": 4,
+    "section": "EB",
+    "strength": 45,
+    "max_classes_per_day": 7,
+    "fixed_room": 5
+  }
+},
+{
+  "model": "core.faculty",
+  "pk": 4,
+  "fields": {
+    "name": "Ankur rai",
+    "employee_id": "Emp1",
+    "department": 4,
+    "email": "ankur.rai@gla.ac.in",
+    "max_hours_per_week": 16
+  }
+},
+{
+  "model": "core.faculty",
+  "pk": 5,
+  "fields": {
+    "name": "Ruby Panwar",
+    "employee_id": "Emp2",
+    "department": 4,
+    "email": "ruby.panwar@gla.ac.in",
+    "max_hours_per_week": 20
+  }
+},
+{
+  "model": "core.faculty",
+  "pk": 6,
+  "fields": {
+    "name": "Anjana Bhardwaj",
+    "employee_id": "Emp3",
+    "department": 4,
+    "email": "anjana@gla.ac.in",
+    "max_hours_per_week": 14
+  }
+},
+{
+  "model": "core.faculty",
+  "pk": 7,
+  "fields": {
+    "name": "Chavvi Bajpai",
+    "employee_id": "Emp4",
+    "department": 4,
+    "email": "chavi@gla.ac.in",
+    "max_hours_per_week": 15
+  }
+},
+{
+  "model": "core.faculty",
+  "pk": 8,
+  "fields": {
+    "name": "Namratta",
+    "employee_id": "Emp5",
+    "department": 4,
+    "email": "namrata@gla.ac.in",
+    "max_hours_per_week": 16
+  }
+},
+{
+  "model": "core.faculty",
+  "pk": 9,
+  "fields": {
+    "name": "Piyush Khandelwal",
+    "employee_id": "Emp6",
+    "department": 4,
+    "email": "Piyush@gla.ac.in",
+    "max_hours_per_week": 18
+  }
+},
+{
+  "model": "core.faculty",
+  "pk": 10,
+  "fields": {
+    "name": "Shivanshi",
+    "employee_id": "Emp7",
+    "department": 4,
+    "email": "shivanshiu@gla.ac.in",
+    "max_hours_per_week": 16
+  }
+},
+{
+  "model": "core.faculty",
+  "pk": 11,
+  "fields": {
+    "name": "rs",
+    "employee_id": "Emp8",
+    "department": 4,
+    "email": null,
+    "max_hours_per_week": 20
+  }
+},
+{
+  "model": "core.faculty",
+  "pk": 12,
+  "fields": {
+    "name": "cybe",
+    "employee_id": "Emp9",
+    "department": 4,
+    "email": null,
+    "max_hours_per_week": 20
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 5,
+  "fields": {
+    "name": "Discrete maths",
+    "code": "BCSC0058",
+    "subject_type": "theory",
+    "weekly_frequency": 3,
+    "duration_hours": 1,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 6,
+  "fields": {
+    "name": "Data communication",
+    "code": "BCSC0060",
+    "subject_type": "theory",
+    "weekly_frequency": 3,
+    "duration_hours": 1,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 7,
+  "fields": {
+    "name": "DSA",
+    "code": "BCSC0073",
+    "subject_type": "theory",
+    "weekly_frequency": 2,
+    "duration_hours": 2,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 8,
+  "fields": {
+    "name": "Machine Learning",
+    "code": "BCSC0075",
+    "subject_type": "theory",
+    "weekly_frequency": 2,
+    "duration_hours": 1,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 9,
+  "fields": {
+    "name": "CO",
+    "code": "BCSC0077",
+    "subject_type": "theory",
+    "weekly_frequency": 3,
+    "duration_hours": 1,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 10,
+  "fields": {
+    "name": "Hacker rank",
+    "code": "PHRH0001",
+    "subject_type": "theory",
+    "weekly_frequency": 2,
+    "duration_hours": 1,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 11,
+  "fields": {
+    "name": "DSAL",
+    "code": "BCSC0874",
+    "subject_type": "lab",
+    "weekly_frequency": 2,
+    "duration_hours": 2,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 12,
+  "fields": {
+    "name": "MLL",
+    "code": "BCSC0876",
+    "subject_type": "lab",
+    "weekly_frequency": 2,
+    "duration_hours": 2,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 13,
+  "fields": {
+    "name": "CNL",
+    "code": "BCSC0880",
+    "subject_type": "lab",
+    "weekly_frequency": 1,
+    "duration_hours": 2,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 14,
+  "fields": {
+    "name": "COL",
+    "code": "BCSC0878",
+    "subject_type": "lab",
+    "weekly_frequency": 1,
+    "duration_hours": 2,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 15,
+  "fields": {
+    "name": "Rastriy Gaurav",
+    "code": "RG",
+    "subject_type": "elective",
+    "weekly_frequency": 2,
+    "duration_hours": 1,
+    "department": 4
+  }
+},
+{
+  "model": "core.subject",
+  "pk": 16,
+  "fields": {
+    "name": "cybersecurity",
+    "code": "cs",
+    "subject_type": "elective",
+    "weekly_frequency": 2,
+    "duration_hours": 1,
+    "department": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 7,
+  "fields": {
+    "faculty": 6,
+    "subject": 9,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 8,
+  "fields": {
+    "faculty": 4,
+    "subject": 5,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 9,
+  "fields": {
+    "faculty": 7,
+    "subject": 6,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 10,
+  "fields": {
+    "faculty": 8,
+    "subject": 14,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 11,
+  "fields": {
+    "faculty": 9,
+    "subject": 11,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 12,
+  "fields": {
+    "faculty": 9,
+    "subject": 10,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 13,
+  "fields": {
+    "faculty": 9,
+    "subject": 7,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 14,
+  "fields": {
+    "faculty": 5,
+    "subject": 8,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 15,
+  "fields": {
+    "faculty": 5,
+    "subject": 12,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 16,
+  "fields": {
+    "faculty": 7,
+    "subject": 13,
+    "batch": 4
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 17,
+  "fields": {
+    "faculty": 8,
+    "subject": 9,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 18,
+  "fields": {
+    "faculty": 8,
+    "subject": 14,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 19,
+  "fields": {
+    "faculty": 4,
+    "subject": 5,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 20,
+  "fields": {
+    "faculty": 7,
+    "subject": 6,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 21,
+  "fields": {
+    "faculty": 7,
+    "subject": 13,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 22,
+  "fields": {
+    "faculty": 9,
+    "subject": 7,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 23,
+  "fields": {
+    "faculty": 9,
+    "subject": 11,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 24,
+  "fields": {
+    "faculty": 9,
+    "subject": 10,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 25,
+  "fields": {
+    "faculty": 10,
+    "subject": 8,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 26,
+  "fields": {
+    "faculty": 10,
+    "subject": 12,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 27,
+  "fields": {
+    "faculty": 12,
+    "subject": 16,
+    "batch": 5
+  }
+},
+{
+  "model": "core.facultysubject",
+  "pk": 28,
+  "fields": {
+    "faculty": 11,
+    "subject": 15,
+    "batch": 4
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 255,
+  "fields": {
+    "batch": 5,
+    "subject": 9,
+    "faculty": 8,
+    "room": 5,
+    "day_of_week": 0,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.856Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 256,
+  "fields": {
+    "batch": 5,
+    "subject": 9,
+    "faculty": 8,
+    "room": 5,
+    "day_of_week": 1,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.856Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 257,
+  "fields": {
+    "batch": 5,
+    "subject": 9,
+    "faculty": 8,
+    "room": 5,
+    "day_of_week": 2,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.856Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 258,
+  "fields": {
+    "batch": 5,
+    "subject": 14,
+    "faculty": 8,
+    "room": 5,
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.857Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 259,
+  "fields": {
+    "batch": 5,
+    "subject": 5,
+    "faculty": 4,
+    "room": 5,
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.857Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 260,
+  "fields": {
+    "batch": 5,
+    "subject": 5,
+    "faculty": 4,
+    "room": 5,
+    "day_of_week": 3,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.857Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 261,
+  "fields": {
+    "batch": 5,
+    "subject": 5,
+    "faculty": 4,
+    "room": 5,
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.857Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 262,
+  "fields": {
+    "batch": 5,
+    "subject": 13,
+    "faculty": 7,
+    "room": 5,
+    "day_of_week": 0,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.857Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 263,
+  "fields": {
+    "batch": 5,
+    "subject": 8,
+    "faculty": 10,
+    "room": 5,
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.857Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 264,
+  "fields": {
+    "batch": 5,
+    "subject": 8,
+    "faculty": 10,
+    "room": 5,
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.857Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 265,
+  "fields": {
+    "batch": 5,
+    "subject": 12,
+    "faculty": 10,
+    "room": 5,
+    "day_of_week": 1,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.858Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 266,
+  "fields": {
+    "batch": 5,
+    "subject": 12,
+    "faculty": 10,
+    "room": 5,
+    "day_of_week": 4,
+    "start_time": 15,
+    "end_time": 17,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.858Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 267,
+  "fields": {
+    "batch": 5,
+    "subject": 16,
+    "faculty": 12,
+    "room": 5,
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.858Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 268,
+  "fields": {
+    "batch": 5,
+    "subject": 16,
+    "faculty": 12,
+    "room": 5,
+    "day_of_week": 1,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-02T09:38:12.858Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 269,
+  "fields": {
+    "batch": 5,
+    "subject": 6,
+    "faculty": 7,
+    "room": 6,
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": true,
+    "combined_class": 12,
+    "created_at": "2026-05-02T09:38:12.858Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 270,
+  "fields": {
+    "batch": 5,
+    "subject": 7,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "combined_class": 7,
+    "created_at": "2026-05-02T09:38:12.858Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 271,
+  "fields": {
+    "batch": 5,
+    "subject": 11,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "combined_class": 8,
+    "created_at": "2026-05-02T09:38:12.859Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 272,
+  "fields": {
+    "batch": 5,
+    "subject": 10,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "combined_class": 9,
+    "created_at": "2026-05-02T09:38:12.859Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 273,
+  "fields": {
+    "batch": 5,
+    "subject": 7,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "combined_class": 10,
+    "created_at": "2026-05-02T09:38:12.859Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 274,
+  "fields": {
+    "batch": 5,
+    "subject": 11,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "combined_class": 11,
+    "created_at": "2026-05-02T09:38:12.859Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 275,
+  "fields": {
+    "batch": 4,
+    "subject": 15,
+    "faculty": 11,
+    "room": 4,
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 11,
+    "is_fixed": true,
+    "combined_class": null,
+    "created_at": "2026-05-02T17:14:45.533Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 276,
+  "fields": {
+    "batch": 4,
+    "subject": 15,
+    "faculty": 11,
+    "room": 4,
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": true,
+    "combined_class": null,
+    "created_at": "2026-05-02T17:15:58.864Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 297,
+  "fields": {
+    "batch": 4,
+    "subject": 9,
+    "faculty": 6,
+    "room": 4,
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.804Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 298,
+  "fields": {
+    "batch": 4,
+    "subject": 9,
+    "faculty": 6,
+    "room": 4,
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.805Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 299,
+  "fields": {
+    "batch": 4,
+    "subject": 9,
+    "faculty": 6,
+    "room": 4,
+    "day_of_week": 4,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.806Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 300,
+  "fields": {
+    "batch": 4,
+    "subject": 5,
+    "faculty": 4,
+    "room": 4,
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.807Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 301,
+  "fields": {
+    "batch": 4,
+    "subject": 5,
+    "faculty": 4,
+    "room": 4,
+    "day_of_week": 2,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.808Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 302,
+  "fields": {
+    "batch": 4,
+    "subject": 5,
+    "faculty": 4,
+    "room": 4,
+    "day_of_week": 3,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.809Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 303,
+  "fields": {
+    "batch": 4,
+    "subject": 14,
+    "faculty": 8,
+    "room": 4,
+    "day_of_week": 4,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.809Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 304,
+  "fields": {
+    "batch": 4,
+    "subject": 8,
+    "faculty": 5,
+    "room": 4,
+    "day_of_week": 0,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.810Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 305,
+  "fields": {
+    "batch": 4,
+    "subject": 8,
+    "faculty": 5,
+    "room": 4,
+    "day_of_week": 1,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.810Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 306,
+  "fields": {
+    "batch": 4,
+    "subject": 12,
+    "faculty": 5,
+    "room": 4,
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.811Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 307,
+  "fields": {
+    "batch": 4,
+    "subject": 12,
+    "faculty": 5,
+    "room": 4,
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.811Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 308,
+  "fields": {
+    "batch": 4,
+    "subject": 13,
+    "faculty": 7,
+    "room": 4,
+    "day_of_week": 0,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.813Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 309,
+  "fields": {
+    "batch": 4,
+    "subject": 15,
+    "faculty": 11,
+    "room": 4,
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.814Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 310,
+  "fields": {
+    "batch": 4,
+    "subject": 15,
+    "faculty": 11,
+    "room": 4,
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:04:59.814Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 311,
+  "fields": {
+    "batch": 4,
+    "subject": 6,
+    "faculty": 7,
+    "room": 6,
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": true,
+    "combined_class": 12,
+    "created_at": "2026-05-05T10:04:59.817Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 312,
+  "fields": {
+    "batch": 4,
+    "subject": 7,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "combined_class": 7,
+    "created_at": "2026-05-05T10:04:59.818Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 313,
+  "fields": {
+    "batch": 4,
+    "subject": 11,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "combined_class": 8,
+    "created_at": "2026-05-05T10:04:59.819Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 314,
+  "fields": {
+    "batch": 4,
+    "subject": 10,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "combined_class": 9,
+    "created_at": "2026-05-05T10:04:59.820Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 315,
+  "fields": {
+    "batch": 4,
+    "subject": 7,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "combined_class": 10,
+    "created_at": "2026-05-05T10:04:59.821Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 316,
+  "fields": {
+    "batch": 4,
+    "subject": 11,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "combined_class": 11,
+    "created_at": "2026-05-05T10:04:59.821Z"
+  }
+},
+{
+  "model": "core.timetableentry",
+  "pk": 317,
+  "fields": {
+    "batch": 4,
+    "subject": 14,
+    "faculty": 8,
+    "room": 6,
+    "day_of_week": 4,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "combined_class": null,
+    "created_at": "2026-05-05T10:10:00.626Z"
+  }
+},
+{
+  "model": "core.combinedclass",
+  "pk": 7,
+  "fields": {
+    "subject": 7,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "created_at": "2026-05-02T05:22:40.115Z",
+    "batches": [
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "core.combinedclass",
+  "pk": 8,
+  "fields": {
+    "subject": 11,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "created_at": "2026-05-02T05:23:04.454Z",
+    "batches": [
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "core.combinedclass",
+  "pk": 9,
+  "fields": {
+    "subject": 10,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "created_at": "2026-05-02T05:23:37.384Z",
+    "batches": [
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "core.combinedclass",
+  "pk": 10,
+  "fields": {
+    "subject": 7,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "created_at": "2026-05-02T05:23:54.445Z",
+    "batches": [
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "core.combinedclass",
+  "pk": 11,
+  "fields": {
+    "subject": 11,
+    "faculty": 9,
+    "room": 6,
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "created_at": "2026-05-02T05:24:12.650Z",
+    "batches": [
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "core.combinedclass",
+  "pk": 12,
+  "fields": {
+    "subject": 6,
+    "faculty": 7,
+    "room": 6,
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 11,
+    "created_at": "2026-05-02T09:37:29.264Z",
+    "batches": [
+      4,
+      5
+    ]
+  }
+},
+{
+  "model": "core.classadvisor",
+  "pk": 1,
+  "fields": {
+    "user": 3,
+    "faculty": 4,
+    "batch": 4,
+    "created_at": "2026-05-02T09:02:29.918Z"
+  }
+},
+{
+  "model": "core.classadvisor",
+  "pk": 2,
+  "fields": {
+    "user": 5,
+    "faculty": 8,
+    "batch": 5,
+    "created_at": "2026-05-02T09:26:52.429Z"
+  }
+},
+{
+  "model": "core.student",
+  "pk": 1,
+  "fields": {
+    "user": 4,
+    "batch": 4,
+    "roll_number": "2415800019",
+    "created_at": "2026-05-02T09:15:25.132Z"
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 1,
+  "fields": {
+    "generated_by": 2,
+    "status": "completed",
+    "created_at": "2026-03-02T11:45:04.020Z",
+    "completed_at": "2026-03-02T11:45:04.057Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 2,
+  "fields": {
+    "generated_by": 2,
+    "status": "completed",
+    "created_at": "2026-03-02T11:48:03.064Z",
+    "completed_at": "2026-03-02T11:48:03.101Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 3,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T04:25:30.779Z",
+    "completed_at": null,
+    "error_message": "No schedulable slots found. Check that rooms exist with sufficient capacity and subjects have valid duration."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 4,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T04:25:46.682Z",
+    "completed_at": null,
+    "error_message": "No schedulable slots found. Check that rooms exist with sufficient capacity and subjects have valid duration."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 5,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T04:26:28.817Z",
+    "completed_at": "2026-05-02T04:26:29.032Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 6,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T04:44:14.044Z",
+    "completed_at": "2026-05-02T04:44:14.703Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 7,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T04:46:41.763Z",
+    "completed_at": "2026-05-02T04:46:42.331Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 8,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T05:05:00.193Z",
+    "completed_at": "2026-05-02T05:05:00.577Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 9,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T05:05:20.814Z",
+    "completed_at": "2026-05-02T05:05:21.099Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 10,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:09:46.536Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, subject frequencies, and max classes per day."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 11,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:13:26.598Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, subject frequencies, and max classes per day."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 12,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:18:13.491Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, subject frequencies, and max classes per day."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 13,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:18:24.787Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, subject frequencies, and max classes per day."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 14,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:19:44.311Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, subject frequencies, and max classes per day."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 15,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:24:19.496Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, subject frequencies, and max classes per day."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 16,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:24:24.532Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, subject frequencies, and max classes per day."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 17,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:24:31.888Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable: constraints are impossible to satisfy. Check room capacity, subject frequencies, and max classes per day."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 18,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:26:04.015Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable. Specific issues found:\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes)."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 19,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:27:12.158Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable. Specific issues found:\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EB' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes)."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 20,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:27:22.553Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable. Specific issues found:\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes)."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 21,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:27:52.011Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable. Specific issues found:\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes)."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 22,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:29:18.698Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable. Specific issues found:\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes)."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 23,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:29:29.292Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable. Specific issues found:\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes)."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 24,
+  "fields": {
+    "generated_by": 1,
+    "status": "failed",
+    "created_at": "2026-05-02T05:29:36.649Z",
+    "completed_at": null,
+    "error_message": "Cannot generate timetable. Specific issues found:\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes).\n• Batch 'CS - Year 2 Sem 4 - EA' needs 29 hours/week but only 26 slots available (35 total − 9 blocked by combined classes)."
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 25,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T05:31:51.768Z",
+    "completed_at": "2026-05-02T05:31:51.876Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 26,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T05:32:27.934Z",
+    "completed_at": "2026-05-02T05:32:27.996Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 27,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T05:55:20.665Z",
+    "completed_at": "2026-05-02T05:55:21.301Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 28,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T05:55:43.816Z",
+    "completed_at": "2026-05-02T05:55:43.979Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 29,
+  "fields": {
+    "generated_by": 3,
+    "status": "completed",
+    "created_at": "2026-05-02T09:08:21.079Z",
+    "completed_at": "2026-05-02T09:08:22.260Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 30,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T09:35:33.763Z",
+    "completed_at": "2026-05-02T09:35:33.915Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 31,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T09:37:57.376Z",
+    "completed_at": "2026-05-02T09:37:57.554Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 32,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T09:38:12.214Z",
+    "completed_at": "2026-05-02T09:38:12.859Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 33,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-02T17:16:19.685Z",
+    "completed_at": "2026-05-02T17:16:19.961Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.timetablegeneration",
+  "pk": 34,
+  "fields": {
+    "generated_by": 1,
+    "status": "completed",
+    "created_at": "2026-05-05T10:04:59.463Z",
+    "completed_at": "2026-05-05T10:04:59.822Z",
+    "error_message": ""
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 1,
+  "fields": {
+    "batch": 4,
+    "saved_by": 1,
+    "label": "CS - Year 2 Sem 4 - EA – saved before regeneration on 2026-05-02 05:31",
+    "created_at": "2026-05-02T05:31:51.860Z"
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 2,
+  "fields": {
+    "batch": 5,
+    "saved_by": 1,
+    "label": "CS - Year 2 Sem 4 - EB – saved before regeneration on 2026-05-02 05:32",
+    "created_at": "2026-05-02T05:32:27.988Z"
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 3,
+  "fields": {
+    "batch": 4,
+    "saved_by": 1,
+    "label": "CS - Year 2 Sem 4 - EA – saved before regeneration on 2026-05-02 05:55",
+    "created_at": "2026-05-02T05:55:21.270Z"
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 4,
+  "fields": {
+    "batch": 5,
+    "saved_by": 1,
+    "label": "CS - Year 2 Sem 4 - EB – saved before regeneration on 2026-05-02 05:55",
+    "created_at": "2026-05-02T05:55:43.973Z"
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 5,
+  "fields": {
+    "batch": 4,
+    "saved_by": 3,
+    "label": "CS - Year 2 Sem 4 - EA – saved before regeneration on 2026-05-02 09:08",
+    "created_at": "2026-05-02T09:08:22.250Z"
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 6,
+  "fields": {
+    "batch": 5,
+    "saved_by": 1,
+    "label": "CS - Year 2 Sem 4 - EB – saved before regeneration on 2026-05-02 09:35",
+    "created_at": "2026-05-02T09:35:33.902Z"
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 7,
+  "fields": {
+    "batch": 4,
+    "saved_by": 1,
+    "label": "CS - Year 2 Sem 4 - EA – saved before regeneration on 2026-05-02 09:37",
+    "created_at": "2026-05-02T09:37:57.538Z"
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 8,
+  "fields": {
+    "batch": 5,
+    "saved_by": 1,
+    "label": "CS - Year 2 Sem 4 - EB – saved before regeneration on 2026-05-02 09:38",
+    "created_at": "2026-05-02T09:38:12.852Z"
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 9,
+  "fields": {
+    "batch": 4,
+    "saved_by": 1,
+    "label": "CS - Year 2 Sem 4 - EA – saved before regeneration on 2026-05-02 17:16",
+    "created_at": "2026-05-02T17:16:19.940Z"
+  }
+},
+{
+  "model": "core.savedtimetable",
+  "pk": 10,
+  "fields": {
+    "batch": 4,
+    "saved_by": 1,
+    "label": "CS - Year 2 Sem 4 - EA – saved before regeneration on 2026-05-05 10:04",
+    "created_at": "2026-05-05T10:04:59.787Z"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 1,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 2,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 3,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 4,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 5,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 6,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 7,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 8,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 9,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 10,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 11,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 12,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 13,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 14,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 15,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 16,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 17,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 18,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 19,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 20,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 11,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 21,
+  "fields": {
+    "saved_timetable": 1,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 22,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 23,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 24,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 25,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 26,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 27,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 28,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 29,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 30,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 31,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "7025",
+    "day_of_week": 2,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 32,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 2,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 33,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "7025",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 34,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 35,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 2,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 36,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 37,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 38,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 39,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 40,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 41,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 11,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 42,
+  "fields": {
+    "saved_timetable": 2,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 43,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 44,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 45,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 46,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 47,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 48,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 49,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 50,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 51,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 52,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 53,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 54,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 55,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 56,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 57,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 58,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 59,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 60,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 61,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 62,
+  "fields": {
+    "saved_timetable": 3,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 63,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 64,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 65,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 66,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 67,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 68,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 69,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 70,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 71,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 2,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 72,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 73,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 74,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 75,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 2,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 76,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 77,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 78,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 79,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 80,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 81,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 15,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 82,
+  "fields": {
+    "saved_timetable": 4,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 83,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 84,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 85,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 86,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 87,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 88,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 11,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 89,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 90,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 91,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 92,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 93,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 94,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 95,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 96,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 97,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 98,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 99,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 100,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 101,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 102,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 103,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 104,
+  "fields": {
+    "saved_timetable": 5,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 105,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 106,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 107,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 108,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 109,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 110,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "cs",
+    "subject_name": "cybersecurity",
+    "faculty_name": "cybe",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 111,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 112,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 113,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 15,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 114,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 115,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 2,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 116,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 117,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 118,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 119,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 120,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 121,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 122,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "cs",
+    "subject_name": "cybersecurity",
+    "faculty_name": "cybe",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 123,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 124,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 125,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 126,
+  "fields": {
+    "saved_timetable": 6,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 127,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 128,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 129,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 130,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 131,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 132,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 133,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 134,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 135,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 136,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 137,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 138,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 139,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 140,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 141,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 142,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 143,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 144,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 11,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 145,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 146,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 147,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 148,
+  "fields": {
+    "saved_timetable": 7,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 149,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 150,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 151,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 152,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 153,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 0,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 154,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "cs",
+    "subject_name": "cybersecurity",
+    "faculty_name": "cybe",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 155,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 156,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 157,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 15,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 158,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 1,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 159,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "7025",
+    "day_of_week": 2,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 160,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 161,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 162,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 163,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 164,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 165,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 166,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "cs",
+    "subject_name": "cybersecurity",
+    "faculty_name": "cybe",
+    "room_number": "7025",
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 167,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Namratta",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 168,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 169,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 170,
+  "fields": {
+    "saved_timetable": 8,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Shivanshi",
+    "room_number": "7025",
+    "day_of_week": 4,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 171,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "4018",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 172,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 173,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 15,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 174,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 175,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 176,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 177,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 15,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 178,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 179,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 180,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 181,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 182,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 183,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 184,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 185,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 186,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 187,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 11,
+    "is_fixed": true,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 188,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 189,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 190,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 191,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 192,
+  "fields": {
+    "saved_timetable": 9,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": true,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 193,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0060",
+    "subject_name": "Data communication",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "4018",
+    "day_of_week": 0,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 194,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 11,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 195,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 15,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 196,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 0,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 197,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0880",
+    "subject_name": "CNL",
+    "faculty_name": "Chavvi Bajpai",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 10,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 198,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0075",
+    "subject_name": "Machine Learning",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 12,
+    "end_time": 13,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 199,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0878",
+    "subject_name": "COL",
+    "faculty_name": "Namratta",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 200,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0876",
+    "subject_name": "MLL",
+    "faculty_name": "Ruby Panwar",
+    "room_number": "6040",
+    "day_of_week": 1,
+    "start_time": 16,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 201,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 10,
+    "end_time": 11,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 202,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 203,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 204,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "PHRH0001",
+    "subject_name": "Hacker rank",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 2,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 205,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 2,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 206,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0073",
+    "subject_name": "DSA",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 11,
+    "end_time": 13,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 207,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0874",
+    "subject_name": "DSAL",
+    "faculty_name": "Piyush Khandelwal",
+    "room_number": "4018",
+    "day_of_week": 3,
+    "start_time": 14,
+    "end_time": 16,
+    "is_fixed": true,
+    "is_combined": true,
+    "combined_batch_sections": "EA, EB"
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 208,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 16,
+    "end_time": 17,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 209,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 11,
+    "is_fixed": true,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 210,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 3,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 211,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0058",
+    "subject_name": "Discrete maths",
+    "faculty_name": "Ankur rai",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 11,
+    "end_time": 12,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 212,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "BCSC0077",
+    "subject_name": "CO",
+    "faculty_name": "Anjana Bhardwaj",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 14,
+    "end_time": 15,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 213,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": true,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+},
+{
+  "model": "core.savedtimetableentry",
+  "pk": 214,
+  "fields": {
+    "saved_timetable": 10,
+    "subject_code": "RG",
+    "subject_name": "Rastriy Gaurav",
+    "faculty_name": "rs",
+    "room_number": "6040",
+    "day_of_week": 4,
+    "start_time": 17,
+    "end_time": 18,
+    "is_fixed": false,
+    "is_combined": false,
+    "combined_batch_sections": ""
+  }
+}
+]
