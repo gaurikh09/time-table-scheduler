@@ -1,100 +1,97 @@
 {% extends 'base.html' %}
 
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
 {% block content %}
-<div class="max-w-2xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">{{ title }}</h1>
-    
-    <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
-        <h3 class="font-semibold mb-2">CSV Format Instructions:</h3>
-        <ul class="list-disc list-inside text-sm">
-            <li>Required column: <strong>section</strong> (batch section name)</li>
-            <li>All other columns will be treated as subject codes</li>
-            <li>Column names can be anything (e.g., subject1, sub-code1, CS101, etc.)</li>
-            <li>Example header: <code>section,CS101,CS102,CS103,CS104,CS105</code></li>
-            <li>Example row: <code>2EA1,CS101,CS102,CS103,CS104,CS105</code></li>
-            <li>Or use descriptive headers: <code>section,subject-code1,subject-code2,subject-code3</code></li>
-            <li>Subjects must already exist in the system before uploading</li>
-            <li>Empty cells will be ignored</li>
+<div style="max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.5rem;">
+
+    <!-- Format Info -->
+    <div class="table-card scroll-reveal" style="padding: 1.5rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; color: #3b82f6; font-weight: 600; font-size: 0.875rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            CSV Format
+        </div>
+        <div style="background: var(--bg-dark); border-radius: 6px; padding: 0.6rem 0.9rem; font-family: monospace; font-size: 0.8rem; color: var(--text-primary); margin-bottom: 0.75rem;">
+            section, subject-code1, subject-code2, subject-code3, ...
+        </div>
+        <ul style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 1rem; line-height: 2;">
+            <li><strong style="color: var(--text-primary);">section</strong> — Batch section name (required), e.g. 2A(AIML)</li>
+            <li>All other columns are treated as subject codes to assign to that section</li>
+            <li>Subjects must already exist in the system</li>
+            <li>Empty cells are ignored</li>
         </ul>
     </div>
-    
-    <form method="post" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
-        {% csrf_token %}
-        
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">
-                {{ form.department.label }}
-            </label>
-            {{ form.department }}
-            {% if form.department.help_text %}
-            <p class="text-gray-600 text-xs mt-1">{{ form.department.help_text }}</p>
-            {% endif %}
-            {% if form.department.errors %}
-            <p class="text-red-500 text-xs mt-1">{{ form.department.errors.0 }}</p>
-            {% endif %}
-        </div>
-        
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">
-                {{ form.year.label }}
-            </label>
-            {{ form.year }}
-            {% if form.year.help_text %}
-            <p class="text-gray-600 text-xs mt-1">{{ form.year.help_text }}</p>
-            {% endif %}
-            {% if form.year.errors %}
-            <p class="text-red-500 text-xs mt-1">{{ form.year.errors.0 }}</p>
-            {% endif %}
-        </div>
-        
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">
-                {{ form.semester.label }}
-            </label>
-            {{ form.semester }}
-            {% if form.semester.help_text %}
-            <p class="text-gray-600 text-xs mt-1">{{ form.semester.help_text }}</p>
-            {% endif %}
-            {% if form.semester.errors %}
-            <p class="text-red-500 text-xs mt-1">{{ form.semester.errors.0 }}</p>
-            {% endif %}
-        </div>
-        
-        <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2">
-                {{ form.csv_file.label }}
-            </label>
-            {{ form.csv_file }}
-            {% if form.csv_file.help_text %}
-            <p class="text-gray-600 text-xs mt-1">{{ form.csv_file.help_text }}</p>
-            {% endif %}
-            {% if form.csv_file.errors %}
-            <p class="text-red-500 text-xs mt-1">{{ form.csv_file.errors.0 }}</p>
-            {% endif %}
-        </div>
-        
-        <div class="flex items-center justify-between">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Upload CSV
-            </button>
-            <a href="{% url 'batch_list' %}" class="text-gray-600 hover:text-gray-800">
-                Cancel
-            </a>
-        </div>
-    </form>
 
-    {% if all_subjects %}
-    <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mt-6">
-        <h3 class="font-semibold mb-3">Available Subject Codes</h3>
-        <p class="text-sm text-gray-600 mb-3">Use these exact codes in your CSV file:</p>
-        <div style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
-            {% for subject in all_subjects %}
-            <span style="background: #ede9fe; color: #5b21b6; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.8rem; font-weight: 600; cursor: pointer;" title="{{ subject.name }}">
-                {{ subject.code }}
-            </span>
-            {% endfor %}
+    <!-- Upload Form -->
+    <div class="table-card scroll-reveal">
+        <div style="padding: 1.5rem 1.5rem 0;">
+            <h2 class="table-title">{{ title }}</h2>
         </div>
+        <form method="post" enctype="multipart/form-data" style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+            {% csrf_token %}
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+                <div>
+                    <label class="form-label">{{ form.department.label }} <span style="color:var(--error)">*</span></label>
+                    {{ form.department }}
+                    {% if form.department.errors %}<div style="color:var(--error);font-size:0.8rem;margin-top:0.25rem;">{{ form.department.errors.0 }}</div>{% endif %}
+                </div>
+                <div>
+                    <label class="form-label">{{ form.year.label }} <span style="color:var(--error)">*</span></label>
+                    {{ form.year }}
+                    {% if form.year.help_text %}<small style="color:var(--text-secondary);">{{ form.year.help_text }}</small>{% endif %}
+                    {% if form.year.errors %}<div style="color:var(--error);font-size:0.8rem;margin-top:0.25rem;">{{ form.year.errors.0 }}</div>{% endif %}
+                </div>
+                <div>
+                    <label class="form-label">{{ form.semester.label }} <span style="color:var(--error)">*</span></label>
+                    {{ form.semester }}
+                    {% if form.semester.help_text %}<small style="color:var(--text-secondary);">{{ form.semester.help_text }}</small>{% endif %}
+                    {% if form.semester.errors %}<div style="color:var(--error);font-size:0.8rem;margin-top:0.25rem;">{{ form.semester.errors.0 }}</div>{% endif %}
+                </div>
+            </div>
+
+            <div>
+                <label class="form-label">{{ form.csv_file.label }} <span style="color:var(--error)">*</span></label>
+                {{ form.csv_file }}
+                {% if form.csv_file.help_text %}<small style="color:var(--text-secondary);">{{ form.csv_file.help_text }}</small>{% endif %}
+                {% if form.csv_file.errors %}<div style="color:var(--error);font-size:0.8rem;margin-top:0.25rem;">{{ form.csv_file.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                <button type="submit" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Upload CSV
+                </button>
+                <a href="{% url 'batch_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+
+        {% if all_subjects %}
+        <div style="padding: 0 1.5rem 1.5rem;">
+            <div style="border-top: 1px solid var(--border); padding-top: 1.25rem;">
+                <p style="font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; font-size: 0.875rem;">Available Subject Codes</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 0.4rem;">
+                    {% for subject in all_subjects %}
+                    <span style="background: rgba(124,58,237,0.12); color: var(--primary); padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: default;" title="{{ subject.name }}">
+                        {{ subject.code }}
+                    </span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
-    {% endif %}
+
 </div>
+
+<style>
+.form-label { display: block; font-weight: 500; margin-bottom: 0.4rem; color: var(--text-primary); font-size: 0.875rem; }
+</style>
 {% endblock %}

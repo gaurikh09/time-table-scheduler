@@ -1,2 +1,4 @@
 Django==4.2.7
 ortools==9.8.3296
+gunicorn==21.2.0
+whitenoise==6.6.0

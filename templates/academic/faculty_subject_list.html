@@ -4,126 +4,129 @@
 {% block page_title %}Faculty-Subject Mappings{% endblock %}
 
 {% block content %}
-<div style="background: white; border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 1rem; padding: 2rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px solid #e5e7eb;">
-        <div>
-            <h2 style="font-size: 1.5rem; font-weight: 700; color: #111827; margin: 0;">Faculty-Subject Mappings</h2>
-            <p style="color: #6b7280; font-size: 0.875rem; margin-top: 0.25rem;">View faculty subject capabilities and batch assignments</p>
+<div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+    <!-- Batch Assignments -->
+    <div class="table-card scroll-reveal">
+        <div class="table-header">
+            <div>
+                <h2 class="table-title">Batch Assignments <span class="badge badge-primary" style="margin-left:0.5rem;">{{ batch_mappings|length }}</span></h2>
+                <p style="color:var(--text-secondary);font-size:0.875rem;margin-top:0.25rem;">Faculty assigned to teach specific subjects for each batch</p>
+            </div>
+            <div class="table-actions">
+                {% if user.role == 'admin' or user.role == 'coordinator' or user.role == 'class_advisor' %}
+                <a href="{% url 'upload_faculty_subject' %}" class="btn btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Upload CSV
+                </a>
+                <a href="{% url 'faculty_subject_create' %}" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                    Add Assignment
+                </a>
+                {% endif %}
+            </div>
         </div>
-        <div>
-            <a href="{% url 'faculty_subject_create' %}" style="background: #7c3aed; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600;">
-                <span>+</span>
-                Add Batch Assignment
-            </a>
-        </div>
-    </div>
-    
-    <!-- Faculty Subject Capabilities (What they CAN teach) -->
-    <div style="margin-bottom: 3rem;">
-        <h3 style="font-size: 1.25rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem;">
-            📚 Faculty Subject Capabilities ({{ capability_mappings|length }})
-        </h3>
-        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1.5rem;">Subjects that faculty members can teach (from CSV upload)</p>
-        
-        {% if capability_mappings %}
-        <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; background: white;">
-                <thead>
-                    <tr style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
-                        <th style="padding: 1rem; text-align: left; font-weight: 600; color: #374151;">Faculty</th>
-                        <th style="padding: 1rem; text-align: left; font-weight: 600; color: #374151;">Subject</th>
-                        <th style="padding: 1rem; text-align: left; font-weight: 600; color: #374151;">Department</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for mapping in capability_mappings %}
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 1rem;">
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #7c3aed, #a855f7); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 0.875rem;">
-                                    {{ mapping.faculty.name|slice:":2"|upper }}
-                                </div>
-                                <div>
-                                    <strong style="color: #111827; font-size: 0.875rem; display: block;">{{ mapping.faculty.name }}</strong>
-                                    <span style="font-size: 0.75rem; color: #6b7280;">{{ mapping.faculty.employee_id }}</span>
-                                </div>
-                            </div>
-                        </td>
-                        <td style="padding: 1rem;">
-                            <div>
-                                <strong style="color: #111827; font-size: 0.875rem; display: block;">{{ mapping.subject.code }}</strong>
-                                <span style="font-size: 0.75rem; color: #6b7280;">{{ mapping.subject.name }}</span>
-                            </div>
-                        </td>
-                        <td style="padding: 1rem; color: #374151;">{{ mapping.faculty.department.name }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <div style="text-align: center; padding: 3rem; background: #f9fafb; border-radius: 8px; border: 2px dashed #d1d5db;">
-            <p style="color: #6b7280; font-size: 1rem;">No subject capabilities found. Upload faculty CSV to add subjects.</p>
-        </div>
-        {% endif %}
-    </div>
-    
-    <!-- Faculty Batch Assignments (Specific batch assignments) -->
-    <div>
-        <h3 style="font-size: 1.25rem; font-weight: 700; color: #111827; margin-bottom: 0.5rem;">
-            👥 Faculty Batch Assignments ({{ batch_mappings|length }})
-        </h3>
-        <p style="color: #6b7280; font-size: 0.875rem; margin-bottom: 1.5rem;">Specific assignments of faculty to teach subjects for particular batches</p>
-        
+
         {% if batch_mappings %}
-        <div style="overflow-x: auto;">
-            <table style="width: 100%; border-collapse: collapse; background: white;">
-                <thead>
-                    <tr style="background: #f9fafb; border-bottom: 2px solid #e5e7eb;">
-                        <th style="padding: 1rem; text-align: left; font-weight: 600; color: #374151;">Faculty</th>
-                        <th style="padding: 1rem; text-align: left; font-weight: 600; color: #374151;">Subject</th>
-                        <th style="padding: 1rem; text-align: left; font-weight: 600; color: #374151;">Batch</th>
-                        <th style="padding: 1rem; text-align: left; font-weight: 600; color: #374151;">Department</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for mapping in batch_mappings %}
-                    <tr style="border-bottom: 1px solid #e5e7eb;">
-                        <td style="padding: 1rem;">
-                            <div style="display: flex; align-items: center; gap: 0.75rem;">
-                                <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #7c3aed, #a855f7); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; color: white; font-size: 0.875rem;">
-                                    {{ mapping.faculty.name|slice:":2"|upper }}
-                                </div>
-                                <div>
-                                    <strong style="color: #111827; font-size: 0.875rem; display: block;">{{ mapping.faculty.name }}</strong>
-                                    <span style="font-size: 0.75rem; color: #6b7280;">{{ mapping.faculty.employee_id }}</span>
-                                </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Faculty</th>
+                    <th>Subject</th>
+                    <th>Batch</th>
+                    <th>Department</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mapping in batch_mappings %}
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:0.75rem;">
+                            <div style="width:36px;height:36px;background:linear-gradient(135deg,rgba(124,58,237,0.2),rgba(147,51,234,0.2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--primary);font-size:0.8rem;flex-shrink:0;">
+                                {{ mapping.faculty.name|slice:":1"|upper }}
                             </div>
-                        </td>
-                        <td style="padding: 1rem;">
                             <div>
-                                <strong style="color: #111827; font-size: 0.875rem; display: block;">{{ mapping.subject.code }}</strong>
-                                <span style="font-size: 0.75rem; color: #6b7280;">{{ mapping.subject.name }}</span>
+                                <strong style="color:var(--text-primary);font-size:0.875rem;">{{ mapping.faculty.name }}</strong>
+                                <div style="font-size:0.75rem;color:var(--text-secondary);">{{ mapping.faculty.employee_id }}</div>
                             </div>
-                        </td>
-                        <td style="padding: 1rem;">
-                            <span style="background: #ddd6fe; color: #5b21b6; padding: 0.25rem 0.75rem; border-radius: 6px; font-size: 0.875rem; font-weight: 600;">{{ mapping.batch.department.code }} - {{ mapping.batch.section }}</span>
-                        </td>
-                        <td style="padding: 1rem; color: #374151;">{{ mapping.faculty.department.name }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                        </div>
+                    </td>
+                    <td>
+                        <strong style="color:var(--primary);">{{ mapping.subject.code }}</strong>
+                        <div style="font-size:0.75rem;color:var(--text-secondary);">{{ mapping.subject.name }}</div>
+                    </td>
+                    <td><span class="badge badge-primary">{{ mapping.batch.department.code }} — {{ mapping.batch.section }}</span></td>
+                    <td style="color:var(--text-secondary);font-size:0.875rem;">{{ mapping.faculty.department.name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
         {% else %}
-        <div style="text-align: center; padding: 3rem; background: #f9fafb; border-radius: 8px; border: 2px dashed #d1d5db;">
-            <p style="color: #6b7280; font-size: 1rem; margin-bottom: 1rem;">No batch assignments found. Check "Assign to batches" when uploading faculty CSV or create manual assignments.</p>
-            <a href="{% url 'faculty_subject_create' %}" style="background: #7c3aed; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; font-weight: 600;">
-                <span>+</span>
-                Create Batch Assignment
-            </a>
+        <div class="empty-state">
+            <div class="empty-title">No Batch Assignments Yet</div>
+            <div class="empty-message">Upload a CSV or create assignments manually</div>
+            {% if user.role == 'admin' or user.role == 'coordinator' or user.role == 'class_advisor' %}
+            <div style="display:flex;gap:1rem;justify-content:center;margin-top:1rem;">
+                <a href="{% url 'faculty_subject_create' %}" class="btn btn-primary">Add Assignment</a>
+                <a href="{% url 'upload_faculty_subject' %}" class="btn btn-secondary">Upload CSV</a>
+            </div>
+            {% endif %}
         </div>
         {% endif %}
     </div>
+
+    <!-- Capabilities -->
+    {% if capability_mappings %}
+    <div class="table-card scroll-reveal">
+        <div class="table-header">
+            <div>
+                <h2 class="table-title">Subject Capabilities <span class="badge badge-primary" style="margin-left:0.5rem;">{{ capability_mappings|length }}</span></h2>
+                <p style="color:var(--text-secondary);font-size:0.875rem;margin-top:0.25rem;">Subjects each faculty member is qualified to teach</p>
+            </div>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Faculty</th>
+                    <th>Subject</th>
+                    <th>Department</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mapping in capability_mappings %}
+                <tr>
+                    <td>
+                        <div style="display:flex;align-items:center;gap:0.75rem;">
+                            <div style="width:36px;height:36px;background:linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--success);font-size:0.8rem;flex-shrink:0;">
+                                {{ mapping.faculty.name|slice:":1"|upper }}
+                            </div>
+                            <div>
+                                <strong style="color:var(--text-primary);font-size:0.875rem;">{{ mapping.faculty.name }}</strong>
+                                <div style="font-size:0.75rem;color:var(--text-secondary);">{{ mapping.faculty.employee_id }}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <strong style="color:var(--primary);">{{ mapping.subject.code }}</strong>
+                        <div style="font-size:0.75rem;color:var(--text-secondary);">{{ mapping.subject.name }}</div>
+                    </td>
+                    <td style="color:var(--text-secondary);font-size:0.875rem;">{{ mapping.faculty.department.name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
 </div>
+
+<style>
+.table-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;padding:1.5rem;border-bottom:1px solid var(--border);}
+.table-actions{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap;}
+</style>
 {% endblock %}

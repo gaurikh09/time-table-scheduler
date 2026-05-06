@@ -1,75 +1,72 @@
 {% extends 'base.html' %}
 
+{% block title %}{{ title }}{% endblock %}
+{% block page_title %}{{ title }}{% endblock %}
+
 {% block content %}
-<div class="max-w-2xl mx-auto">
-    <h1 class="text-3xl font-bold mb-6">{{ title }}</h1>
-    
-    <div class="bg-blue-50 border border-blue-200 rounded p-4 mb-6">
-        <h3 class="font-semibold mb-2">CSV Format Instructions:</h3>
-        <ul class="list-disc list-inside text-sm">
-            <li><strong>Required columns:</strong> Teach-name, Emp-ID, and at least one subject code column</li>
-            <li>Optional column: <strong>email</strong></li>
-            <li><strong>Subject columns (REQUIRED):</strong> All other columns will be treated as subject codes the faculty can teach</li>
-            <li>Example header: <code>Teach-name,Emp-ID,email,CS101,CS102,CS103</code></li>
-            <li>Example row: <code>Dr. John Smith,EMP001,john@university.edu,CS101,CS102,CS103</code></li>
-            <li>Or use descriptive headers: <code>Teach-name,Emp-ID,email,subject1,subject2,subject3</code></li>
-            <li><strong>Important:</strong> Each faculty member MUST have at least one subject code</li>
-            <li>Subjects must already exist in the system before uploading</li>
-            <li>Empty subject cells will be ignored, but at least one must be filled</li>
-            <li><strong>All subjects will be visible in faculty list immediately after upload!</strong></li>
-        </ul>
+<div class="table-card scroll-reveal" style="max-width: 600px; margin: 0 auto;">
+    <div style="padding: 1.5rem 1.5rem 0;">
+        <h2 class="table-title">{{ title }}</h2>
+        <p style="color: var(--text-secondary); font-size: 0.875rem; margin-top: 0.25rem;">
+            Bulk upload faculty members from a CSV file
+        </p>
     </div>
-    
-    <form method="post" enctype="multipart/form-data" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
-        {% csrf_token %}
-        
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">
-                {{ form.department.label }}
-            </label>
-            {{ form.department }}
-            {% if form.department.help_text %}
-            <p class="text-gray-600 text-xs mt-1">{{ form.department.help_text }}</p>
-            {% endif %}
-            {% if form.department.errors %}
-            <p class="text-red-500 text-xs mt-1">{{ form.department.errors.0 }}</p>
-            {% endif %}
+
+    <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem;">
+
+        <!-- Format Info -->
+        <div style="background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.25); border-radius: 10px; padding: 1.25rem;">
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; color: #3b82f6; font-weight: 600; font-size: 0.875rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+                Required CSV Columns
+            </div>
+            <div style="background: var(--bg-dark); border-radius: 6px; padding: 0.6rem 0.9rem; font-family: monospace; font-size: 0.8rem; color: var(--text-primary); margin-bottom: 0.75rem;">
+                Teach-name, Emp-ID, email
+            </div>
+            <ul style="font-size: 0.8rem; color: var(--text-secondary); margin-left: 1rem; line-height: 2;">
+                <li><strong style="color: var(--text-primary);">Teach-name</strong> — Full name of the faculty (required)</li>
+                <li><strong style="color: var(--text-primary);">Emp-ID</strong> — Unique employee ID (required)</li>
+                <li><strong style="color: var(--text-primary);">email</strong> — Email address (optional)</li>
+            </ul>
         </div>
-        
-        <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2">
-                {{ form.csv_file.label }}
-            </label>
-            {{ form.csv_file }}
-            {% if form.csv_file.help_text %}
-            <p class="text-gray-600 text-xs mt-1">{{ form.csv_file.help_text }}</p>
-            {% endif %}
-            {% if form.csv_file.errors %}
-            <p class="text-red-500 text-xs mt-1">{{ form.csv_file.errors.0 }}</p>
-            {% endif %}
-        </div>
-        
-        <div class="mb-6">
-            <label class="flex items-center">
-                {{ form.assign_to_batches }}
-                <span class="ml-2 text-gray-700 text-sm font-bold">{{ form.assign_to_batches.label }}</span>
-            </label>
-            {% if form.assign_to_batches.help_text %}
-            <p class="text-gray-600 text-xs mt-1 ml-6">{{ form.assign_to_batches.help_text }}</p>
-            {% endif %}
-            {% if form.assign_to_batches.errors %}
-            <p class="text-red-500 text-xs mt-1 ml-6">{{ form.assign_to_batches.errors.0 }}</p>
-            {% endif %}
-        </div>
-        
-        <div class="flex items-center justify-between">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Upload CSV
-            </button>
-            <a href="{% url 'faculty_list' %}" class="text-gray-600 hover:text-gray-800">
-                Cancel
-            </a>
-        </div>
-    </form>
+
+        <!-- Form -->
+        <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 1.25rem;">
+            {% csrf_token %}
+
+            <div>
+                <label class="form-label">{{ form.department.label }} <span style="color:var(--error)">*</span></label>
+                {{ form.department }}
+                {% if form.department.help_text %}<small style="color:var(--text-secondary);">{{ form.department.help_text }}</small>{% endif %}
+                {% if form.department.errors %}<div style="color:var(--error);font-size:0.8rem;margin-top:0.25rem;">{{ form.department.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div>
+                <label class="form-label">{{ form.csv_file.label }} <span style="color:var(--error)">*</span></label>
+                {{ form.csv_file }}
+                {% if form.csv_file.help_text %}<small style="color:var(--text-secondary);">{{ form.csv_file.help_text }}</small>{% endif %}
+                {% if form.csv_file.errors %}<div style="color:var(--error);font-size:0.8rem;margin-top:0.25rem;">{{ form.csv_file.errors.0 }}</div>{% endif %}
+            </div>
+
+            <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                <button type="submit" class="btn btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Upload CSV
+                </button>
+                <a href="{% url 'faculty_list' %}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+
+    </div>
 </div>
+
+<style>
+.form-label { display: block; font-weight: 500; margin-bottom: 0.4rem; color: var(--text-primary); font-size: 0.875rem; }
+</style>
 {% endblock %}

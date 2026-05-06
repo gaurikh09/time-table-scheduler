@@ -39,7 +39,7 @@
     </div>
 
     <!-- Upload Form -->
-    <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 2rem;">
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem;">
         <h3 style="font-weight: 700; margin-bottom: 1.5rem; color: var(--text-primary);">Upload CSV File</h3>
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -59,7 +59,7 @@
 
     <!-- Results after upload -->
     {% if request.method == 'POST' %}
-    <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+    <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem;">
         <h3 style="font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">Upload Results</h3>
         <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
             <span style="background: rgba(16,185,129,0.1); color: #10b981; padding: 0.4rem 1rem; border-radius: 8px; font-weight: 600;">
@@ -91,21 +91,21 @@
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
 
         <!-- Faculty -->
-        <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem;">
             <h3 style="font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); font-size: 0.95rem;">
                 Available Faculty ({{ faculty_list|length }})
             </h3>
             <div style="max-height: 250px; overflow-y: auto;">
                 <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse;">
                     <thead>
-                        <tr style="border-bottom: 1px solid var(--border-color);">
+                        <tr style="border-bottom: 1px solid var(--border);">
                             <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Emp ID</th>
                             <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Name</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for f in faculty_list %}
-                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);">
+                        <tr style="border-bottom: 1px solid var(--border);">
                             <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: var(--primary); font-family: monospace;">{{ f.employee_id }}</td>
                             <td style="padding: 0.4rem 0.5rem; color: var(--text-primary);">{{ f.name }}</td>
                         </tr>
@@ -116,21 +116,21 @@
         </div>
 
         <!-- Subjects -->
-        <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem;">
             <h3 style="font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); font-size: 0.95rem;">
                 Available Subjects ({{ subject_list|length }})
             </h3>
             <div style="max-height: 250px; overflow-y: auto;">
                 <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse;">
                     <thead>
-                        <tr style="border-bottom: 1px solid var(--border-color);">
+                        <tr style="border-bottom: 1px solid var(--border);">
                             <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Code</th>
                             <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Name</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for s in subject_list %}
-                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);">
+                        <tr style="border-bottom: 1px solid var(--border);">
                             <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: #3b82f6; font-family: monospace;">{{ s.code }}</td>
                             <td style="padding: 0.4rem 0.5rem; color: var(--text-primary);">{{ s.name }}</td>
                         </tr>
@@ -141,21 +141,21 @@
         </div>
 
         <!-- Batches -->
-        <div style="background: var(--card-bg, white); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem;">
             <h3 style="font-weight: 700; margin-bottom: 1rem; color: var(--text-primary); font-size: 0.95rem;">
                 Available Batches ({{ batch_list|length }})
             </h3>
             <div style="max-height: 250px; overflow-y: auto;">
                 <table style="width: 100%; font-size: 0.8rem; border-collapse: collapse;">
                     <thead>
-                        <tr style="border-bottom: 1px solid var(--border-color);">
+                        <tr style="border-bottom: 1px solid var(--border);">
                             <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Section</th>
                             <th style="text-align: left; padding: 0.4rem 0.5rem; color: var(--text-secondary);">Dept / Yr / Sem</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for b in batch_list %}
-                        <tr style="border-bottom: 1px solid rgba(0,0,0,0.04);">
+                        <tr style="border-bottom: 1px solid var(--border);">
                             <td style="padding: 0.4rem 0.5rem; font-weight: 600; color: #10b981; font-family: monospace;">{{ b.section }}</td>
                             <td style="padding: 0.4rem 0.5rem; color: var(--text-secondary);">{{ b.department.code }} Y{{ b.year }} S{{ b.semester }}</td>
                         </tr>
