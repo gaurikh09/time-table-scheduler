@@ -851,6 +851,10 @@ def generate_timetable(request):
 
                     solver = TimetableSolver([selected_batch], None, faculty_subjects, rooms, fixed_entries, combined_classes)
 
+                    # Warn about combined class room capacity issues
+                    for warn in solver.combined_room_warnings:
+                        messages.warning(request, f'⚠ Combined class room capacity: {warn}')
+
                     warning = solver.validate_inputs()
                     if warning:
                         messages.warning(request, warning)

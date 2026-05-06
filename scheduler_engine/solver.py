@@ -26,9 +26,19 @@ class TimetableSolver:
         self.combined_faculty_blocked = {}  # faculty_id -> set of (day, t)
         self.combined_room_blocked = {}  # room_id -> set of (day, t)
         self.combined_subject_batches = set()  # (batch_id, subject_id) already covered by combined class
+        self.combined_room_warnings = []  # capacity warnings for combined classes
         for cc in self.combined_classes:
+            cc_batches = list(cc.batches.all())
+            total_strength = sum(b.strength for b in cc_batches)
+            # Warn if combined room capacity is insufficient
+            if cc.room.capacity < total_strength:
+                self.combined_room_warnings.append(
+                    f"Combined class '{cc.subject.code}' on {cc.get_day_of_week_display()} {cc.start_time}:00 — "
+                    f"room {cc.room.room_number} (capacity {cc.room.capacity}) is too small for "
+                    f"{len(cc_batches)} batches with total strength {total_strength}."
+                )
             for t in range(cc.start_time, cc.end_time):
-                for batch in cc.batches.all():
+                for batch in cc_batches:
                     self.combined_blocked.setdefault(batch.id, set()).add((cc.day_of_week, t))
                     self.combined_subject_batches.add((batch.id, cc.subject_id))
                 self.combined_faculty_blocked.setdefault(cc.faculty_id, set()).add((cc.day_of_week, t))
@@ -62,14 +72,15 @@ class TimetableSolver:
             faculty = fs.faculty
             duration = max(1, subject.duration_hours)
 
-            # Determine valid rooms
+            # Determine valid rooms — must have capacity >= batch strength
             if batch.fixed_room:
                 valid_rooms = [batch.fixed_room]
             else:
                 valid_rooms = [r for r in self.rooms if r.is_allocatable and r.capacity >= batch.strength]
 
+            # No fallback — if no room fits, skip this subject (will be caught by diagnose())
             if not valid_rooms:
-                valid_rooms = [r for r in self.rooms if r.is_allocatable]
+                continue
 
             batch_blocked = self.combined_blocked.get(batch.id, set())
             faculty_blocked = self.combined_faculty_blocked.get(faculty.id, set())
