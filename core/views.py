@@ -11,13 +11,13 @@ import io
 from .models import (
     AcademicBlock, Floor, Room, Department, Batch, Faculty, 
     Subject, FacultySubject, FacultySubjectCapability, TimetableEntry, TimetableGeneration,
-    BatchSubject, CombinedClass, SavedTimetable, SavedTimetableEntry, ClassAdvisor, User, Student
+    BatchSubject, CombinedClass, SavedTimetable, SavedTimetableEntry, ClassAdvisor, User, Student, Shift
 )
 from .forms import (
     AcademicBlockForm, FloorForm, RoomForm, DepartmentForm, 
     BatchForm, FacultyForm, SubjectForm, FacultySubjectForm, TimetableEntryForm,
     FacultyCSVUploadForm, SubjectCSVUploadForm, BatchSubjectCSVUploadForm, FacultySubjectCSVUploadForm,
-    CombinedClassForm
+    CombinedClassForm, ShiftForm
 )
 from scheduler_engine.solver import TimetableSolver
 
@@ -849,7 +849,15 @@ def generate_timetable(request):
                     fixed_entries = list(TimetableEntry.objects.filter(is_fixed=True, batch=selected_batch).select_related('batch', 'subject', 'faculty', 'room'))
                     combined_classes = list(CombinedClass.objects.filter(batches=selected_batch).prefetch_related('batches').select_related('subject', 'faculty', 'room'))
 
-                    solver = TimetableSolver([selected_batch], None, faculty_subjects, rooms, fixed_entries, combined_classes)
+                    solver = TimetableSolver(
+                        [selected_batch], None, faculty_subjects, rooms, fixed_entries, combined_classes,
+                        working_hours=(
+                            selected_batch.shift.start_time if selected_batch.shift else 10,
+                            selected_batch.shift.end_time if selected_batch.shift else 18
+                        ),
+                        lunch_start=selected_batch.shift.lunch_start if selected_batch.shift else 13,
+                        lunch_duration=selected_batch.shift.lunch_duration if selected_batch.shift else 1
+                    )
 
                     # Block generation if combined class room capacity is insufficient
                     if solver.combined_room_warnings:
@@ -979,7 +987,15 @@ def generate_all_timetables(request):
                 fixed_entries = list(TimetableEntry.objects.filter(is_fixed=True, batch=batch).select_related('batch', 'subject', 'faculty', 'room'))
                 combined_classes = list(CombinedClass.objects.filter(batches=batch).prefetch_related('batches').select_related('subject', 'faculty', 'room'))
 
-                solver = TimetableSolver([batch], None, faculty_subjects, rooms, fixed_entries, combined_classes)
+                solver = TimetableSolver(
+                        [batch], None, faculty_subjects, rooms, fixed_entries, combined_classes,
+                        working_hours=(
+                            batch.shift.start_time if batch.shift else 10,
+                            batch.shift.end_time if batch.shift else 18
+                        ),
+                        lunch_start=batch.shift.lunch_start if batch.shift else 13,
+                        lunch_duration=batch.shift.lunch_duration if batch.shift else 1
+                    )
 
                 # Block if combined class room capacity insufficient
                 if solver.combined_room_warnings:
@@ -1068,8 +1084,9 @@ def timetable_view(request):
         batches = Batch.objects.select_related('department').all()
     timetable_grid = {}
     spanned_cells = {}
-    combined_grid = {}  # {day: {start_time: CombinedClass}}
+    combined_grid = {}
     combined_spanned = {}
+    selected_batch_obj = Batch.objects.select_related('shift').filter(pk=batch_id).first() if batch_id else None
 
     if batch_id:
         entries = TimetableEntry.objects.filter(batch_id=batch_id).select_related(
@@ -1112,7 +1129,10 @@ def timetable_view(request):
         'combined_grid': combined_grid,
         'combined_spanned': combined_spanned,
         'days': TimetableEntry.DAYS_OF_WEEK,
-        'timeslots': range(10, 18),
+        'timeslots': range(
+            selected_batch_obj.shift.start_time if selected_batch_obj and selected_batch_obj.shift else 10,
+            selected_batch_obj.shift.end_time if selected_batch_obj and selected_batch_obj.shift else 18
+        ),
     }
     return render(request, 'timetable/timetable_view.html', context)
 
@@ -1475,6 +1495,55 @@ def student_delete(request, pk):
         messages.success(request, 'Student account deleted.')
         return redirect('student_list')
     return render(request, 'confirm_delete.html', {'object': student, 'type': 'Student'})
+
+
+# ── Shift Management ────────────────────────────────────────────────────
+
+@login_required
+@role_required(['admin', 'coordinator', 'class_advisor'])
+def shift_list(request):
+    shifts = Shift.objects.all()
+    return render(request, 'academic/shift_list.html', {'shifts': shifts})
+
+
+@login_required
+@role_required(['admin', 'coordinator', 'class_advisor'])
+def shift_create(request):
+    if request.method == 'POST':
+        form = ShiftForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Shift created successfully.')
+            return redirect('shift_list')
+    else:
+        form = ShiftForm()
+    return render(request, 'academic/shift_form.html', {'form': form, 'title': 'Create Shift'})
+
+
+@login_required
+@role_required(['admin', 'coordinator', 'class_advisor'])
+def shift_edit(request, pk):
+    shift = get_object_or_404(Shift, pk=pk)
+    if request.method == 'POST':
+        form = ShiftForm(request.POST, instance=shift)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Shift updated successfully.')
+            return redirect('shift_list')
+    else:
+        form = ShiftForm(instance=shift)
+    return render(request, 'academic/shift_form.html', {'form': form, 'title': 'Edit Shift'})
+
+
+@login_required
+@role_required(['admin'])
+def shift_delete(request, pk):
+    shift = get_object_or_404(Shift, pk=pk)
+    if request.method == 'POST':
+        shift.delete()
+        messages.success(request, 'Shift deleted.')
+        return redirect('shift_list')
+    return render(request, 'confirm_delete.html', {'object': shift, 'type': 'Shift'})
 
 
 @login_required

@@ -23,6 +23,11 @@ urlpatterns = [
     path('departments/<int:pk>/edit/', views.DepartmentEditView.as_view(), name='department_edit'),
     path('departments/<int:pk>/delete/', views.DepartmentDeleteView.as_view(), name='department_delete'),
 
+    path('shifts/', views.shift_list, name='shift_list'),
+    path('shifts/create/', views.shift_create, name='shift_create'),
+    path('shifts/<int:pk>/edit/', views.shift_edit, name='shift_edit'),
+    path('shifts/<int:pk>/delete/', views.shift_delete, name='shift_delete'),
+
     path('batches/', views.batch_list, name='batch_list'),
     path('batches/create/', views.batch_create, name='batch_create'),
     path('batches/subjects/', views.batch_subjects_view, name='batch_subjects_view'),

@@ -63,6 +63,34 @@ class Room(models.Model):
         unique_together = ['floor', 'room_number']
 
 
+class Shift(models.Model):
+    """Defines working hours and lunch break for a batch."""
+    name = models.CharField(max_length=100, help_text='e.g. Morning Shift, Afternoon Shift')
+    start_time = models.IntegerField(
+        validators=[MinValueValidator(6), MaxValueValidator(14)],
+        help_text='Shift start hour (6-14), e.g. 8 for 8:00 AM'
+    )
+    end_time = models.IntegerField(
+        validators=[MinValueValidator(12), MaxValueValidator(22)],
+        help_text='Shift end hour (12-22), e.g. 17 for 5:00 PM'
+    )
+    lunch_start = models.IntegerField(
+        validators=[MinValueValidator(10), MaxValueValidator(16)],
+        help_text='Lunch break start hour, e.g. 13 for 1:00 PM'
+    )
+    lunch_duration = models.IntegerField(
+        default=1,
+        validators=[MinValueValidator(1), MaxValueValidator(3)],
+        help_text='Lunch break duration in hours (1-3)'
+    )
+
+    def __str__(self):
+        return f"{self.name} ({self.start_time}:00 – {self.end_time}:00, Lunch {self.lunch_start}:00)"
+
+    class Meta:
+        ordering = ['start_time']
+
+
 # Academic Models
 class Department(models.Model):
     name = models.CharField(max_length=200)
@@ -85,6 +113,9 @@ class Batch(models.Model):
     fixed_room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, blank=True, 
                                     related_name='fixed_batches',
                                     help_text="If set, all classes for this batch will be in this room")
+    shift = models.ForeignKey('Shift', on_delete=models.SET_NULL, null=True, blank=True,
+                               related_name='batches',
+                               help_text="Working hours shift for this batch")
     
     def __str__(self):
         return f"{self.department.code} - Year {self.year} Sem {self.semester} - {self.section}"

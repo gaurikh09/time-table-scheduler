@@ -1,7 +1,7 @@
 from django import forms
 from .models import (
     AcademicBlock, Floor, Room, Department, Batch,
-    Faculty, Subject, FacultySubject, TimetableEntry, CombinedClass
+    Faculty, Subject, FacultySubject, TimetableEntry, CombinedClass, Shift
 )
 
 class FacultyCSVUploadForm(forms.Form):
@@ -120,7 +120,7 @@ class DepartmentForm(forms.ModelForm):
 class BatchForm(forms.ModelForm):
     class Meta:
         model = Batch
-        fields = ['department', 'year', 'semester', 'section', 'strength', 'max_classes_per_day', 'fixed_room']
+        fields = ['department', 'year', 'semester', 'section', 'strength', 'max_classes_per_day', 'fixed_room', 'shift']
         widgets = {
             'department': forms.Select(attrs={'class': 'form-input'}),
             'year': forms.NumberInput(attrs={'class': 'form-input'}),
@@ -129,6 +129,20 @@ class BatchForm(forms.ModelForm):
             'strength': forms.NumberInput(attrs={'class': 'form-input'}),
             'max_classes_per_day': forms.NumberInput(attrs={'class': 'form-input'}),
             'fixed_room': forms.Select(attrs={'class': 'form-input'}),
+            'shift': forms.Select(attrs={'class': 'form-input'}),
+        }
+
+
+class ShiftForm(forms.ModelForm):
+    class Meta:
+        model = Shift
+        fields = ['name', 'start_time', 'end_time', 'lunch_start', 'lunch_duration']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-input'}),
+            'start_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 6, 'max': 14}),
+            'end_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 12, 'max': 22}),
+            'lunch_start': forms.NumberInput(attrs={'class': 'form-input', 'min': 10, 'max': 16}),
+            'lunch_duration': forms.NumberInput(attrs={'class': 'form-input', 'min': 1, 'max': 3}),
         }
 
 

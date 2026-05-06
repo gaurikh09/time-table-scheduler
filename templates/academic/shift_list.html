@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Shifts{% endblock %}
+{% block page_title %}Shifts{% endblock %}
+
+{% block content %}
+<div class="table-card scroll-reveal">
+    <div class="table-header">
+        <div>
+            <h2 class="table-title">Shifts</h2>
+            <p style="color:var(--text-secondary);font-size:0.875rem;margin-top:0.25rem;">
+                Define working hours and lunch breaks for batches
+            </p>
+        </div>
+        <div class="table-actions">
+            <a href="{% url 'shift_create' %}" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+                Add Shift
+            </a>
+        </div>
+    </div>
+
+    {% if shifts %}
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Start</th>
+                <th>End</th>
+                <th>Lunch Break</th>
+                <th>Total Hours</th>
+                <th>Batches Using</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for shift in shifts %}
+            <tr>
+                <td><strong style="color:var(--text-primary);">{{ shift.name }}</strong></td>
+                <td><span class="badge badge-primary">{{ shift.start_time }}:00</span></td>
+                <td><span class="badge badge-primary">{{ shift.end_time }}:00</span></td>
+                <td style="color:var(--text-secondary);">
+                    {{ shift.lunch_start }}:00 – {{ shift.lunch_start|add:shift.lunch_duration }}:00
+                    <span style="font-size:0.75rem;">({{ shift.lunch_duration }}h)</span>
+                </td>
+                <td style="font-weight:600;color:var(--text-primary);">
+                    {{ shift.end_time|add:"-"|add:shift.start_time|add:"-"|add:shift.lunch_duration }}h
+                </td>
+                <td><span class="badge badge-primary">{{ shift.batches.count }}</span></td>
+                <td>
+                    <div style="display:flex;gap:0.5rem;">
+                        <a href="{% url 'shift_edit' shift.pk %}" class="btn btn-secondary" style="padding:0.4rem 0.8rem;font-size:0.8rem;">Edit</a>
+                        {% if user.role == 'admin' %}
+                        <a href="{% url 'shift_delete' shift.pk %}" class="btn btn-secondary" style="padding:0.4rem 0.8rem;font-size:0.8rem;color:var(--error);border-color:var(--error);">Delete</a>
+                        {% endif %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.3;">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+            </svg>
+        </div>
+        <div class="empty-title">No Shifts Defined</div>
+        <div class="empty-message">Create a shift to define working hours for batches. Without a shift, the default 10 AM – 6 PM with 1-hour lunch at 1 PM is used.</div>
+        <a href="{% url 'shift_create' %}" class="btn btn-primary" style="margin-top:1rem;">Add Shift</a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+.table-header{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;padding:1.5rem;border-bottom:1px solid var(--border);}
+.table-actions{display:flex;gap:0.75rem;align-items:center;}
+</style>
+{% endblock %}
