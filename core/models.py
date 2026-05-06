@@ -245,8 +245,8 @@ class CombinedClass(models.Model):
     faculty = models.ForeignKey(Faculty, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     day_of_week = models.IntegerField(choices=DAYS_OF_WEEK)
-    start_time = models.IntegerField(validators=[MinValueValidator(10), MaxValueValidator(17)])
-    end_time = models.IntegerField(validators=[MinValueValidator(11), MaxValueValidator(18)])
+    start_time = models.IntegerField(validators=[MinValueValidator(6), MaxValueValidator(21)])
+    end_time = models.IntegerField(validators=[MinValueValidator(7), MaxValueValidator(22)])
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

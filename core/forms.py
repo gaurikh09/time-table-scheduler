@@ -215,6 +215,6 @@ class CombinedClassForm(forms.ModelForm):
             'faculty': forms.Select(attrs={'class': 'form-input'}),
             'room': forms.Select(attrs={'class': 'form-input'}),
             'day_of_week': forms.Select(attrs={'class': 'form-input'}),
-            'start_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 10, 'max': 17}),
-            'end_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 11, 'max': 18}),
+            'start_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 6, 'max': 21}),
+            'end_time': forms.NumberInput(attrs={'class': 'form-input', 'min': 7, 'max': 22}),
         }
