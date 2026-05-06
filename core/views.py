@@ -851,9 +851,18 @@ def generate_timetable(request):
 
                     solver = TimetableSolver([selected_batch], None, faculty_subjects, rooms, fixed_entries, combined_classes)
 
-                    # Warn about combined class room capacity issues
-                    for warn in solver.combined_room_warnings:
-                        messages.warning(request, f'⚠ Combined class room capacity: {warn}')
+                    # Block generation if combined class room capacity is insufficient
+                    if solver.combined_room_warnings:
+                        generation.status = 'failed'
+                        generation.save()
+                        for warn in solver.combined_room_warnings:
+                            messages.error(request, f'⚠ Combined class room capacity issue: {warn}')
+                        return render(request, 'timetable/generate.html', {
+                            'batches': batches,
+                            'selected_batch': selected_batch,
+                            'selected_batch_id': selected_batch_id,
+                            'missing_mappings': missing_mappings,
+                        })
 
                     warning = solver.validate_inputs()
                     if warning:
@@ -943,6 +952,104 @@ def generate_timetable(request):
         'selected_batch_id': selected_batch_id,
         'missing_mappings': missing_mappings,
     })
+
+
+@login_required
+@role_required(['admin', 'coordinator'])
+def generate_all_timetables(request):
+    """Generate timetables for all batches that have faculty-subject mappings."""
+    if request.method != 'POST':
+        return redirect('generate_timetable')
+
+    all_batches = Batch.objects.select_related('department').all()
+    rooms = list(Room.objects.filter(is_allocatable=True))
+    success_count = 0
+    fail_count = 0
+    skipped_count = 0
+    errors = []
+
+    for batch in all_batches:
+        faculty_subjects = list(FacultySubject.objects.filter(batch=batch).select_related('faculty', 'subject', 'batch'))
+        if not faculty_subjects:
+            skipped_count += 1
+            continue
+
+        try:
+            with transaction.atomic():
+                fixed_entries = list(TimetableEntry.objects.filter(is_fixed=True, batch=batch).select_related('batch', 'subject', 'faculty', 'room'))
+                combined_classes = list(CombinedClass.objects.filter(batches=batch).prefetch_related('batches').select_related('subject', 'faculty', 'room'))
+
+                solver = TimetableSolver([batch], None, faculty_subjects, rooms, fixed_entries, combined_classes)
+
+                # Block if combined class room capacity insufficient
+                if solver.combined_room_warnings:
+                    fail_count += 1
+                    errors.append(f'{batch}: ' + '; '.join(solver.combined_room_warnings))
+                    continue
+
+                success, message = solver.solve()
+
+                if success:
+                    # Snapshot existing
+                    existing_entries = list(TimetableEntry.objects.filter(batch=batch).select_related('subject', 'faculty', 'room', 'combined_class').prefetch_related('combined_class__batches'))
+                    if existing_entries:
+                        snapshot = SavedTimetable.objects.create(
+                            batch=batch,
+                            saved_by=request.user,
+                            label=f"{batch} – saved before regeneration on {timezone.now().strftime('%Y-%m-%d %H:%M')}"
+                        )
+                        SavedTimetableEntry.objects.bulk_create([
+                            SavedTimetableEntry(
+                                saved_timetable=snapshot,
+                                subject_code=e.subject.code,
+                                subject_name=e.subject.name,
+                                faculty_name=e.faculty.name,
+                                room_number=e.room.room_number,
+                                day_of_week=e.day_of_week,
+                                start_time=e.start_time,
+                                end_time=e.end_time,
+                                is_fixed=e.is_fixed,
+                                is_combined=bool(e.combined_class_id),
+                                combined_batch_sections=', '.join(b.section for b in e.combined_class.batches.all()) if e.combined_class_id else ''
+                            ) for e in existing_entries
+                        ])
+
+                    TimetableEntry.objects.filter(is_fixed=False, batch=batch, combined_class__isnull=True).delete()
+                    for entry_data in solver.solution:
+                        TimetableEntry.objects.create(
+                            batch_id=entry_data['batch_id'],
+                            subject_id=entry_data['subject_id'],
+                            faculty_id=entry_data['faculty_id'],
+                            room_id=entry_data['room_id'],
+                            day_of_week=entry_data['day_of_week'],
+                            start_time=entry_data['start_time'],
+                            end_time=entry_data['end_time'],
+                            is_fixed=False
+                        )
+                    TimetableEntry.objects.filter(batch=batch, combined_class__isnull=False).delete()
+                    for cc in combined_classes:
+                        TimetableEntry.objects.create(
+                            batch=batch, subject=cc.subject, faculty=cc.faculty, room=cc.room,
+                            day_of_week=cc.day_of_week, start_time=cc.start_time, end_time=cc.end_time,
+                            is_fixed=True, combined_class=cc
+                        )
+                    success_count += 1
+                else:
+                    fail_count += 1
+                    errors.append(f'{batch}: {message}')
+        except Exception as e:
+            fail_count += 1
+            errors.append(f'{batch}: {str(e)}')
+
+    if success_count:
+        messages.success(request, f'Generated timetables for {success_count} batch(es) successfully.')
+    if skipped_count:
+        messages.warning(request, f'Skipped {skipped_count} batch(es) with no faculty-subject mappings.')
+    if fail_count:
+        error_detail = '\n'.join(f'• {e}' for e in errors)
+        messages.error(request, f'Failed for {fail_count} batch(es):\n{error_detail}')
+
+    return redirect('generate_timetable')
 
 
 @login_required

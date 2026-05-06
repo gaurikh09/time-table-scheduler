@@ -49,6 +49,7 @@ urlpatterns = [
 
     # Timetable
     path('timetable/generate/', views.generate_timetable, name='generate_timetable'),
+    path('timetable/generate-all/', views.generate_all_timetables, name='generate_all_timetables'),
     path('timetable/view/', views.timetable_view, name='timetable_view'),
     path('timetable/manual-entry/', views.manual_entry_create, name='manual_entry_create'),
     path('timetable/combined/', views.combined_class_list, name='combined_class_list'),
